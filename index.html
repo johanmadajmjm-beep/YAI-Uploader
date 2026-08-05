@@ -169,6 +169,18 @@
   .login-field select{appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C8578' stroke-width='2.2' stroke-linecap='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat:no-repeat; background-position:right 12px center; background-size:16px; padding-right:38px;}
   .login-field input:focus,.login-field select:focus{border-color:var(--orange); box-shadow:var(--ring); background-color:#fff;}
   .login-field input.error,.login-field select.error{border-color:var(--miss);}
+
+  /* Input sandi dengan tombol lihat */
+  .sandi-wrap{position:relative; display:flex; align-items:center;}
+  .sandi-wrap input{padding-right:44px !important;}
+  .sandi-toggle{position:absolute; right:6px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:7px; border-radius:8px; color:var(--muted-2); display:flex; align-items:center; justify-content:center; transition:color .15s, background .15s;}
+  .sandi-toggle:hover{color:var(--ink-2); background:var(--card-2);}
+  .sandi-toggle svg{width:17px; height:17px;}
+
+  /* Kontak admin di login */
+  .login-kontak{margin-top:20px; padding-top:16px; border-top:1px solid var(--line); text-align:center; font-size:11px; color:var(--muted);}
+  .login-kontak a{display:inline-flex; align-items:center; gap:5px; margin-top:5px; color:#25A366; font-weight:700; text-decoration:none; font-size:12.5px;}
+  .login-kontak a:hover{text-decoration:underline;}
   .login-error{font-size:12px; color:var(--miss); margin:-10px 0 14px; display:none;}
   .login-error.show{display:block;}
   .btn-login{width:100%; border:none; border-radius:99px; padding:13px; font-size:13.5px; font-weight:700; cursor:pointer; background:linear-gradient(135deg,#FB8B3C,var(--orange) 60%,var(--orange-deep)); color:#fff; display:flex; align-items:center; justify-content:center; gap:8px; font-family:var(--font); box-shadow:0 4px 14px rgba(249,115,22,.35); transition:filter .18s, box-shadow .18s, transform .12s;}
@@ -322,15 +334,32 @@
       <select id="inputNama"><option value="">— Pilih nama —</option></select>
     </div>
 
+    <!-- Tombol ganti nama (muncul di tahap sandi) -->
+    <button type="button" id="btnGantiNama" style="display:none; align-self:flex-start; margin:-10px 0 14px 2px; background:none; border:none; color:var(--pjum-deep); font-size:11.5px; font-weight:600; font-family:var(--font); cursor:pointer; display:none; align-items:center; gap:5px;">
+      <svg class="ic" viewBox="0 0 24 24" style="width:13px;height:13px;"><polyline points="15 18 9 12 15 6"/></svg>Ganti nama
+    </button>
+
     <!-- Field sandi (muncul setelah nama dipilih & dicek ke server) -->
     <div class="login-field" id="fieldSandi" style="display:none;">
       <label id="labelSandi">Sandi</label>
-      <input type="password" id="inputSandi" placeholder="Masukkan sandi" autocomplete="off">
+      <div class="sandi-wrap">
+        <input type="password" id="inputSandi" placeholder="Masukkan sandi" autocomplete="off">
+        <button type="button" class="sandi-toggle" data-target="inputSandi" aria-label="Lihat sandi">
+          <svg class="ic ic-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="ic ic-eye-off" viewBox="0 0 24 24" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
     </div>
     <!-- Konfirmasi sandi (hanya saat buat sandi baru) -->
     <div class="login-field" id="fieldSandi2" style="display:none;">
       <label>Ulangi Sandi</label>
-      <input type="password" id="inputSandi2" placeholder="Ketik ulang sandi" autocomplete="off">
+      <div class="sandi-wrap">
+        <input type="password" id="inputSandi2" placeholder="Ketik ulang sandi" autocomplete="off">
+        <button type="button" class="sandi-toggle" data-target="inputSandi2" aria-label="Lihat sandi">
+          <svg class="ic ic-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="ic ic-eye-off" viewBox="0 0 24 24" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
     </div>
 
     <div class="login-error" id="loginError">Nama tidak boleh kosong.</div>
@@ -341,6 +370,15 @@
     </button>
 
     <button type="button" id="btnLupaSandi" style="display:none; width:100%; margin-top:12px; background:none; border:none; color:var(--muted); font-size:11.5px; font-family:var(--font); cursor:pointer; text-decoration:underline;">Lupa sandi?</button>
+
+    <!-- Kontak admin -->
+    <div class="login-kontak">
+      Butuh bantuan? Hubungi admin
+      <a href="https://wa.me/6285333068814" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="vertical-align:-2px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        085333068814
+      </a>
+    </div>
   </div>
 </div>
 
@@ -563,6 +601,19 @@ const elTitle  = () => document.getElementById('loginTitle');
 const elSub    = () => document.getElementById('loginSub');
 const elBtnLbl = () => document.getElementById('btnMasukLabel');
 const elLupa   = () => document.getElementById('btnLupaSandi');
+const elGanti  = () => document.getElementById('btnGantiNama');
+
+/* Kembalikan semua input sandi ke mode tersembunyi + ikon mata normal */
+function resetSandiToggle(){
+  document.querySelectorAll('.sandi-toggle').forEach(btn=>{
+    const inp = document.getElementById(btn.dataset.target);
+    if(inp) inp.type = 'password';
+    const eye = btn.querySelector('.ic-eye');
+    const off = btn.querySelector('.ic-eye-off');
+    if(eye) eye.style.display = '';
+    if(off) off.style.display = 'none';
+  });
+}
 
 function isiDaftarStaf(){
   const sel = elNama();
@@ -586,6 +637,8 @@ function resetLoginUI(){
   elFieldSandi().style.display = 'none';
   elFieldSandi2().style.display = 'none';
   elLupa().style.display = 'none';
+  elGanti().style.display = 'none';
+  resetSandiToggle();
   elTitle().textContent = 'Selamat Datang';
   elSub().textContent = 'Pilih nama kamu untuk melanjutkan';
   elBtnLbl().textContent = 'Lanjut';
@@ -632,6 +685,21 @@ document.getElementById('btnMasuk').addEventListener('click', prosesLogin);
 elSandi().addEventListener('keydown', e=>{ if(e.key==='Enter') prosesLogin(); });
 elSandi2().addEventListener('keydown', e=>{ if(e.key==='Enter') prosesLogin(); });
 
+/* Tombol "Ganti nama" — kembali ke tahap pilih nama */
+elGanti().addEventListener('click', ()=>{ resetLoginUI(); elNama().focus(); });
+
+/* Toggle lihat/sembunyikan sandi */
+document.querySelectorAll('.sandi-toggle').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const inp = document.getElementById(btn.dataset.target);
+    if(!inp) return;
+    const lihat = inp.type === 'password';
+    inp.type = lihat ? 'text' : 'password';
+    btn.querySelector('.ic-eye').style.display     = lihat ? 'none' : '';
+    btn.querySelector('.ic-eye-off').style.display = lihat ? '' : 'none';
+  });
+});
+
 /* Tombol utama — perilakunya tergantung tahap */
 async function prosesLogin(){
   if(LOGIN_STAGE === 'pilihNama')      await tahapPilihNama();
@@ -670,6 +738,7 @@ async function tahapPilihNama(){
   }
 
   elNama().disabled = true;   /* kunci pilihan nama saat masuk tahap sandi */
+  elGanti().style.display = 'inline-flex';   /* tampilkan tombol ganti nama */
 
   if(info.sudahAda && !info.resetDiminta){
     /* Sudah punya sandi → minta masukkan sandi */
