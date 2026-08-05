@@ -1,753 +1,1608 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect width=%2224%22 height=%2224%22 rx=%226%22 fill=%22%23F97316%22/><rect x=%224.5%22 y=%2213%22 width=%224%22 height=%227%22 rx=%221.6%22 fill=%22white%22 opacity=%22.65%22/><rect x=%2210%22 y=%229%22 width=%224%22 height=%2211%22 rx=%221.6%22 fill=%22white%22 opacity=%22.85%22/><rect x=%2215.5%22 y=%224%22 width=%224%22 height=%2216%22 rx=%221.6%22 fill=%22white%22/></svg>"/>
-<title>YAI — Executive Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/style.css?v=20260723r12"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uploader PJUM &amp; Benef — Yayasan Ayo Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --ink:#1C2237; --ink-2:#4C5470; --muted:#8C8578; --muted-2:#B0A99C;
+    --page-bg:#F6F4EF; --card:#FFFFFF; --card-2:#FAF9F6;
+    --line:#EAE5DB; --line-2:#DED8CB;
+    --orange:#F97316; --orange-deep:#EA6C0A; --orange-pale:#FFF3E8;
+    --pjum:#378ADD; --pjum-deep:#185FA5; --pjum-pale:#E6F1FB; --pjum-line:#C5D6EE;
+    --benef:#1D9E75; --benef-deep:#0F6E56; --benef-pale:#E1F5EE; --benef-line:#B6DFCF;
+    --ok:#3B6D11; --ok-bg:#EAF3DE; --miss:#A32D2D; --miss-bg:#FCEBEB;
+    --navy-1:#1A2138; --navy-2:#12172B;
+    --r-sm:8px; --r-md:12px; --r-lg:16px;
+    --sh:0 1px 2px rgba(28,34,55,.04), 0 4px 14px rgba(28,34,55,.05);
+    --sh-md:0 6px 20px rgba(28,34,55,.10), 0 2px 6px rgba(28,34,55,.06);
+    --sh-lg:0 24px 60px rgba(10,14,30,.28), 0 6px 18px rgba(10,14,30,.16);
+    --ring:0 0 0 3px rgba(249,115,22,.18);
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--page-bg); color:var(--ink); font-family:var(--font); font-size:14px; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  svg.ic{width:1em; height:1em; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:-0.15em;}
+  ::-webkit-scrollbar{width:9px; height:9px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--line-2); border-radius:99px; border:2px solid var(--page-bg);}
+
+  .page-wrap{max-width:1040px; margin:0 auto; padding:22px 16px 60px;}
+  .sheet{background:var(--card); border-radius:20px; overflow:hidden; box-shadow:var(--sh-md); border:1px solid var(--line);}
+
+  header.top{background:linear-gradient(160deg,var(--navy-1) 0%,var(--navy-2) 100%); padding:16px 24px;}
+  header.top .inner{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;}
+  .brand{display:flex; align-items:center; gap:13px;}
+  .logo-box{width:44px; height:44px; border-radius:13px; flex:none; background:#fff; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 12px rgba(0,0,0,.28);}
+  .logo-box img{width:100%; height:100%; object-fit:cover;}
+  .brand-text h1{margin:0; font-size:16px; font-weight:800; color:#fff; letter-spacing:-.2px;}
+  .brand-text p{margin:2px 0 0; font-size:11.5px; font-weight:400; color:#8A93B0;}
+
+  .body-pad{padding:22px 24px 26px;}
+  .section-title{display:flex; align-items:center; gap:9px; font-size:11px; font-weight:700; color:var(--muted); letter-spacing:.7px; text-transform:uppercase; margin:26px 0 12px;}
+  .section-title:first-child{margin-top:0;}
+  .section-title .si{width:24px; height:24px; border-radius:7px; background:var(--orange-pale); color:var(--orange-deep); display:flex; align-items:center; justify-content:center; font-size:12px; flex:none;}
+  .section-title.toggleable{cursor:pointer; user-select:none;}
+  .section-title .chevron{margin-left:auto; color:var(--muted-2); transition:transform .2s ease; display:flex;}
+  .section-title.collapsed .chevron{transform:rotate(-90deg);}
+  .riwayat-grid.collapsed{display:none;}
+
+  .kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:11px;}
+  @media (max-width:760px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
+  .kpi{background:var(--card); border:1px solid var(--line); border-top:3px solid var(--pjum); border-radius:0 0 var(--r-md) var(--r-md); padding:13px 14px 12px; transition:transform .18s ease, box-shadow .18s ease;}
+  .kpi:hover{transform:translateY(-2px); box-shadow:var(--sh-md);}
+  .kpi:nth-child(3), .kpi:nth-child(4){border-top-color:var(--benef);}
+  .kpi-top{display:flex; align-items:center; gap:9px;}
+  .kpi .icon-circle{width:28px; height:28px; border-radius:9px; background:var(--pjum-pale); color:var(--pjum-deep); display:flex; align-items:center; justify-content:center; font-size:15px; flex:none;}
+  .kpi:nth-child(3) .icon-circle, .kpi:nth-child(4) .icon-circle{background:var(--benef-pale); color:var(--benef-deep);}
+  .kpi .label{font-size:11.5px; font-weight:500; color:var(--muted); line-height:1.35;}
+  .kpi .value{font-size:26px; font-weight:800; margin-top:10px; color:var(--ink); letter-spacing:-.6px; font-variant-numeric:tabular-nums; line-height:1;}
+  .kpi .unit{font-size:11px; color:var(--muted-2); font-weight:500; margin-top:3px;}
+
+  .upload-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:760px){.upload-grid{grid-template-columns:1fr;}}
+  .upload-col{display:flex; flex-direction:column; gap:11px;}
+  .upload-card{border-radius:var(--r-lg); padding:24px 20px; border:1.5px dashed; background:var(--card); display:flex; flex-direction:column; align-items:center; text-align:center; min-height:210px; justify-content:center; transition:border-color .2s, background .2s, transform .18s ease, box-shadow .2s;}
+  .upload-card.pjum{border-color:var(--pjum-line);}
+  .upload-card.benef{border-color:var(--benef-line);}
+  .upload-card:hover{box-shadow:var(--sh);}
+  .upload-card.pjum:hover{border-color:var(--pjum);}
+  .upload-card.benef:hover{border-color:var(--benef);}
+  .upload-card.dragover{transform:scale(1.012); border-style:solid; border-width:2px;}
+  .upload-card.pjum.dragover{background:var(--pjum-pale); border-color:var(--pjum); box-shadow:0 0 0 4px rgba(55,138,221,.14);}
+  .upload-card.benef.dragover{background:var(--benef-pale); border-color:var(--benef); box-shadow:0 0 0 4px rgba(29,158,117,.14);}
+  .upload-avatar{width:46px; height:46px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:21px; margin-bottom:11px; transition:transform .2s;}
+  .upload-card.pjum .upload-avatar{background:var(--pjum-pale); color:var(--pjum-deep);}
+  .upload-card.benef .upload-avatar{background:var(--benef-pale); color:var(--benef-deep);}
+  .upload-card.dragover .upload-avatar{transform:translateY(-3px) scale(1.06);}
+  .upload-card h3{margin:0 0 4px; font-size:14px; font-weight:700; color:var(--ink); letter-spacing:-.1px;}
+  .upload-card p.desc{margin:0 0 15px; font-size:11.5px; color:var(--muted); max-width:270px; line-height:1.5;}
+  .btn-pick{border:none; border-radius:99px; padding:9px 22px; font-size:12px; font-weight:700; cursor:pointer; color:#fff; display:inline-flex; align-items:center; gap:7px; font-family:var(--font); transition:filter .18s, box-shadow .18s, transform .12s;}
+  .btn-pick:active{transform:scale(.97);}
+  .upload-card.pjum .btn-pick{background:var(--pjum); box-shadow:0 3px 10px rgba(55,138,221,.3);}
+  .upload-card.pjum .btn-pick:hover{filter:brightness(1.06); box-shadow:0 5px 14px rgba(55,138,221,.42);}
+  .upload-card.benef .btn-pick{background:var(--benef); box-shadow:0 3px 10px rgba(29,158,117,.3);}
+  .upload-card.benef .btn-pick:hover{filter:brightness(1.06); box-shadow:0 5px 14px rgba(29,158,117,.42);}
+  .drop-hint{font-size:10.5px; color:var(--muted-2); margin-top:10px;}
+  input[type=file]{display:none;}
+
+  .file-list{width:100%; margin-top:14px; text-align:left;}
+  .file-row{display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--card-2); border:1px solid var(--line); border-radius:var(--r-sm); padding:8px 11px; margin-bottom:6px; font-size:11.5px;}
+  .file-row .fn{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; color:var(--ink);}
+  .file-row .fstatus{flex:none; font-weight:700;}
+  .file-row .fstatus.ok{color:var(--ok);}
+  .file-row .fstatus.bad{color:var(--miss);}
+  .file-row .fremove{flex:none; cursor:pointer; color:var(--muted-2); font-weight:800; padding:0 4px; transition:color .15s;}
+  .file-row .fremove:hover{color:var(--miss);}
+  .file-row.bad{background:var(--miss-bg); border-color:#F0C9C9;}
+
+  .btn-kirim{display:flex; align-items:center; justify-content:center; gap:8px; width:100%; border:none; border-radius:99px; padding:12px; font-size:12.5px; font-weight:700; cursor:not-allowed; background:var(--card-2); color:var(--muted-2); border:1px solid var(--line); font-family:var(--font); transition:filter .18s, box-shadow .18s, transform .12s;}
+  .btn-kirim.benefbtn{background:var(--card-2); color:var(--muted-2);}
+  .btn-kirim.ready{cursor:pointer; border-color:transparent; color:#fff;}
+  .btn-kirim.ready:active{transform:scale(.985);}
+  .btn-kirim.ready.pjumbtn{background:var(--pjum); box-shadow:0 3px 12px rgba(55,138,221,.32);}
+  .btn-kirim.ready.pjumbtn:hover{filter:brightness(1.06); box-shadow:0 5px 16px rgba(55,138,221,.42);}
+  .btn-kirim.ready.benefbtn{background:var(--benef); box-shadow:0 3px 12px rgba(29,158,117,.32);}
+  .btn-kirim.ready.benefbtn:hover{filter:brightness(1.06); box-shadow:0 5px 16px rgba(29,158,117,.42);}
+  .btn-kirim:disabled{opacity:.7;}
+
+  .dl-box{display:none; margin-top:2px; background:var(--orange-pale); border:1px solid #F5C9A8; border-radius:var(--r-md); padding:11px 13px;}
+  .dl-box.show{display:block;}
+  .dl-box .dl-head{font-size:11.5px; font-weight:700; color:var(--ink); margin-bottom:3px; display:flex; align-items:center; gap:6px;}
+  .dl-box .dl-note{font-size:10.5px; color:var(--muted); line-height:1.5; margin-bottom:8px;}
+  .dl-item{display:flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--line); border-radius:var(--r-sm); padding:7px 10px; margin-bottom:5px;}
+  .dl-item .dl-nm{flex:1; font-size:10.5px; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .dl-item a{flex:none; font-size:10.5px; font-weight:700; color:#fff; background:var(--orange); border-radius:99px; padding:4px 12px; text-decoration:none; transition:filter .18s;}
+  .dl-item a:hover{filter:brightness(1.07);}
+  .dl-box .dl-close{margin-top:4px; font-size:10.5px; color:var(--orange-deep); background:none; border:none; cursor:pointer; font-family:var(--font); text-decoration:underline; padding:0;}
+  .progress-box{display:none; margin-top:2px;}
+  .progress-box.show{display:block;}
+  .progress-label{font-size:11px; color:var(--muted); margin-bottom:5px; display:flex; justify-content:space-between;}
+  .progress-track{height:6px; background:var(--line); border-radius:99px; overflow:hidden;}
+  .progress-fill{height:100%; width:0%; border-radius:99px; transition:width .25s ease;}
+  .progress-fill.pjumfill{background:var(--pjum);}
+  .progress-fill.benefill{background:var(--benef);}
+
+  .riwayat-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:760px){.riwayat-grid{grid-template-columns:1fr;}}
+  .riwayat-card{border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--line); background:var(--card); box-shadow:var(--sh);}
+  .riwayat-head{padding:11px 15px; font-size:12.5px; font-weight:700; color:var(--ink); background:var(--card); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:9px;}
+  .riwayat-head::before{content:""; width:8px; height:8px; border-radius:3px; flex:none;}
+  .riwayat-card.pjum .riwayat-head::before{background:var(--pjum);}
+  .riwayat-card.benef .riwayat-head::before{background:var(--benef);}
+  table{width:100%; border-collapse:collapse; font-size:11.8px;}
+  th{padding:8px 15px; font-weight:700; font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted-2); text-align:left; background:var(--card-2); border-bottom:1px solid var(--line);}
+  td{padding:10px 15px; border-bottom:1px solid #F2EFE8; vertical-align:top; color:var(--ink);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr{transition:background .12s;}
+  tbody tr:hover td{background:#FFF8F1;}
+  .status-pill{display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; padding:3px 10px; border-radius:99px; background:var(--ok-bg); color:var(--ok);}
+  .status-pill.bad{background:var(--miss-bg); color:var(--miss);}
+  .empty-state{padding:38px 16px; text-align:center; color:var(--muted);}
+  .empty-state .ic-empty{width:38px; height:38px; margin:0 auto 10px; color:var(--line-2);}
+  .empty-state .txt{font-size:12px;}
+
+  .toast{position:fixed; bottom:24px; right:24px; background:var(--ink); color:#fff; padding:13px 18px; border-radius:var(--r-md); font-size:12.5px; box-shadow:var(--sh-lg); display:flex; align-items:center; gap:10px; z-index:600; opacity:0; transform:translateY(10px); transition:.25s; pointer-events:none; max-width:340px;}
+  .toast.show{opacity:1; transform:translateY(0);}
+  .toast .dot{width:8px;height:8px;border-radius:50%;background:#5DCAA5; flex:none;}
+
+  footer{padding:14px 24px; border-top:1px solid var(--line); font-size:10.5px; color:var(--muted-2); text-align:center; background:var(--card-2);}
+  tr.clickable{cursor:pointer;}
+
+  .login-screen{display:none; position:fixed; inset:0; background:linear-gradient(160deg,var(--navy-1) 0%,var(--navy-2) 100%); align-items:center; justify-content:center; z-index:999; padding:20px;}
+  .login-screen.show{display:flex;}
+  .login-card{background:#fff; border-radius:20px; padding:36px 32px; width:100%; max-width:400px; box-shadow:var(--sh-lg); animation:umUp .3s cubic-bezier(.22,.9,.35,1) both;}
+  .login-logo{display:flex; align-items:center; gap:13px; margin-bottom:26px;}
+  .login-logo-box{width:46px; height:46px; border-radius:14px; background:var(--orange); overflow:hidden; display:flex; align-items:center; justify-content:center; flex:none; box-shadow:0 3px 12px rgba(249,115,22,.35);}
+  .login-logo-box img{width:100%; height:100%; object-fit:cover;}
+  .login-logo-text h2{margin:0; font-size:16px; font-weight:800; color:var(--ink); letter-spacing:-.2px;}
+  .login-logo-text p{margin:2px 0 0; font-size:11.5px; color:var(--muted);}
+  .login-title{font-size:21px; font-weight:800; color:var(--ink); margin:0 0 5px; letter-spacing:-.4px;}
+  .login-sub{font-size:12.5px; color:var(--muted); margin:0 0 22px;}
+  .login-field{display:flex; flex-direction:column; gap:6px; margin-bottom:18px;}
+  .login-field label{font-size:10.5px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.6px;}
+  .login-field input,.login-field select{padding:11px 13px; border:1.5px solid var(--line); border-radius:var(--r-sm); font-size:14px; font-family:var(--font); outline:none; background:var(--card-2); transition:border-color .18s, box-shadow .18s, background .18s; width:100%; cursor:pointer; color:var(--ink);}
+  .login-field select{appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C8578' stroke-width='2.2' stroke-linecap='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat:no-repeat; background-position:right 12px center; background-size:16px; padding-right:38px;}
+  .login-field input:focus,.login-field select:focus{border-color:var(--orange); box-shadow:var(--ring); background-color:#fff;}
+  .login-field input.error,.login-field select.error{border-color:var(--miss);}
+  .login-error{font-size:12px; color:var(--miss); margin:-10px 0 14px; display:none;}
+  .login-error.show{display:block;}
+  .btn-login{width:100%; border:none; border-radius:99px; padding:13px; font-size:13.5px; font-weight:700; cursor:pointer; background:linear-gradient(135deg,#FB8B3C,var(--orange) 60%,var(--orange-deep)); color:#fff; display:flex; align-items:center; justify-content:center; gap:8px; font-family:var(--font); box-shadow:0 4px 14px rgba(249,115,22,.35); transition:filter .18s, box-shadow .18s, transform .12s;}
+  .btn-login:hover{filter:brightness(1.06); box-shadow:0 6px 20px rgba(249,115,22,.45);}
+  .btn-login:active{transform:scale(.985);}
+
+  .user-info{display:flex; align-items:center; gap:8px;}
+  .user-chip{background:rgba(255,255,255,.1); border-radius:99px; padding:6px 13px; font-size:12px; font-weight:500; color:#fff; display:flex; align-items:center; gap:7px;}
+  .user-chip svg{opacity:.75;}
+  .btn-logout{background:transparent; border:1px solid rgba(255,255,255,.25); border-radius:99px; padding:6px 13px; font-size:11.5px; font-weight:600; color:#C9CEDF; cursor:pointer; font-family:var(--font); transition:all .18s;}
+  .btn-logout:hover{background:rgba(255,255,255,.12); color:#fff; border-color:rgba(255,255,255,.4);}
+
+  .modal-overlay{display:none; position:fixed; inset:0; background:rgba(18,23,43,.55); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); align-items:center; justify-content:center; z-index:300; padding:20px;}
+  .modal-overlay.show{display:flex;}
+
+  .upload-modal{display:none; position:fixed; inset:0; background:rgba(18,23,43,.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); align-items:center; justify-content:center; z-index:500; padding:20px;}
+  .upload-modal.show{display:flex; animation:umFade .2s ease both;}
+  @keyframes umFade{from{opacity:0}to{opacity:1}}
+  @keyframes umUp{from{opacity:0; transform:translateY(14px) scale(.985)}to{opacity:1; transform:none}}
+  .upload-modal-box{background:#fff; border-radius:20px; padding:26px 26px 0; width:100%; max-width:390px; box-shadow:var(--sh-lg); overflow:hidden; animation:umUp .26s cubic-bezier(.22,.9,.35,1) both;}
+  .um-head{display:flex; align-items:center; gap:12px; margin-bottom:20px;}
+  .um-head-text{min-width:0; flex:1; text-align:left;}
+  .upload-modal-icon{width:40px; height:40px; border-radius:13px; display:flex; align-items:center; justify-content:center; flex:none; font-size:20px;}
+  .upload-modal-icon.pjum{background:var(--pjum-pale); color:var(--pjum-deep);}
+  .upload-modal-icon.benef{background:var(--benef-pale); color:var(--benef-deep);}
+  .upload-modal-title{font-size:14.5px; font-weight:800; color:var(--ink); margin:0; letter-spacing:-.2px;}
+  .upload-modal-sub{font-size:11.5px; color:var(--muted); margin:2px 0 0; line-height:1.45; min-height:16px;}
+
+  .um-ring-wrap{position:relative; width:168px; height:168px; margin:0 auto 18px;}
+  .um-ring{width:100%; height:100%; transform:rotate(-90deg);}
+  .um-ring-track{fill:none; stroke:var(--line); stroke-width:9;}
+  .um-ring-fill{fill:none; stroke-width:9; stroke-linecap:round; stroke-dasharray:351.86; stroke-dashoffset:351.86; transition:stroke-dashoffset .4s cubic-bezier(.4,0,.2,1), stroke .3s;}
+  .um-ring-fill.pjum{stroke:var(--pjum);}
+  .um-ring-fill.benef{stroke:var(--benef);}
+  .um-ring-center{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none;}
+  .upload-pct{font-size:38px; font-weight:800; margin:0; letter-spacing:-1.6px; line-height:1; font-variant-numeric:tabular-nums;}
+  .upload-pct.pjum{color:var(--pjum-deep);}
+  .upload-pct.benef{color:var(--benef-deep);}
+  .um-ring-lbl{font-size:10px; font-weight:700; color:var(--muted-2); text-transform:uppercase; letter-spacing:1px; margin-top:5px;}
+  .um-dots{display:flex; gap:4px; justify-content:center; margin-top:7px;}
+  .um-dots i{width:5px; height:5px; border-radius:50%; background:var(--line-2); animation:umBlink 1.2s ease-in-out infinite;}
+  .um-dots i:nth-child(2){animation-delay:.2s;}
+  .um-dots i:nth-child(3){animation-delay:.4s;}
+  @keyframes umBlink{0%,100%{opacity:.3; transform:scale(1)}50%{opacity:1; transform:scale(1.25)}}
+
+  .upload-detail{font-size:10.5px; color:var(--muted); display:flex; justify-content:space-between; gap:10px; padding-bottom:18px;}
+  .upload-detail span:first-child{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; text-align:left;}
+  .upload-detail span:last-child{flex:none; font-weight:700; color:var(--ink-2);}
+  .upload-track{height:4px; background:var(--line); overflow:hidden; margin:0 -26px;}
+  .upload-fill{height:100%; width:0%; transition:width .35s cubic-bezier(.4,0,.2,1);}
+  .upload-fill.pjum{background:var(--pjum);}
+  .upload-fill.benef{background:var(--benef);}
+
+  .modal-box{background:#fff; border-radius:var(--r-lg); max-width:720px; width:100%; max-height:88vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--sh-lg); animation:umUp .24s cubic-bezier(.22,.9,.35,1) both;}
+  .modal-head{padding:16px 22px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; background:var(--card-2);}
+  .modal-head h3{margin:0; font-size:14px; font-weight:800; color:var(--ink);}
+  .modal-head .sub{font-size:11px; color:var(--muted); margin-top:2px;}
+  .modal-close{background:none; border:none; font-size:18px; cursor:pointer; color:var(--muted); border-radius:8px; width:30px; height:30px; transition:all .15s;}
+  .modal-close:hover{background:var(--miss-bg); color:var(--miss);}
+  .modal-scroll{padding:18px 22px; overflow-y:auto; flex:1;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:13px;}
+  @media (max-width:600px){.field-row{grid-template-columns:1fr;}}
+  .field{display:flex; flex-direction:column; gap:4px;}
+  .field label{font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;}
+  .field input{padding:8px 10px; border:1px solid var(--line); border-radius:var(--r-sm); font-size:12.5px; font-family:var(--font); background:var(--card-2); outline:none; transition:border-color .15s, box-shadow .15s, background .15s;}
+  .field input:focus{border-color:var(--orange); box-shadow:var(--ring); background:#fff;}
+  .edit-table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--r-md);}
+  .edit-table{width:100%; border-collapse:collapse; font-size:12px;}
+  .edit-table th{background:var(--card-2); padding:8px 10px; font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--muted-2); text-align:left; white-space:nowrap;}
+  .edit-table td{padding:6px; border-top:1px solid var(--line);}
+  .edit-table input{width:100%; min-width:90px; padding:6px 8px; border:1px solid var(--line); border-radius:7px; font-size:12px; font-family:var(--font); outline:none; transition:border-color .15s, box-shadow .15s;}
+  .edit-table input:focus{border-color:var(--orange); box-shadow:var(--ring);}
+  .row-remove{background:none; border:none; color:var(--miss); cursor:pointer; font-weight:800; font-size:14px; border-radius:6px; transition:background .15s;}
+  .row-remove:hover{background:var(--miss-bg);}
+  .btn-add-row{margin-top:10px; background:var(--orange-pale); color:var(--orange-deep); border:1px solid #F5C9A8; border-radius:var(--r-sm); padding:8px 16px; font-size:12px; font-weight:700; cursor:pointer; font-family:var(--font); transition:all .18s;}
+  .btn-add-row:hover{background:var(--orange); color:#fff; border-color:var(--orange);}
+  .modal-foot{padding:14px 22px; border-top:1px solid var(--line); display:flex; gap:10px; background:var(--card-2);}
+  .btn-modal-secondary{flex:1; background:#fff; border:1px solid var(--line); border-radius:99px; padding:11px; font-size:12.5px; font-weight:700; cursor:pointer; color:var(--ink-2); font-family:var(--font); transition:all .18s;}
+  .btn-modal-secondary:hover{border-color:var(--line-2); background:var(--card-2);}
+  .btn-modal-primary{flex:1; background:linear-gradient(135deg,#FB8B3C,var(--orange) 60%,var(--orange-deep)); color:#fff; border:none; border-radius:99px; padding:11px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:var(--font); box-shadow:0 3px 12px rgba(249,115,22,.32); transition:all .18s;}
+  .btn-modal-primary:hover{filter:brightness(1.06);}
+  .btn-modal-primary:disabled{background:var(--line-2); box-shadow:none; cursor:not-allowed;}
+  .modal-loading{padding:38px; text-align:center; color:var(--muted); font-size:12.5px;}
+
+  /* ═══ BERKAS BERNOMOR — section permanen ═══ */
+  .berkas-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:760px){.berkas-grid{grid-template-columns:1fr;}}
+  .berkas-card{border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--line); background:var(--card); box-shadow:var(--sh);}
+  .berkas-head{padding:11px 15px; font-size:12.5px; font-weight:700; color:var(--ink); background:var(--card); border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:9px;}
+  .berkas-head-left{display:flex; align-items:center; gap:9px;}
+  .berkas-head::before{display:none;}
+  .berkas-card.pjum .berkas-head-left::before{content:""; width:8px; height:8px; border-radius:3px; flex:none; background:var(--pjum);}
+  .berkas-card.benef .berkas-head-left::before{content:""; width:8px; height:8px; border-radius:3px; flex:none; background:var(--benef);}
+  .berkas-hapus-semua{font-size:10px; font-weight:700; color:var(--muted-2); background:none; border:none; cursor:pointer; font-family:var(--font); padding:3px 8px; border-radius:99px; transition:all .15s;}
+  .berkas-hapus-semua:hover{background:var(--miss-bg); color:var(--miss);}
+  .berkas-item{display:flex; align-items:center; gap:10px; padding:9px 15px; border-bottom:1px solid #F2EFE8; transition:background .12s;}
+  .berkas-item:last-child{border-bottom:none;}
+  .berkas-item:hover{background:#FFF8F1;}
+  .berkas-icon{flex:none; width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px;}
+  .berkas-card.pjum .berkas-icon{background:var(--pjum-pale); color:var(--pjum-deep);}
+  .berkas-card.benef .berkas-icon{background:var(--benef-pale); color:var(--benef-deep);}
+  .berkas-info{flex:1; min-width:0;}
+  .berkas-nama{font-size:11.5px; font-weight:600; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .berkas-meta{font-size:10px; color:var(--muted-2); margin-top:1px;}
+  .berkas-actions{display:flex; align-items:center; gap:5px; flex:none;}
+  .btn-unduh-berkas{font-size:10.5px; font-weight:700; color:#fff; background:var(--orange); border:none; border-radius:99px; padding:5px 12px; cursor:pointer; font-family:var(--font); transition:filter .15s, box-shadow .15s; white-space:nowrap;}
+  .btn-unduh-berkas:hover{filter:brightness(1.07); box-shadow:0 3px 8px rgba(249,115,22,.3);}
+  .btn-unduh-berkas:disabled{background:var(--muted-2); cursor:not-allowed; filter:none; box-shadow:none;}
+  .btn-hapus-berkas{width:22px; height:22px; border-radius:6px; background:none; border:none; cursor:pointer; color:var(--muted-2); font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; transition:all .15s; flex:none;}
+  .btn-hapus-berkas:hover{background:var(--miss-bg); color:var(--miss);}
+  .berkas-grid.collapsed{display:none;}
+</style>
 </head>
 <body>
 
-<!-- LOADING -->
-<div id="loading-overlay" class="loading-overlay">
-  <div class="spinner"></div>
-  <p>Memuat data dari Google Sheets…</p>
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-box">
+        <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" width="38" height="38">
+          <rect x="13" y="13" width="18" height="18" rx="3" fill="#fff" opacity="0.95"/>
+          <rect x="17" y="17" width="3" height="3" rx="1" fill="#F97316"/>
+          <rect x="22" y="17" width="3" height="3" rx="1" fill="#F97316"/>
+          <rect x="17" y="22" width="3" height="3" rx="1" fill="#F97316"/>
+          <rect x="22" y="22" width="3" height="3" rx="1" fill="#EA6C0A" opacity="0.7"/>
+          <rect x="17" y="27" width="3" height="3" rx="1" fill="#F97316"/>
+          <rect x="22" y="27" width="3" height="3" rx="1" fill="#F97316"/>
+          <rect x="17" y="9" width="2" height="4" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="22" y="9" width="2" height="4" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="27" y="9" width="2" height="4" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="17" y="31" width="2" height="4" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="22" y="31" width="2" height="4" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="27" y="31" width="2" height="4" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="9" y="17" width="4" height="2" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="9" y="22" width="4" height="2" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="9" y="27" width="4" height="2" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="31" y="17" width="4" height="2" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="31" y="22" width="4" height="2" rx="1" fill="#fff" opacity="0.85"/>
+          <rect x="31" y="27" width="4" height="2" rx="1" fill="#fff" opacity="0.85"/>
+        </svg>
+      </div>
+      <div class="login-logo-text"><h2>AppWeb Staf</h2><p>Yayasan Ayo Indonesia</p></div>
+    </div>
+    <div class="login-title">Selamat Datang</div>
+    <div class="login-sub">Masukkan nama kamu untuk melanjutkan</div>
+    <div class="login-field">
+      <label>Nama Staf</label>
+      <select id="inputNama"><option value="">— Pilih nama —</option></select>
+    </div>
+    <div class="login-error" id="loginError">Nama tidak boleh kosong.</div>
+    <button class="btn-login" id="btnMasuk">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Masuk
+    </button>
+  </div>
 </div>
 
-<!-- APP -->
-<div id="app-layout" class="layout" style="display:none">
+<div class="page-wrap">
+<div class="sheet">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <div class="sidebar-logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="4" y="13" width="4" height="7" rx="1.6" fill="white" opacity=".65"/><rect x="10" y="9" width="4" height="11" rx="1.6" fill="white" opacity=".85"/><rect x="16" y="4" width="4" height="16" rx="1.6" fill="white"/></svg></div>
-      <div class="sidebar-logo-text">
-        <div class="name">YAI Dashboard</div>
-        <div class="org">Yayasan Ayo Indonesia</div>
+  <header class="top">
+    <div class="inner">
+      <div class="brand">
+        <div class="logo-box"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgCAYAAACLz2ctAACbf0lEQVR42uy9d7xddZX+//6UXU67PZU0IIFQQq/Si4qCBUWwYYWxgL2MOmN3nNGxd3EUURRBBKQqSO8dQgkJJCG93tx2yi6f8vtjn3tzEwIE1BnnO7/zeiW3nbr32qs861nPEhN6uj3PdRNj/7V/FGM/CiFGfwOi+P3o3zffTzzjKb33Y189Hu/Be1f87D3eFV/d6M9b/aP9mM1fNz/nuFfBP/cnQ4hnfNBxv9/8ucTY5xEIIZDtr0Ju/l5KWXzf/p1s/04INt+n/TztQzX2igK/xdfNb9xv9T1bfe/HH1S2+M3Wf9/yyDzbn7Zx32c1inHHT2x1CMU2jrHY5jPp4iXEM86MEOOfRDzLi7dPyuhjtvq6tcGOHhMhfPGqo0aFxwtZGB4eJ4sDL/+HDXD0s794AxQIIQvDEwI5dp2OPqdn81FqnwfvN7+v0VPjx73F0c8rtrKO8X8DEKPPty2TEs98/Au9bW0TYmufJbZptMV52fzC2m/xSUEpRZ7nZFn2zAeLrb2gGOct2p5PiG0brdhsgb59xfpRL/gs/5xzz2KA2zK4v9/tuQxQSbmlAbYNb8wIxxvq5kCxhRcc7/nkFidpnKcb5wmF38KXjR3L8X/3W/mwbTtEv8W3z3tEtxXRxhzN1oYotrLN4n8pJVEUF9eGc+jNtucRQjIwMMCkSZOYM2dO8eR+qxcWY8FpK2sfZ4xinCfd6hL12wrDY56wfTCfw+i2bYTb8nZ/Hw/onUMIgdYBCJDjvJUUtL1ecTyUEEopi39bhV8EbWMrIsHmVxxnbKNGOD4sb/Gh/Divt40Pu9UB2J7wzPM6RrGVXxHPbpxjacxmH9dqNVm+dElhiHHc9oAepJDU63Xe9/7384/++GPm29H//8XgAs/GRTp7TqSSwDjO13/xmUcf+ADp0+G8OhNcCevuAONW1YRM2mVqPSyYoJlEqPR0P6a0Q5aMfUeyFJjaSWItpJmFoYWYA2kBtFe22YnGNqNoGhUHa/sWqJsAIMZknCGLQHoQRm3YT4SuFT7WBoCKFEkHhYVQASxfvpbsOaJXFkAbSfEG+1eqCCGJSlOovlHIQoNFuXFKFJlSqKxnUIMrCVCovECAWJoqIyBVKRIDCoQiREDISgRhJHihhJghAoVsUoUaVBkiAVEJpVWqk0i1J0oUgkKUqUBICkGgIBgCRVGgU0BVoBAqCZBiVzEiRSBRaqnkBhWEqiROiC5hbQmgKCRmpkogIRa7dI1Qm0ZiloMqlUSgFIkKiKQFpNKkgVqKZTQoWWIDQQpRahWgKM0kICWqXkCYRIlFJVGKAEKUqVEJBCkTmOjSwVQZqBaDDdI2gEoqFoVmOiSJYBqZARpoBqEAFJQoYQJVqhJVCbKoNFSFKbJamMCKAAEBEqVKoqSgFQBKRkCCqNqgIVKGkAlgklkJSmVVqAAlFKBAlBqoIRBVKEBISiqJHVqUFJKlaqpSqpJFUiYpkBSmEJJFQYoJKpJUgqKoJFSEJIYYkuZGSiiROUkEBJIqYoJCImVAQq" alt="Logo"></div>
+        <div class="brand-text"><h1>UPLOADER PJUM &amp; BENEF</h1><p>Yayasan Ayo Indonesia</p></div>
       </div>
-    </div>
-    <nav class="sidebar-nav">
-      <div class="nav-section-label">Menu Utama</div>
-      <button class="nav-item active" data-page="dashboard"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span> Dashboard</button>
-      <button class="nav-item" data-page="beneficiary"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Beneficiary</button>
-      <button class="nav-item" data-page="pjum"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span> PJUM</button>
-      <button class="nav-item" data-page="wilayah"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></span> Sebaran</button>
-      <div class="nav-section-label">Analisis</div>
-      <button class="nav-item" data-page="analitik"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span> Analitik</button>
-      <button class="nav-item" data-page="laporan"><span class="nav-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span> Laporan</button>
-    </nav>
-    <div class="sidebar-quote">
-      <div class="sidebar-quote-inner">
-        <div class="q-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1zm12 0c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg></div>
-        <div class="sidebar-quote-text">Bersama membangun masyarakat inklusif dan berdaya</div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="topbar-title" id="topbar-title">Executive Dashboard</div>
-    <div class="topbar-right">
-      <div class="topbar-date"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> <span id="topbar-date-val">—</span></div>
-      <button class="refresh-btn" id="btn-refresh">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M1 4v6h6M23 20v-6h-6M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
-        </svg> Refresh
-      </button>
-      <div class="topbar-icon-btn" id="btn-notif" style="position:relative">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span class="notif-badge" id="notif-badge" style="display:none">0</span>
-        <div class="notif-panel" id="notif-panel" style="display:none">
-          <div class="notif-header">Notifikasi</div>
-          <div class="notif-list" id="notif-list"><div class="notif-empty">Tidak ada notifikasi</div></div>
+      <div class="user-info">
+        <div class="user-chip">
+          <svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="userLabel">—</span>
         </div>
-      </div>
-      <div class="topbar-avatar">
-        <div class="av-circle">A</div>
-        <div class="av-name">Admin</div>
+        <button class="btn-logout" id="btnLogout">Keluar</button>
       </div>
     </div>
   </header>
 
-  <main class="main">
+  <div class="body-pad">
+    <div class="section-title"><span class="si"><svg class="ic" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span> Status Laporan</div>
+    <div class="kpi-row" id="kpiStatus"></div>
 
-    <!-- ════════════════════ DASHBOARD ════════════════════ -->
-    <div id="page-dashboard" class="page active">
-      <!-- Filter -->
-      <div class="filter-bar">
-        <div class="fg fg-wide"><label>Program</label><select id="dash-proyek"><option value="">Semua</option></select></div>
-        <div class="fg"><label>Staf</label><select id="dash-staf"><option value="">Semua</option></select></div>
-        <div class="fg fg-sm"><label>Tahun</label><select id="dash-tahun"><option value="">Semua</option></select></div>
-        <div class="fg fg-sm"><label>Bulan</label><select id="dash-bulan"><option value="">Semua</option></select></div>
-        <div class="filter-actions">
-          <button class="btn-filter secondary" onclick="resetDashFilter()">↺ Reset</button>
-          <button class="btn-export" title="Export PDF" onclick="exportDashPDF()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></button>
+    <div class="section-title"><span class="si"><svg class="ic" viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></span> Upload PJUM dan data Benef</div>
+    <div class="upload-grid">
+      <div class="upload-col">
+        <div class="upload-card pjum">
+          <div class="upload-avatar"><svg class="ic" style="width:26px;height:26px;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <h3>Upload PJUM</h3>
+          <p class="desc">Laporan Uang Muka — sheet "Laporan". Bisa pilih lebih dari satu file.</p>
+          <label class="btn-pick"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Pilih File<input type="file" id="filePJUM" accept=".xlsx" multiple></label>
+          <div class="file-list" id="fileListPJUM"></div>
+        </div>
+        <button class="btn-kirim pjumbtn" id="btnKirimPjum" disabled>
+          <svg class="ic" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Kirim PJUM
+        </button>
+        <div class="dl-box" id="dlBoxPJUM"></div>
+        <div class="progress-box" id="progressPJUM">
+          <div class="progress-label"><span id="progressLabelPJUM">Mengirim...</span><span id="progressCountPJUM"></span></div>
+          <div class="progress-track"><div class="progress-fill pjumfill" id="progressFillPJUM"></div></div>
         </div>
       </div>
-      <!-- KPI -->
-      <div class="stat-grid g5">
-        <div class="stat-card sc-orange">
-          <div class="stat-icon-wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-          <div class="stat-body">
-            <div class="stat-label">Beneficiary Unik</div>
-            <div class="stat-value" id="kpi-benef">—</div>
-            <div class="stat-sub" id="kpi-uniq">—</div>
-          </div>
+      <div class="upload-col">
+        <div class="upload-card benef">
+          <div class="upload-avatar"><svg class="ic" style="width:26px;height:26px;" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h3>Upload Data Benef</h3>
+          <p class="desc">Daftar penerima manfaat — sheet "Benef_List". Bisa pilih lebih dari satu file.</p>
+          <label class="btn-pick"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Pilih File<input type="file" id="fileBenef" accept=".xlsx" multiple></label>
+          <div class="file-list" id="fileListBenef"></div>
         </div>
-        <div class="stat-card sc-blue">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-          <div class="stat-body">
-            <div class="stat-label">File PJUM</div>
-            <div class="stat-value" id="kpi-pjum">—</div>
-            <div class="stat-sub" id="kpi-pjum-sub">file terupload</div>
-          </div>
-        </div>
-        <div class="stat-card sc-teal">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg></div>
-          <div class="stat-body">
-            <div class="stat-label">File Beneficiary</div>
-            <div class="stat-value" id="kpi-benef-file">—</div>
-            <div class="stat-sub" id="kpi-benef-file-sub">file terupload</div>
-          </div>
-        </div>
-        <div class="stat-card sc-green">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-          <div class="stat-body">
-            <div class="stat-label">Total Desa</div>
-            <div class="stat-value" id="kpi-desa">—</div>
-            <div class="stat-sub" id="kpi-kab">—</div>
-          </div>
-        </div>
-        <div class="stat-card sc-purple">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <div class="stat-body">
-            <div class="stat-label">Total Biaya PJUM</div>
-            <div class="stat-value" id="kpi-biaya">—</div>
-            <div class="stat-sub">seluruh periode</div>
-          </div>
-        </div>
-      </div>
-      <!-- Charts row 1 -->
-      <div class="chart-grid g-6-4">
-        <div class="chart-card">
-          <div class="chart-title">Trend Beneficiary per Bulan</div>
-          <div class="chart-sub">Jumlah penerima manfaat dari waktu ke waktu</div>
-          <div class="chart-wrap h200"><canvas id="ch-dash-benef-trend"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Distribusi Jenis Beneficiary</div>
-          <div class="chart-sub">Kategori penerima manfaat</div>
-          <div class="donut-wrap" style="margin-top:10px;height:180px">
-            <div class="donut-chart-area" style="width:150px;height:150px;position:relative;flex-shrink:0">
-              <canvas id="ch-dash-benef-donut" width="150" height="150"></canvas>
-              <div class="donut-center">
-                <div class="dc-val" id="donut-center-val">—</div>
-                <div class="dc-lbl" id="donut-center-lbl">Total</div>
-              </div>
-            </div>
-            <div class="donut-legend" id="donut-legend"></div>
-          </div>
-        </div>
-      </div>
-      <!-- Charts row 2 -->
-      <div class="chart-grid g-6-4">
-        <div class="chart-card">
-          <div class="chart-title">Beneficiary per Desa</div>
-          <div class="chart-sub">Top 10 desa/kelurahan dengan penerima manfaat terbanyak</div>
-          <div class="chart-wrap h260"><canvas id="dch-desa"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Pengeluaran PJUM per Bulan</div>
-          <div class="chart-sub">Total biaya kegiatan per bulan</div>
-          <div class="chart-wrap h200"><canvas id="ch-dash-pjum-trend"></canvas></div>
-        </div>
-      </div>
-      <!-- Charts row 3 -->
-      <div class="chart-grid g3 section-gap">
-        <div class="chart-card">
-          <div class="chart-title">Top 5 Jenis Kegiatan</div>
-          <div class="chart-sub">Dari data beneficiary</div>
-          <div class="rank-list" id="rank-kegiatan" style="margin-top:8px"></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Top 5 Benefit Diterima</div>
-          <div class="chart-sub">Jenis benefit terbanyak</div>
-          <div class="rank-list" id="rank-benefit" style="margin-top:8px"></div>
-        </div>
-        <div class="ai-box">
-          <div class="ai-box-header"><div class="ai-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg></div><div class="ai-title">AI Insight</div></div>
-          <div class="ai-text" id="ai-insight-text">Menganalisis data…</div>
-          <button class="ai-btn" onclick="navigate('analitik')">Lihat Detail Analitik →</button>
+        <button class="btn-kirim benefbtn" id="btnKirimBenef" disabled>
+          <svg class="ic" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Kirim Benef
+        </button>
+        <div class="dl-box" id="dlBoxBenef"></div>
+        <div class="progress-box" id="progressBenef">
+          <div class="progress-label"><span id="progressLabelBenef">Mengirim...</span><span id="progressCountBenef"></span></div>
+          <div class="progress-track"><div class="progress-fill benefill" id="progressFillBenef"></div></div>
         </div>
       </div>
     </div>
 
-
-    <!-- ════════════════════ BENEFICIARY ════════════════════ -->
-    <div id="page-beneficiary" class="page">
-      <!-- Filter — 2 baris, lebih rapi -->
-      <div class="filter-bar">
-        <div class="fg fg-wide"><label>Program</label><select id="bf-proyek"><option value="">Semua</option></select></div>
-        <div class="fg"><label>Staf</label><select id="bf-staf"><option value="">Semua</option></select></div>
-        <div class="fg fg-wide"><label>Kategori</label><select id="bf-kategori"><option value="">Semua</option></select></div>
-        <div class="fg"><label>Kabupaten</label><select id="bf-kab"><option value="">Semua</option></select></div>
-        <div class="fg"><label>Kecamatan</label><select id="bf-kec"><option value="">Semua</option></select></div>
-        <div class="fg"><label>Disabilitas</label><select id="bf-disab"><option value="">Semua</option></select></div>
-        <div class="fg fg-sm"><label>Jenis Kelamin</label>
-          <select id="bf-gender"><option value="">Semua</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select>
+    <div class="section-title toggleable" id="berkasToggle"><span class="si"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span> Berkas Bernomor <span style="font-size:9px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted-2);margin-left:4px;">— unduh ulang jika perlu koreksi</span><span class="chevron"><svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+    <div class="berkas-grid" id="berkasGrid">
+      <div class="berkas-card pjum">
+        <div class="berkas-head">
+          <div class="berkas-head-left">Berkas PJUM Bernomor</div>
+          <button class="berkas-hapus-semua" id="hapusBerkasPJUM" title="Hapus semua dari daftar lokal">Hapus semua</button>
         </div>
-        <div class="fg fg-sm"><label>Tahun</label><select id="bf-tahun"><option value="">Semua</option></select></div>
-        <div class="fg fg-sm"><label>Bulan</label><select id="bf-bulan"><option value="">Semua</option></select></div>
-        <div class="fg fg-wide"><label>Cari</label><input type="text" id="bf-cari" placeholder="nama / desa / kegiatan…"/></div>
-        <div class="filter-actions">
-          <button class="btn-filter secondary" id="bf-reset">↺ Reset</button>
-          <button class="btn-export" title="Export PDF" onclick="exportBenefPDF()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></button>
-        </div>
+        <div id="berkasPjumList"></div>
       </div>
-      <!-- KPI -->
-      <div class="stat-grid g4">
-        <div class="stat-card sc-orange" id="bstat-total">
-          <div class="stat-icon-wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Total Benef (Baris)</div><div class="stat-value">—</div><div class="stat-sub">—</div></div>
+      <div class="berkas-card benef">
+        <div class="berkas-head">
+          <div class="berkas-head-left">Berkas Benef Bernomor</div>
+          <button class="berkas-hapus-semua" id="hapusBerkasBenef" title="Hapus semua dari daftar lokal">Hapus semua</button>
         </div>
-        <div class="stat-card sc-blue" id="bstat-lp">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 6l9-3 9 3"/><path d="M3 18l9-3 9 3"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Laki-laki / Perempuan</div><div class="stat-value">—</div><div class="stat-sub">—</div></div>
-        </div>
-        <div class="stat-card sc-green" id="bstat-desa">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Desa Terjangkau</div><div class="stat-value">—</div><div class="stat-sub">—</div></div>
-        </div>
-        <div class="stat-card sc-purple" id="bstat-prog">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Program Aktif</div><div class="stat-value">—</div><div class="stat-sub">—</div></div>
-        </div>
-      </div>
-      <!-- Row 1: trend + gender donut -->
-      <div class="chart-grid g-7-3">
-        <div class="chart-card">
-          <div class="chart-title">Trend Benef per Bulan</div>
-          <div class="chart-sub">Jumlah penerima manfaat dari waktu ke waktu</div>
-          <div class="chart-wrap h200"><canvas id="bch-trend"></canvas></div>
-        </div>
-        <div class="chart-card gender-donut-card">
-          <div class="chart-title">Jenis Kelamin</div>
-          <div class="chart-sub">Distribusi gender penerima</div>
-          <div class="donut-wrap" style="justify-content:center;flex-direction:column;align-items:center;gap:12px;padding-top:4px">
-            <div style="position:relative;width:130px;height:130px;flex-shrink:0">
-              <canvas id="bch-gender" width="130" height="130"></canvas>
-            </div>
-            <div class="donut-legend" id="bch-gender-legend" style="width:100%;max-width:180px"></div>
-          </div>
-        </div>
-      </div>
-      <!-- Row 2 -->
-      <div class="chart-grid g3">
-        <div class="chart-card">
-          <div class="chart-title">Per Kategori Benef</div>
-          <div class="chart-sub">Jenis/kategori penerima manfaat</div>
-          <div class="chart-wrap h260"><canvas id="bch-kategori"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Per Kategori Usia</div>
-          <div class="chart-sub">Kelompok umur penerima</div>
-          <div class="chart-wrap h260"><canvas id="bch-usia"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Per Program</div>
-          <div class="chart-sub">Jumlah benef tiap program</div>
-          <div class="chart-wrap h260"><canvas id="bch-proyek"></canvas></div>
-        </div>
-      </div>
-      <!-- Row 3 -->
-      <div class="chart-grid g3">
-        <div class="chart-card">
-          <div class="chart-title">Top 10 Desa/Kelurahan</div>
-          <div class="chart-sub">Wilayah dengan benef terbanyak</div>
-          <div class="chart-wrap h260"><canvas id="bch-desa"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Per Staf</div>
-          <div class="chart-sub">Jumlah benef tiap staf</div>
-          <div class="chart-wrap h260"><canvas id="bch-staf"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Ragam Disabilitas</div>
-          <div class="chart-sub">Perbandingan penerima dengan &amp; tanpa disabilitas</div>
-          <div class="donut-wrap" style="margin-top:10px;height:220px">
-            <div class="donut-chart-area" style="width:140px;height:140px;position:relative;flex-shrink:0">
-              <canvas id="bch-disab" width="140" height="140"></canvas>
-              <div class="donut-center">
-                <div class="dc-val" id="disab-center-val">—</div>
-                <div class="dc-lbl" id="disab-center-lbl">Total</div>
-              </div>
-            </div>
-            <div class="donut-legend" id="bch-disab-legend"></div>
-          </div>
-        </div>
-      </div>
-      <!-- Table -->
-      <div class="table-card">
-        <div class="table-header">
-          <h3>Data Beneficiary Lengkap</h3>
-          <span class="tbl-count" id="benef-tbl-count">—</span>
-          <input class="tbl-search" id="benef-tbl-search" placeholder="Cari nama / desa / kegiatan…" oninput="renderBenefTable()"/>
-        </div>
-        <div class="tbl-scroll">
-          <table class="data-table">
-            <thead><tr>
-              <th class="th-sort" data-tbl="benef" data-col="0">Nama</th><th class="th-sort" data-tbl="benef" data-col="1">JK</th><th class="th-sort" data-tbl="benef" data-col="2">Kat. Usia</th><th class="th-sort" data-tbl="benef" data-col="3">Kategori</th>
-              <th class="th-sort" data-tbl="benef" data-col="4">Disabilitas</th><th class="th-sort" data-tbl="benef" data-col="5">Desa</th><th class="th-sort" data-tbl="benef" data-col="6">Kecamatan</th><th class="th-sort" data-tbl="benef" data-col="7">Kabupaten</th>
-              <th class="th-sort" data-tbl="benef" data-col="8">Program</th><th class="th-sort" data-tbl="benef" data-col="9">Kegiatan</th><th class="th-sort" data-tbl="benef" data-col="10">Benefit</th>
-              <th class="th-sort" data-tbl="benef" data-col="11">Staf</th><th class="th-sort" data-tbl="benef" data-col="12">Tanggal</th><th class="th-sort" data-tbl="benef" data-col="13">Kode</th>
-            </tr></thead>
-            <tbody id="benef-tbl-body"></tbody>
-          </table>
-        </div>
-        <div class="tbl-footer">
-          <span id="benef-pg-info">—</span>
-          <div class="pg-btns">
-            <button class="pg-btn" id="benef-pg-prev" onclick="changeBenefPage(-1)">‹ Prev</button>
-            <button class="pg-btn" id="benef-pg-next" onclick="changeBenefPage(1)">Next ›</button>
-          </div>
-        </div>
+        <div id="berkasBenefList"></div>
       </div>
     </div>
 
-
-    <!-- ════════════════════ PJUM ════════════════════ -->
-    <div id="page-pjum" class="page">
-      <div class="filter-bar">
-        <div class="fg fg-wide"><label>Program/Proyek</label><select id="pf-proyek"><option value="">Semua</option></select></div>
-        <div class="fg"><label>Staf</label><select id="pf-staf"><option value="">Semua</option></select></div>
-        <div class="fg fg-wide"><label>Kode Kegiatan</label><select id="pf-kode"><option value="">Semua</option></select></div>
-        <div class="fg fg-sm"><label>Tahun</label><select id="pf-tahun"><option value="">Semua</option></select></div>
-        <div class="fg fg-sm"><label>Bulan</label><select id="pf-bulan"><option value="">Semua</option></select></div>
-        <div class="fg fg-wide"><label>Cari</label><input type="text" id="pf-cari" placeholder="kegiatan / item…"/></div>
-        <div class="filter-actions">
-          <button class="btn-filter secondary" id="pf-reset">↺ Reset</button>
-          <button class="btn-export" title="Export PDF" onclick="exportPjumPDF()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></button>
-        </div>
+    <div class="section-title toggleable" id="riwayatToggle"><span class="si"><svg class="ic" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span> Riwayat Laporan Terkirim<span class="chevron"><svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+    <div class="riwayat-grid" id="riwayatGrid">
+      <div class="riwayat-card pjum">
+        <div class="riwayat-head">Riwayat Upload PJUM</div>
+        <table><thead><tr><th>File/Kegiatan</th><th>Tgl Kirim</th><th>G-Sheet</th><th>Gdrive</th></tr></thead>
+        <tbody id="logPjumBody"></tbody></table>
       </div>
-      <div class="stat-grid g4">
-        <div class="stat-card sc-purple" id="pstat-total">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Total Biaya</div><div class="stat-value">—</div><div class="stat-sub">—</div></div>
-        </div>
-        <div class="stat-card sc-orange" id="pstat-trx">
-          <div class="stat-icon-wrap">📋</div>
-          <div class="stat-body"><div class="stat-label">Jumlah Transaksi</div><div class="stat-value">—</div><div class="stat-sub">—</div></div>
-        </div>
-        <div class="stat-card sc-blue" id="pstat-prog">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Program Aktif</div><div class="stat-value">—</div><div class="stat-sub">—</div></div>
-        </div>
-        <div class="stat-card sc-green" id="pstat-staf">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Staf Terlibat</div><div class="stat-value">—</div><div class="stat-sub">—</div></div>
-        </div>
-      </div>
-      <!-- Row 1: trend + komponen -->
-      <div class="chart-grid g-6-4">
-        <div class="chart-card">
-          <div class="chart-title">Trend Pengeluaran per Bulan</div>
-          <div class="chart-sub">Total biaya PJUM yang terfilter</div>
-          <div class="chart-wrap h200"><canvas id="pch-trend"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Komponen Biaya</div>
-          <div class="chart-sub">Klasifikasi item pengeluaran</div>
-          <div class="donut-wrap" style="margin-top:8px;height:200px">
-            <div style="position:relative;width:140px;height:140px;flex-shrink:0">
-              <canvas id="pch-komponen" width="140" height="140"></canvas>
-            </div>
-            <div class="donut-legend" id="pch-komponen-legend"></div>
-          </div>
-        </div>
-      </div>
-      <!-- Row 2: 3 bar charts -->
-      <div class="chart-grid g3">
-        <div class="chart-card">
-          <div class="chart-title">Per Program/Proyek</div>
-          <div class="chart-sub">Total biaya per program</div>
-          <div class="chart-wrap h260"><canvas id="pch-proyek"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Per Staf</div>
-          <div class="chart-sub">Total biaya per staf</div>
-          <div class="chart-wrap h260"><canvas id="pch-staf"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Per Kode Kegiatan</div>
-          <div class="chart-sub">Total biaya per kode RAB</div>
-          <div class="chart-wrap h260"><canvas id="pch-kode"></canvas></div>
-        </div>
-      </div>
-      <!-- Row 3 -->
-      <div class="chart-grid g2">
-        <div class="chart-card">
-          <div class="chart-title">Per Nama Kegiatan</div>
-          <div class="chart-sub">Total biaya per kegiatan (top 8)</div>
-          <div class="chart-wrap h260"><canvas id="pch-kegiatan"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Ringkasan Cepat</div>
-          <div class="chart-sub">Statistik dari data terfilter</div>
-          <div id="pjum-quick-stats" style="margin-top:12px"></div>
-        </div>
-      </div>
-      <!-- Table -->
-      <div class="table-card">
-        <div class="table-header">
-          <h3>Detail Transaksi PJUM</h3>
-          <span class="tbl-count" id="pjum-tbl-count">—</span>
-          <input class="tbl-search" id="pjum-tbl-search" placeholder="Cari kegiatan / item / staf…" oninput="renderPjumTable()"/>
-        </div>
-        <div class="tbl-scroll">
-          <table class="data-table">
-            <thead><tr>
-              <th class="th-sort" data-tbl="pjum" data-col="0">Tanggal</th><th class="th-sort" data-tbl="pjum" data-col="1">Staf</th><th class="th-sort" data-tbl="pjum" data-col="2">Program</th><th class="th-sort" data-tbl="pjum" data-col="3">Kode</th>
-              <th class="th-sort" data-tbl="pjum" data-col="4">Kegiatan</th><th class="th-sort" data-tbl="pjum" data-col="5">Item Pengeluaran</th><th class="th-sort" data-tbl="pjum" data-col="6">Komponen</th>
-              <th class="num th-sort" data-tbl="pjum" data-col="7">Jumlah (Rp)</th><th class="th-sort" data-tbl="pjum" data-col="8">File</th>
-            </tr></thead>
-            <tbody id="pjum-tbl-body"></tbody>
-          </table>
-        </div>
-        <div class="tbl-footer">
-          <span id="pjum-pg-info">—</span>
-          <div class="pg-btns">
-            <button class="pg-btn" id="pjum-pg-prev" onclick="changePjumPage(-1)">‹ Prev</button>
-            <button class="pg-btn" id="pjum-pg-next" onclick="changePjumPage(1)">Next ›</button>
-          </div>
-        </div>
+      <div class="riwayat-card benef">
+        <div class="riwayat-head">Riwayat Upload Benef</div>
+        <table><thead><tr><th>File/Kegiatan</th><th>Tgl Kirim</th><th>G-Sheet</th><th>Gdrive</th></tr></thead>
+        <tbody id="logBenefBody"></tbody></table>
       </div>
     </div>
+  </div>
 
-
-    <!-- ════════════════════ WILAYAH ════════════════════ -->
-    <div id="page-wilayah" class="page">
-      <div class="filter-bar">
-        <div class="fg fg-wide"><label>Program</label><select id="wf-proyek"><option value="">Semua</option></select></div>
-        <div class="fg fg-sm"><label>Tahun</label><select id="wf-tahun"><option value="">Semua</option></select></div>
-        <div class="filter-actions"><button class="btn-filter secondary" id="wf-reset">↺ Reset</button>
-          <button class="btn-export" title="Export PDF" onclick="exportWilayahPDF()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></button>
-        </div>
-      </div>
-      <!-- KPI -->
-      <div class="stat-grid g6">
-        <div class="stat-card sc-orange">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Kabupaten</div><div class="stat-value" id="wstat-kab">—</div></div>
-        </div>
-        <div class="stat-card sc-blue">
-          <div class="stat-icon-wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Kecamatan</div><div class="stat-value" id="wstat-kec">—</div></div>
-        </div>
-        <div class="stat-card sc-green">
-          <div class="stat-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Desa</div><div class="stat-value" id="wstat-desa">—</div></div>
-        </div>
-        <div class="stat-card sc-teal">
-          <div class="stat-icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6"/><path d="M9 5h6"/><path d="M5 22V12l7-4 7 4v10"/><path d="M5 22h14"/><path d="M10 22v-5a2 2 0 0 1 4 0v5"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Paroki</div><div class="stat-value" id="wstat-paroki">—</div></div>
-        </div>
-        <div class="stat-card sc-yellow">
-          <div class="stat-icon-wrap"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="7" x2="9" y2="7.01"/><line x1="15" y1="7" x2="15" y2="7.01"/><line x1="9" y1="11" x2="9" y2="11.01"/><line x1="15" y1="11" x2="15" y2="11.01"/><path d="M10 22v-4a2 2 0 0 1 4 0v4"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Instansi</div><div class="stat-value" id="wstat-instansi">—</div></div>
-        </div>
-        <div class="stat-card sc-purple">
-          <div class="stat-icon-wrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-          <div class="stat-body"><div class="stat-label">Total Benef</div><div class="stat-value" id="wstat-tot">—</div></div>
-        </div>
-      </div>
-      <!-- Row 1: 3 chart wilayah -->
-      <div class="chart-grid g3">
-        <div class="chart-card">
-          <div class="chart-title">Per Kabupaten</div>
-          <div class="chart-sub">Distribusi benef per kabupaten</div>
-          <div class="chart-wrap h260"><canvas id="wch-kab"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Top Kecamatan</div>
-          <div class="chart-sub">Kecamatan dengan benef terbanyak</div>
-          <div class="chart-wrap h260"><canvas id="wch-kec"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Top 15 Desa/Kelurahan</div>
-          <div class="chart-sub">Desa dengan benef terbanyak</div>
-          <div class="chart-wrap h260"><canvas id="wch-desa"></canvas></div>
-        </div>
-      </div>
-      <!-- Row 2: program + gender -->
-      <div class="chart-grid g2">
-        <div class="chart-card">
-          <div class="chart-title">Benef per Program (di wilayah ini)</div>
-          <div class="chart-sub">Jumlah penerima manfaat tiap program</div>
-          <div class="chart-wrap h260"><canvas id="wch-prog"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Distribusi Gender</div>
-          <div class="chart-sub">Rasio laki-laki dan perempuan</div>
-          <div style="display:flex;align-items:center;gap:20px;margin-top:8px;height:200px">
-            <div style="position:relative;width:160px;height:160px;flex-shrink:0">
-              <canvas id="wch-gender" width="160" height="160"></canvas>
-            </div>
-            <div class="donut-legend" id="wch-gender-legend" style="flex:1"></div>
-          </div>
-        </div>
-      </div>
-      <!-- Row 3: paroki + instansi (baru) -->
-      <div class="chart-grid g2">
-        <div class="chart-card">
-          <div class="chart-title">Top 15 Paroki</div>
-          <div class="chart-sub">Sebaran benef unik per paroki</div>
-          <div class="chart-wrap h260"><canvas id="wch-paroki"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Top 15 Instansi</div>
-          <div class="chart-sub">Sebaran benef unik per instansi/lembaga asal</div>
-          <div class="chart-wrap h260"><canvas id="wch-instansi"></canvas></div>
-        </div>
-      </div>
-      <!-- Tabel desa -->
-      <div class="table-card">
-        <div class="table-header">
-          <h3>Rekap per Desa/Kelurahan</h3>
-          <span class="tbl-count" id="wilayah-pg-info">—</span>
-        </div>
-        <div class="tbl-scroll">
-          <table class="data-table">
-            <thead><tr>
-              <th>#</th><th class="th-sort" data-tbl="wilayah" data-col="1">Desa/Kelurahan</th><th class="th-sort" data-tbl="wilayah" data-col="2">Kecamatan</th><th class="th-sort" data-tbl="wilayah" data-col="3">Kabupaten</th>
-              <th class="num th-sort" data-tbl="wilayah" data-col="4">Jumlah Benef</th><th class="num th-sort" data-tbl="wilayah" data-col="4">%</th><th>Proporsi</th>
-            </tr></thead>
-            <tbody id="wilayah-tbl-body"></tbody>
-          </table>
-        </div>
-        <div class="tbl-footer">
-          <span></span>
-          <div class="pg-btns">
-            <button class="pg-btn" id="wilayah-pg-prev" onclick="changeWilayahPage(-1)">‹ Prev</button>
-            <button class="pg-btn" id="wilayah-pg-next" onclick="changeWilayahPage(1)">Next ›</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ════════════════════ ANALITIK ════════════════════ -->
-    <div id="page-analitik" class="page">
-      <div class="page-header">
-        <div class="page-header-left">
-          <div class="ph-title">Analitik Mendalam</div>
-          <div class="ph-sub">Cross-analysis PJUM × Beneficiary — temuan, efisiensi, cakupan</div>
-        </div>
-        <div class="export-bar">
-          <button class="btn-export" title="Export PDF" onclick="exportAnalitikPDF()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></button>
-        </div>
-      </div>
-
-      <div class="analitik-layout">
-      <div class="analitik-main">
-
-      <!-- 1. Efisiensi Program -->
-      <div class="chart-card" style="margin-bottom:14px">
-        <div class="chart-title">Efisiensi Biaya per Beneficiary (Rp/Orang)</div>
-        <div class="chart-sub">Ranking program — lebih rendah berarti lebih efisien</div>
-        <div class="chart-wrap h260"><canvas id="ach-efisiensi"></canvas></div>
-      </div>
-
-      <!-- 1b. Overlap + Kuadran (baru) -->
-      <div class="chart-grid g2">
-        <div class="chart-card">
-          <div class="chart-title">Overlap Beneficiary Antar Program</div>
-          <div class="chart-sub">Berapa program diterima tiap orang — kedalaman vs keluasan intervensi</div>
-          <div class="donut-wrap" style="margin-top:10px;height:200px">
-            <div class="donut-chart-area" style="width:140px;height:140px;position:relative;flex-shrink:0">
-              <canvas id="ach-overlap" width="140" height="140"></canvas>
-              <div class="donut-center"><div class="dc-val" id="ach-overlap-total">—</div><div class="dc-lbl">Benef Unik</div></div>
-            </div>
-            <div class="donut-legend" id="ach-overlap-legend"></div>
-          </div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Kuadran Program: Jangkauan vs Biaya</div>
-          <div class="chart-sub">Kanan-bawah ideal (jangkauan tinggi, biaya rendah) — kiri-atas perlu evaluasi</div>
-          <div class="chart-wrap h220"><canvas id="ach-kuadran"></canvas></div>
-        </div>
-      </div>
-
-      <!-- 3. Cross-Tab + Gender -->
-      <div class="chart-grid g2">
-        <div class="chart-card">
-          <div class="chart-title">Cross-Tab: Kategori × Kabupaten</div>
-          <div class="chart-sub">Jumlah beneficiary unik — warna makin gelap = makin banyak</div>
-          <div id="ach-crosstab" style="margin-top:8px"></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Rasio Gender per Program</div>
-          <div class="chart-sub">Perbandingan L / P di setiap program</div>
-          <div class="chart-wrap h260"><canvas id="ach-gender-prog"></canvas></div>
-        </div>
-      </div>
-
-      <!-- 4. Cakupan Wilayah + Staf -->
-      <div class="chart-grid g2">
-        <div class="chart-card">
-          <div class="chart-title">Cakupan Wilayah per Desa</div>
-          <div class="chart-sub">Berapa program yang melayani setiap desa — highlight under-served</div>
-          <div id="ach-coverage" style="margin-top:8px"></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">Perbandingan Staf: Beban vs Biaya</div>
-          <div class="chart-sub">Benef unik (oranye) vs biaya PJUM (biru) — dual axis</div>
-          <div class="chart-wrap h260"><canvas id="ach-staf-compare"></canvas></div>
-        </div>
-      </div>
-
-      <!-- 5. Trend Multi-Program -->
-      <div class="chart-card" style="margin-bottom:14px">
-        <div class="chart-title">Trend Beneficiary per Program (Top 4)</div>
-        <div class="chart-sub">Jumlah penerima manfaat unik per bulan untuk 4 program terbesar</div>
-        <div class="chart-wrap h220"><canvas id="ach-trend-prog"></canvas></div>
-      </div>
-
-      <!-- 6. Kualitas Data -->
-      <div style="margin-bottom:14px">
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px">Kualitas Data</div>
-        <div class="insight-grid" id="ach-dataquality"></div>
-      </div>
-
-      </div><!-- /analitik-main -->
-
-      <aside class="insight-rail">
-        <div class="rail-card">
-          <div class="rail-head">
-            <div class="rail-head-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.4 1 2.3h6c0-.9.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg></div>
-            <div>
-              <div class="rail-title">Insight Otomatis</div>
-              <div class="rail-sub">Dihitung langsung dari data</div>
-            </div>
-          </div>
-          <div class="rail-body" id="analitik-rail"></div>
-        </div>
-      </aside>
-      </div><!-- /analitik-layout -->
-    </div>
-
-
-    <!-- ════════════════════ LAPORAN ════════════════════ -->
-    <div id="page-laporan" class="page">
-      <div class="page-header">
-        <div class="page-header-left">
-          <div class="ph-title">Laporan &amp; Export</div>
-          <div class="ph-sub">Ringkasan data untuk pelaporan — gunakan filter untuk mempersempit data</div>
-        </div>
-        <div class="export-bar">
-          <button class="btn-export primary" title="Export PDF" onclick="exportLaporanPDF()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></button>
-          <button class="btn-export" title="Export Excel" onclick="exportLaporanExcel()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
-        </div>
-      </div>
-
-      <!-- Filter Laporan -->
-      <div class="filter-bar" style="margin-bottom:14px">
-        <div class="fg fg-wide"><label>Program</label><select id="lf-proyek"><option value="">Semua</option></select></div>
-        <div class="fg"><label>Staf</label><select id="lf-staf"><option value="">Semua</option></select></div>
-        <div class="fg fg-sm"><label>Tahun</label><select id="lf-tahun"><option value="">Semua</option></select></div>
-        <div class="fg fg-sm"><label>Bulan</label><select id="lf-bulan"><option value="">Semua</option></select></div>
-        <div class="filter-actions">
-          <button class="btn-filter secondary" id="lf-reset">↺ Reset</button>
-        </div>
-      </div>
-
-      <!-- KPI summary laporan -->
-      <div class="stat-grid g4" id="laporan-kpi-grid" style="margin-bottom:16px"></div>
-
-      <!-- Rekap cards -->
-      <div class="chart-grid g2">
-        <div class="chart-card">
-          <div class="chart-title" style="margin-bottom:14px">Rekap PJUM</div>
-          <div id="laporan-pjum-rekap"></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title" style="margin-bottom:14px">Rekap Beneficiary</div>
-          <div id="laporan-benef-rekap"></div>
-        </div>
-      </div>
-
-      <!-- Tabel per program -->
-      <div class="table-card" style="margin-top:14px">
-        <div class="table-header">
-          <h3>Rekap per Program (PJUM + Benef)</h3>
-          <span class="tbl-count" id="laporan-prog-count">—</span>
-        </div>
-        <div class="tbl-scroll">
-          <table class="data-table">
-            <thead><tr>
-              <th>#</th><th class="th-sort" data-tbl="lap-prog" data-col="1">Program</th>
-              <th class="num th-sort" data-tbl="lap-prog" data-col="2">Total Biaya PJUM</th><th class="num th-sort" data-tbl="lap-prog" data-col="3">Transaksi</th>
-              <th class="num th-sort" data-tbl="lap-prog" data-col="4">Jumlah Benef</th><th class="num th-sort" data-tbl="lap-prog" data-col="5">Benef Unik</th>
-              <th class="num th-sort" data-tbl="lap-prog" data-col="6">Rp/Benef</th>
-            </tr></thead>
-            <tbody id="laporan-prog-body"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tabel per staf -->
-      <div class="table-card" style="margin-top:14px">
-        <div class="table-header"><h3>Rekap per Staf</h3></div>
-        <div class="tbl-scroll">
-          <table class="data-table">
-            <thead><tr>
-              <th>#</th><th class="th-sort" data-tbl="lap-staf" data-col="1">Staf</th>
-              <th class="num th-sort" data-tbl="lap-staf" data-col="2">Biaya PJUM</th><th class="num th-sort" data-tbl="lap-staf" data-col="3">Transaksi PJUM</th>
-              <th class="num th-sort" data-tbl="lap-staf" data-col="4">Jumlah Benef</th>
-            </tr></thead>
-            <tbody id="laporan-staf-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-  </main>
+  <footer>AppWeb Staf — Yayasan Ayo Indonesia · parsing di browser (SheetJS), sinkron ke Google Sheet &amp; Google Drive lewat Code_Uploader.gs</footer>
+</div>
 </div>
 
-<!-- ════════════════════ DETAIL MODAL (Laporan) ════════════════════ -->
-<div id="detail-modal" class="modal-backdrop" style="display:none">
-  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="dm-title">
-    <div class="modal-head">
-      <div class="modal-head-left">
-        <div class="mh-kicker" id="dm-kicker">Detail</div>
-        <div class="mh-title" id="dm-title">—</div>
-        <div class="mh-sub" id="dm-sub">—</div>
-      </div>
-      <div class="modal-head-actions">
-        <button class="modal-icon-btn" id="dm-pdf" title="Export PDF"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg></button>
-        <button class="modal-icon-btn mib-close" id="dm-close" title="Tutup"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+<!-- UPLOAD LOADING MODAL -->
+<div class="upload-modal" id="uploadModal">
+  <div class="upload-modal-box">
+    <div class="um-head">
+      <div class="upload-modal-icon" id="uploadModalIcon"><svg class="ic" style="width:20px;height:20px;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+      <div class="um-head-text">
+        <div class="upload-modal-title" id="uploadModalTitle">Mengirim data…</div>
+        <div class="upload-modal-sub" id="uploadModalSub">Mohon tunggu, jangan tutup halaman ini</div>
       </div>
     </div>
-    <div class="modal-body" id="dm-body"></div>
+    <div class="um-ring-wrap">
+      <svg class="um-ring" viewBox="0 0 128 128" aria-hidden="true">
+        <circle class="um-ring-track" cx="64" cy="64" r="56"/>
+        <circle class="um-ring-fill pjum" id="uploadModalRing" cx="64" cy="64" r="56"/>
+      </svg>
+      <div class="um-ring-center">
+        <div class="upload-pct" id="uploadModalPct">0%</div>
+        <div class="um-ring-lbl">terkirim</div>
+        <div class="um-dots"><i></i><i></i><i></i></div>
+      </div>
+    </div>
+    <div class="upload-detail">
+      <span id="uploadModalFile">—</span>
+      <span id="uploadModalCount">—</span>
+    </div>
+    <div class="upload-track"><div class="upload-fill" id="uploadModalFill"></div></div>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="js/utils.js?v=20260723r12"></script>
-<script src="js/api.js?v=20260723r12"></script>
-<script src="js/charts.js?v=20260723r12"></script>
-<script src="js/report-lib.js?v=20260723r12"></script>
-<script src="js/export.js?v=20260723r12"></script>
-<script src="js/auth.js?v=20260805r1"></script>
-<script src="js/app.js?v=20260805r2"></script>
-<script src="js/dashboard.js?v=20260723r12"></script>
-<script src="js/benef.js?v=20260723r12"></script>
-<script src="js/pjum.js?v=20260723r12"></script>
-<script src="js/pages.js?v=20260723r12"></script>
-<script src="js/ai-assistant.js?v=20260805r2"></script>
+<div class="modal-overlay" id="editOverlay">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><h3 id="editTitle">Preview &amp; Edit</h3><div class="sub" id="editSub"></div></div>
+      <button class="modal-close" id="editClose">✕</button>
+    </div>
+    <div class="modal-scroll" id="editScroll"><div class="modal-loading">Memuat data...</div></div>
+    <div class="modal-foot">
+      <button class="btn-modal-secondary" id="editCancel">Batal</button>
+      <button class="btn-modal-primary" id="editSave">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
+<script>
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbz7fjIFALDAbVo2TGEUi0j-RwLqZk7KxcUyU2rdNAiTHcEsAMD2i0O0g4-biV41Nw-hew/exec';
+
+/* ============ STATE ============ */
+const DAFTAR_STAF = [
+  'Apri','Boy','Delfi','Didi','Eni','Erika','Flory','Gens','Gusto',
+  'Jack','Jeri','Johan','Len','Misel','Nerdi','Patris','Tarsi','Rikar',
+  'Stanis','Stef','Tetik','Veli','Vino','Yos','Rich'
+];
+
+let CURRENT_STAF = '';
+let SUBMISSION_LOG = [];
+
+/* ============================================================
+   FIX #1 — PERSISTENCE ke localStorage per staf
+   Hanya entry lokal (bukan fromServer) yang disimpan supaya
+   tidak membengkak dan tidak bertabrakan dengan data server.
+   ============================================================ */
+function logKey(staf){ return 'submission_log_v2_' + staf; }
+
+function saveLog(){
+  if(!CURRENT_STAF) return;
+  try{
+    const local = SUBMISSION_LOG.filter(l => !l.fromServer);
+    localStorage.setItem(logKey(CURRENT_STAF), JSON.stringify(local));
+  }catch(e){ /* quota exceeded — abaikan */ }
+}
+
+function loadLog(staf){
+  try{
+    const raw = localStorage.getItem(logKey(staf));
+    if(!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){ return []; }
+}
+
+/* ============ LOGIN ============ */
+function isiDaftarStaf(){
+  const sel = document.getElementById('inputNama');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">— Pilih nama —</option>' +
+    DAFTAR_STAF.slice().sort((a,b)=>a.localeCompare(b,'id'))
+      .map(n=>`<option value="${n}">${n}</option>`).join('');
+}
+
+function initLogin(){
+  isiDaftarStaf();
+  const saved = localStorage.getItem('staf_name');
+  if(saved && DAFTAR_STAF.indexOf(saved.trim()) > -1){
+    CURRENT_STAF = saved.trim();
+    showApp();
+  } else {
+    localStorage.removeItem('staf_name');
+    document.getElementById('loginScreen').classList.add('show');
+    document.getElementById('inputNama').focus();
+  }
+}
+
+/* FIX #2 — showApp() jadi async, properly await renderStatus() */
+async function showApp(){
+  document.getElementById('loginScreen').classList.remove('show');
+  document.getElementById('userLabel').textContent = CURRENT_STAF;
+  /* Muat log lokal dulu → UI langsung responsif sebelum server balas */
+  SUBMISSION_LOG = loadLog(CURRENT_STAF);
+  renderKpiCards();       /* tampilkan angka lokal segera */
+  renderRiwayat();
+  renderBerkasBernomor(); /* tampilkan daftar berkas bernomor dari localStorage */
+  await renderStatus();   /* sync server, update ulang KPI + riwayat */
+}
+
+document.getElementById('btnMasuk').addEventListener('click', doLogin);
+document.getElementById('inputNama').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+document.getElementById('inputNama').addEventListener('change', ()=>{
+  document.getElementById('loginError').classList.remove('show');
+  document.getElementById('inputNama').classList.remove('error');
+});
+
+function doLogin(){
+  const val = document.getElementById('inputNama').value.trim();
+  const errEl = document.getElementById('loginError');
+  const inputEl = document.getElementById('inputNama');
+  if(!val || DAFTAR_STAF.indexOf(val) < 0){
+    errEl.textContent = 'Pilih nama kamu dari daftar.';
+    errEl.classList.add('show');
+    inputEl.classList.add('error');
+    inputEl.focus();
+    return;
+  }
+  errEl.classList.remove('show');
+  inputEl.classList.remove('error');
+  CURRENT_STAF = val;
+  localStorage.setItem('staf_name', val);
+  showApp();
+}
+
+/* FIX #3 — Logout bersihkan: SUBMISSION_LOG, pending, dl-box, DOM KPI & riwayat */
+document.getElementById('btnLogout').addEventListener('click', ()=>{
+  if(!confirm(`Keluar dari sesi "${CURRENT_STAF}"?`)) return;
+  localStorage.removeItem('staf_name');
+  CURRENT_STAF = '';
+  SUBMISSION_LOG = [];
+
+  /* Bersihkan pending file */
+  pending.PJUM = [];
+  pending.Benef = [];
+  renderFileList('PJUM');
+  renderFileList('Benef');
+
+  /* Bersihkan tombol unduh */
+  ['PJUM','Benef'].forEach(j=>{
+    const box = document.getElementById('dlBox'+j);
+    if(box){ box.classList.remove('show'); box.innerHTML=''; }
+  });
+
+  /* Bersihkan DOM KPI, riwayat, dan berkas bernomor */
+  document.getElementById('kpiStatus').innerHTML = '';
+  document.getElementById('logPjumBody').innerHTML = '';
+  document.getElementById('logBenefBody').innerHTML = '';
+  document.getElementById('berkasPjumList').innerHTML = '';
+  document.getElementById('berkasBenefList').innerHTML = '';
+
+  document.getElementById('loginScreen').classList.add('show');
+  isiDaftarStaf();
+  document.getElementById('inputNama').value = '';
+  document.getElementById('inputNama').focus();
+});
+
+/* ============================================================
+   FIX #4 — KPI CARDS: 4 angka BERBEDA dengan filter bulan benar
+   Card 1: PJUM bulan ini  (filter by tgl YYYY-MM)
+   Card 2: Total PJUM semua waktu
+   Card 3: Benef bulan ini
+   Card 4: Total Benef semua waktu
+   ============================================================ */
+function bulanNamaNow(){
+  const names=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  const d = new Date();
+  return names[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function isThisMonth(tglStr){
+  if(!tglStr) return false;
+  const now = new Date();
+  const yy  = now.getFullYear();
+  const mm  = String(now.getMonth()+1).padStart(2,'0');
+  return String(tglStr).slice(0,7) === `${yy}-${mm}`;
+}
+
+const ICON_DOC  = `<svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`;
+const ICON_CLOUD= `<svg class="ic" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>`;
+const ICON_USERS= `<svg class="ic" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+const ICON_CLIP = `<svg class="ic" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>`;
+const ICON_CHECK= `<svg class="ic" viewBox="0 0 24 24" style="width:.9em;height:.9em;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+const ICON_X    = `<svg class="ic" viewBox="0 0 24 24" style="width:.9em;height:.9em;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+const ICON_DL   = `<svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const ICON_INBOX= `<svg class="ic ic-empty" viewBox="0 0 24 24" style="stroke-width:1.5;"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>`;
+
+function renderKpiCards(){
+  const mine       = SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF);
+  const pjumBulan  = mine.filter(l=>l.jenis==='PJUM' && isThisMonth(l.tgl)).length;
+  const pjumTotal  = mine.filter(l=>l.jenis==='PJUM').length;
+  const benefBulan = mine.filter(l=>l.jenis==='Benef' && isThisMonth(l.tgl)).length;
+  const benefTotal = mine.filter(l=>l.jenis==='Benef').length;
+  document.getElementById('kpiStatus').innerHTML = `
+    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_DOC}</span><span class="label">PJUM bulan ini<br>(${bulanNamaNow()})</span></div><div class="value">${pjumBulan}</div><div class="unit">Laporan</div></div>
+    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_CLOUD}</span><span class="label">Total PJUM<br>sudah di-upload</span></div><div class="value">${pjumTotal}</div><div class="unit">Laporan</div></div>
+    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_USERS}</span><span class="label">Benef bulan ini<br>(${bulanNamaNow()})</span></div><div class="value">${benefBulan}</div><div class="unit">Laporan</div></div>
+    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_CLIP}</span><span class="label">Total Benef<br>sudah di-upload</span></div><div class="value">${benefTotal}</div><div class="unit">Laporan</div></div>
+  `;
+}
+
+/* ============================================================
+   FIX #5 — pullFromServer: pakai r.staf dari server, bukan paksa CURRENT_STAF
+   ============================================================ */
+async function pullFromServer(staf){
+  try{
+    const res = await fetch(`${GAS_URL}?action=getStatus&staf=${encodeURIComponent(staf)}`, {redirect:'follow'});
+    const json = await res.json();
+    /* Hapus entry server lama, pertahankan entry lokal */
+    SUBMISSION_LOG = SUBMISSION_LOG.filter(l => !l.fromServer);
+    const localFiles = new Set(SUBMISSION_LOG.map(l => l.file));
+    (json.pjum||[]).forEach(r=>{
+      if(localFiles.has(r.fileName)) return;
+      SUBMISSION_LOG.push({
+        jenis:'PJUM', kode:r.kode||'', kegiatan:r.kegiatan||'', proyek:r.proyek||'Ayo - JPM',
+        staf: r.staf || staf,   /* FIX #5: pakai staf dari server */
+        file: r.fileName, tgl:(r.uploadedAt||'').slice(0,10),
+        gsheet:r.gsheet, drive:r.drive,
+        payload:{items:[]}, fromServer:true
+      });
+    });
+    (json.benef||[]).forEach(r=>{
+      if(localFiles.has(r.fileName)) return;
+      SUBMISSION_LOG.push({
+        jenis:'Benef', kode:r.kode||'', kegiatan:r.kegiatan||'', proyek:r.proyek||'Ayo - JPM',
+        staf: r.staf || staf,   /* FIX #5: pakai staf dari server */
+        file: r.fileName, tgl:(r.uploadedAt||'').slice(0,10),
+        gsheet:r.gsheet, drive:r.drive,
+        payload:{headers:[], rows:[]}, fromServer:true
+      });
+    });
+  }catch(err){ /* server tidak terjangkau — pakai data lokal */ }
+}
+
+async function renderStatus(){
+  await pullFromServer(CURRENT_STAF);
+  renderKpiCards();
+  renderRiwayat();
+}
+
+function statusPill(v){ return v==='ok'
+  ? `<span class="status-pill">${ICON_CHECK} Tersimpan</span>`
+  : `<span class="status-pill bad">${ICON_X} Gagal</span>`; }
+
+function renderRiwayat(){
+  function dedupLog(entries){
+    const seen = new Map();
+    entries.forEach(l => seen.set(l.file, l));
+    return [...seen.values()].reverse();
+  }
+  const pjum  = dedupLog(SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF && l.jenis==='PJUM'));
+  const benef = dedupLog(SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF && l.jenis==='Benef'));
+
+  document.getElementById('logPjumBody').innerHTML = pjum.length
+    ? pjum.map(l=>`<tr class="clickable" data-jenis="PJUM" data-file="${l.file}">
+        <td>${l.kegiatan||l.file}</td><td>${l.tgl}</td><td>${statusPill(l.gsheet)}</td><td>${statusPill(l.drive)}</td>
+      </tr>`).join('')
+    : `<tr><td colspan="4"><div class="empty-state">${ICON_INBOX}<div class="txt">Belum ada laporan PJUM.</div></div></td></tr>`;
+
+  document.getElementById('logBenefBody').innerHTML = benef.length
+    ? benef.map(l=>`<tr class="clickable" data-jenis="Benef" data-file="${l.file}">
+        <td>${l.kegiatan||l.file}</td><td>${l.tgl}</td><td>${statusPill(l.gsheet)}</td><td>${statusPill(l.drive)}</td>
+      </tr>`).join('')
+    : `<tr><td colspan="4"><div class="empty-state">${ICON_INBOX}<div class="txt">Belum ada laporan Benef.</div></div></td></tr>`;
+
+  document.querySelectorAll('tr.clickable').forEach(tr=>{
+    tr.addEventListener('click', ()=>openEditModal(tr.dataset.jenis, tr.dataset.file));
+  });
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+/* ============ PARSER ============ */
+function cellVal(ws, addr){ const c = ws[addr]; return c ? c.v : null; }
+
+function excelDateToStr(v){
+  if(!v) return '';
+  if(v instanceof Date){
+    const y=v.getUTCFullYear(), m=String(v.getUTCMonth()+1).padStart(2,'0'), d=String(v.getUTCDate()).padStart(2,'0');
+    return `${y}-${m}-${d}`;
+  }
+  if(typeof v === 'number'){
+    const d=new Date(Math.round((v-25569)*86400*1000));
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+  }
+  return String(v);
+}
+
+function parseJumlah(v){
+  if(typeof v==='number') return isFinite(v)?v:0;
+  if(v===null||v===undefined) return 0;
+  let s=String(v).trim();
+  if(!s||!/\d/.test(s)) return 0;
+  s=s.replace(/rp/gi,'').replace(/\s+/g,'').replace(/[^0-9.,-]/g,'');
+  const neg=s.charAt(0)==='-';
+  s=s.replace(/-/g,'');
+  const hasDot=s.indexOf('.')>-1, hasComma=s.indexOf(',')>-1;
+  if(hasDot&&hasComma){
+    if(s.lastIndexOf(',')>s.lastIndexOf('.')) s=s.replace(/\./g,'').replace(',','.');
+    else s=s.replace(/,/g,'');
+  } else if(hasComma){
+    const pc=s.split(',');
+    if(pc.length===2&&pc[1].length<=2) s=pc[0]+'.'+pc[1];
+    else s=s.replace(/,/g,'');
+  } else if(hasDot){
+    const pd=s.split('.');
+    const polaRibuan=pd.every((p,i)=>i===0?(p.length>=1&&p.length<=3):p.length===3);
+    if(!(pd.length===2&&pd[1].length<=2&&pd[0].length<=3&&pd[1].length!==3)&&polaRibuan) s=s.replace(/\./g,'');
+  }
+  const n=parseFloat(s);
+  return isFinite(n)?(neg?-n:n):0;
+}
+
+const ALIASES={
+  proyek:['proyek','project','program'],staf:['staf','staff','nama staf'],
+  tanggal:['tgl','tanggal','date'],kode:['kode','kode kegiatan','code'],
+  no:['no','no.','nomor','number'],kegiatan:['kegiatan','nama kegiatan','activity'],
+  item:['item pengeluaran','item','keterangan','deskripsi','uraian'],
+  jumlah:['jumlah','amount','cost','total','nilai'],
+};
+
+function parsePJUMFile(wb){
+  const ws=wb.Sheets['Laporan'];
+  if(!ws) return {error:'Sheet "Laporan" tidak ditemukan.'};
+  const range=XLSX.utils.decode_range(ws['!ref']||'A1:Z100');
+  let headerRow=-1;
+  const COL={};
+  for(let r=range.s.r;r<=Math.min(range.e.r,25);r++){
+    const rowVals=[];
+    for(let c=range.s.c;c<=range.e.c;c++)
+      rowVals.push(String(cellVal(ws,XLSX.utils.encode_cell({r,c}))||'').trim().toLowerCase());
+    const hasItem=rowVals.some(v=>ALIASES.item.some(a=>v===a));
+    const hasJumlah=rowVals.some(v=>ALIASES.jumlah.some(a=>v===a));
+    if(hasItem&&hasJumlah){
+      headerRow=r;
+      rowVals.forEach((v,c)=>{
+        for(const[key,aliases]of Object.entries(ALIASES)){
+          if(!(key in COL)&&aliases.some(a=>v===a)) COL[key]=c;
+        }
+      });
+      break;
+    }
+  }
+  if(headerRow===-1) return {error:'Baris header tidak ditemukan. Pastikan ada kolom "Item Pengeluaran" dan "Jumlah".'};
+  if(!('item' in COL)) return {error:'Kolom "Item Pengeluaran" tidak ditemukan.'};
+  if(!('jumlah' in COL)) return {error:'Kolom "Jumlah" tidak ditemukan.'};
+
+  const items=[];
+  for(let r=headerRow+1;r<=range.e.r;r++){
+    const ket=String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.item}))||'').trim();
+    if(ket&&['jumlah','saldo','total'].includes(ket.toLowerCase())) break;
+    if(!ket) continue;
+    items.push({
+      proyek:'proyek' in COL?String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.proyek}))||'').trim():'',
+      staf:'staf' in COL?String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.staf}))||'').trim():'',
+      tanggal:excelDateToStr('tanggal' in COL?cellVal(ws,XLSX.utils.encode_cell({r,c:COL.tanggal})):null),
+      kode:'kode' in COL?String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.kode}))||'').trim():'',
+      no:'no' in COL?String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.no}))||'').trim():'',
+      kegiatan:'kegiatan' in COL?String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.kegiatan}))||'').trim():'',
+      keterangan:ket,
+      jumlah:parseJumlah(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.jumlah}))),
+      jumlahRaw:String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.jumlah}))??'').trim(),
+    });
+  }
+  if(items.length===0) return {error:'Tidak ada baris item di sheet Laporan.'};
+
+  const itemErrors=[];
+  items.forEach((it,i)=>{
+    const rowMissing=[];
+    if(!it.proyek) rowMissing.push('Proyek');
+    if(!it.staf) rowMissing.push('Staf');
+    if(!it.kegiatan) rowMissing.push('Kegiatan');
+    if(!it.jumlah||it.jumlah===0){
+      if(it.jumlahRaw) itemErrors.push(`Baris ${i+1}: nominal "${it.jumlahRaw}" tidak terbaca sebagai angka`);
+      else rowMissing.push('Jumlah');
+    }
+    if(rowMissing.length>0) itemErrors.push(`Baris ${i+1}: ${rowMissing.join(', ')} kosong`);
+  });
+  if(itemErrors.length>0){
+    const tampil=itemErrors.slice(0,3).join(' | ')+(itemErrors.length>3?` ... +${itemErrors.length-3} baris lagi`:'');
+    return {error:tampil};
+  }
+  const first=items[0];
+  return {
+    valid:true, kode:first.kode.toUpperCase(), kegiatan:first.kegiatan,
+    proyek:first.proyek, staf:first.staf,
+    raw:{kegiatan:first.kegiatan, kode:first.kode.toUpperCase(), proyek:first.proyek, staf:first.staf,
+         items:items.map(({jumlahRaw,...it})=>it)}
+  };
+}
+
+const BENEF_REQUIRED_HEADERS=[
+  'Nama Benef','Jenis Kelamin','Usia','Kategori Usia','Disabiltas','Kategori Benef',
+  'Jika lainnya, sebutkan','Desa/Kelurahan','Kecamatan','Kabupaten','Paroki',
+  'Instansi/Lembaga','Jabatan','Alamat Instansi','Benefit yang Diperoleh',
+  'Jika benda, sebutkan','Kegiatan terkait Benef','Kode kegiatan (*lihat RAB)',
+  'Nomor HP Benef','Tanggal Kegiatan','Program Pendukung','Lembaga Mitra','Nama Staf'
+];
+const BENEF_ROW_REQUIRED=['Nama Benef','Program Pendukung','Nama Staf'];
+const BENEF_OFFICIAL_HEADERS=[...BENEF_REQUIRED_HEADERS,'Nama Staf Pengupload'];
+const BENEF_HEADER_ALIASES={
+  'kode':'Kode kegiatan (*lihat RAB)','kode kegiatan':'Kode kegiatan (*lihat RAB)',
+  'kode rab':'Kode kegiatan (*lihat RAB)','umur':'Usia','disabilitas':'Disabiltas',
+  'pekerjaan':'Jabatan','jabatan/pekerjaan':'Jabatan','lembaga mitra':'Lembaga Mitra',
+  'alamat instansi/lembaga':'Alamat Instansi','instansi':'Instansi/Lembaga',
+  'instansi lembaga':'Instansi/Lembaga','lembaga/instansi':'Instansi/Lembaga',
+  'nama instansi':'Instansi/Lembaga','instansi/lembaga asal':'Instansi/Lembaga',
+};
+const BENEF_IGNORABLE=['no','no.','nomor','nomor urut'];
+
+function benefNormalizeHeader(s){
+  return String(s||'').replace(/[\u00A0\u200B\t]+/g,' ')
+    .replace(/\s*\/\s*/g,'/').replace(/\s+/g,' ').trim().toLowerCase();
+}
+function benefResolveHeader(raw){
+  const norm=benefNormalizeHeader(raw);
+  if(BENEF_HEADER_ALIASES[norm]) return BENEF_HEADER_ALIASES[norm];
+  const exact=BENEF_OFFICIAL_HEADERS.find(h=>benefNormalizeHeader(h)===norm);
+  return exact||String(raw||'').trim();
+}
+function validateBenefHeadersClient(headers){
+  const unknown=[],seen={},duplicates=[];
+  const official={};
+  BENEF_OFFICIAL_HEADERS.forEach(h=>official[h]=true);
+  (headers||[]).forEach(raw=>{
+    const t=String(raw||'').trim();
+    if(!t||BENEF_IGNORABLE.indexOf(benefNormalizeHeader(t))>-1) return;
+    const resolved=benefResolveHeader(t);
+    if(!official[resolved]){unknown.push(t);return;}
+    if(seen[resolved]) duplicates.push(resolved);
+    else seen[resolved]=t;
+  });
+  return {ok:unknown.length===0&&duplicates.length===0,unknown,duplicates};
+}
+
+function parseBenefFile(wb){
+  const ws=wb.Sheets['Benef_List'];
+  if(!ws) return {error:'Sheet "Benef_List" tidak ditemukan.'};
+  const range=XLSX.utils.decode_range(ws['!ref']);
+  const headers=[];
+  for(let c=range.s.c;c<=range.e.c;c++){
+    const cell=ws[XLSX.utils.encode_cell({r:0,c})];
+    headers.push(cell?String(cell.v).trim():'');
+  }
+  const normalizeH=s=>String(s).replace(/[\u00A0\u200B\t]+/g,' ').replace(/\s+/g,' ').trim();
+  const headersNorm=headers.map(normalizeH);
+  const missingKunci=BENEF_ROW_REQUIRED.filter(h=>!headersNorm.includes(normalizeH(h)));
+  if(missingKunci.length>0) return {error:`Kolom wajib tidak ada: ${missingKunci.join(', ')}`};
+  const hv=validateBenefHeadersClient(headers);
+  if(!hv.ok){
+    const parts=[];
+    if(hv.unknown.length) parts.push(`Header tidak dikenal: ${hv.unknown.join(', ')}`);
+    if(hv.duplicates.length) parts.push(`Header ganda: ${hv.duplicates.join(', ')}`);
+    return {error:parts.join(' | ')+' — sesuaikan dengan template resmi'};
+  }
+  const rowsRaw=XLSX.utils.sheet_to_json(ws,{header:1,defval:null,raw:true}).slice(1).filter(r=>r[0]);
+  const tglColIdx=headersNorm.indexOf('tanggal kegiatan');
+  const rows=rowsRaw.map(r=>r.map((v,ci)=>{
+    if(v===null||v===undefined) return null;
+    if(ci===tglColIdx) return excelDateToStr(v);
+    if(v instanceof Date) return excelDateToStr(v);
+    if(typeof v==='number') return String(v);
+    return v;
+  }));
+  if(rows.length===0) return {error:'Tidak ada baris data.'};
+
+  const rowErrors=[];
+  BENEF_ROW_REQUIRED.forEach(colName=>{
+    const idx=headersNorm.indexOf(normalizeH(colName));
+    if(idx===-1) return;
+    rows.forEach((row,i)=>{
+      if(!row[idx]||String(row[idx]).trim()==='') rowErrors.push(`Baris ${i+2}: "${colName}" kosong`);
+    });
+  });
+  if(rowErrors.length>0){
+    const tampil=rowErrors.slice(0,3).join(' | ')+(rowErrors.length>3?` ... +${rowErrors.length-3} baris lagi`:'');
+    return {error:tampil};
+  }
+  const kegIdx=headersNorm.indexOf(normalizeH('Kegiatan terkait Benef'));
+  const kodeIdx=headersNorm.indexOf(normalizeH('Kode kegiatan (*lihat RAB)'));
+  const progIdx=headersNorm.indexOf(normalizeH('Program Pendukung'));
+  const kode=kodeIdx>-1&&rows[0][kodeIdx]?String(rows[0][kodeIdx]).toUpperCase():'';
+  const kegiatan=kegIdx>-1?rows[0][kegIdx]:'';
+  const proyek=progIdx>-1&&rows[0][progIdx]?String(rows[0][progIdx]).trim():'Ayo - JPM';
+  const headersOut=[...headers.map(h=>String(h).trim()),'Nama Staf Pengupload'];
+  const rowsOut=rows.map(r=>{
+    const extended=[...r];
+    while(extended.length<headers.length) extended.push(null);
+    extended.push('__STAF_PENGUPLOAD__');
+    return extended;
+  });
+  return {valid:true,kode,kegiatan,proyek,raw:{headers:headersOut,rows:rowsOut}};
+}
+
+/* ============ IDENTITAS FILE ============ */
+const ID_RE_CLIENT=/^([A-Za-z0-9]{1,14}_[BP]\d{6}-[A-Z0-9]{4})_?/;
+function idDariNamaFileClient(fileName){
+  const m=ID_RE_CLIENT.exec(String(fileName||'').trim());
+  return m?m[1]:'';
+}
+
+/* ============================================================
+   BERKAS BERNOMOR — sistem persist permanen
+   - Metadata (nama, tgl, jenis) disimpan ke localStorage per staf
+   - b64 juga disimpan sementara di memori (berkasB64Cache) untuk
+     unduh langsung setelah upload tanpa request ulang ke server
+   - Jika b64 tidak ada di cache (misal setelah refresh), tombol
+     "Unduh" mengambil file dari Google Drive via GAS (action=downloadFile)
+   ============================================================ */
+
+/* Cache b64 in-memory — hanya valid selama sesi, untuk unduh segera setelah upload */
+const berkasB64Cache = {};  /* key: namaFile, value: b64 string */
+
+function berkasKey(staf){ return 'berkas_bernomor_v1_' + staf; }
+
+function loadBerkas(staf){
+  try{
+    const raw = localStorage.getItem(berkasKey(staf));
+    if(!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){ return []; }
+}
+
+function saveBerkas(staf, daftar){
+  try{
+    /* Simpan maksimal 50 berkas per staf supaya tidak membengkak */
+    const trimmed = daftar.slice(-50);
+    localStorage.setItem(berkasKey(staf), JSON.stringify(trimmed));
+  }catch(e){ /* quota exceeded */ }
+}
+
+/* Tambahkan berkas baru ke daftar — dipanggil setiap kali upload berhasil */
+function tambahBerkasBernomor(jenis, namaFile, b64){
+  if(!namaFile) return;
+  /* Simpan b64 ke cache in-memory */
+  if(b64) berkasB64Cache[namaFile] = b64;
+  const daftar = loadBerkas(CURRENT_STAF);
+  /* Hindari duplikat berdasarkan nama file */
+  if(daftar.some(b => b.nama === namaFile)) return;
+  daftar.push({
+    nama: namaFile,
+    jenis: jenis,
+    tgl: new Date().toISOString().slice(0,10),
+    tglWaktu: new Date().toLocaleString('id-ID',{timeZone:'Asia/Makassar'})
+  });
+  saveBerkas(CURRENT_STAF, daftar);
+  renderBerkasBernomor();
+}
+
+/* Hapus satu berkas dari daftar */
+function hapusSatuBerkas(namaFile){
+  const daftar = loadBerkas(CURRENT_STAF).filter(b => b.nama !== namaFile);
+  saveBerkas(CURRENT_STAF, daftar);
+  delete berkasB64Cache[namaFile];
+  renderBerkasBernomor();
+}
+
+/* Hapus semua berkas jenis tertentu */
+function hapusSemuaBerkas(jenis){
+  if(!confirm(`Hapus semua berkas ${jenis} bernomor dari daftar lokal?\n(File di Google Drive tidak terpengaruh)`)) return;
+  const daftar = loadBerkas(CURRENT_STAF).filter(b => b.jenis !== jenis);
+  saveBerkas(CURRENT_STAF, daftar);
+  renderBerkasBernomor();
+}
+
+/* Unduh berkas — coba cache dulu, fallback ke GAS/Drive */
+async function unduhBerkas(namaFile, btnEl){
+  /* 1. Jika b64 masih ada di cache in-memory → langsung unduh */
+  if(berkasB64Cache[namaFile]){
+    triggerUnduh(namaFile, berkasB64Cache[namaFile]);
+    return;
+  }
+  /* 2. Minta GAS untuk mengambil file dari Drive dan kembalikan sebagai base64 */
+  btnEl.disabled = true;
+  btnEl.textContent = 'Mengunduh...';
+  try{
+    const res = await fetch(GAS_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow',
+      body: JSON.stringify({ action:'downloadFile', fileName: namaFile, staf: CURRENT_STAF })
+    });
+    const json = await res.json();
+    if(json.b64){
+      berkasB64Cache[namaFile] = json.b64;
+      triggerUnduh(namaFile, json.b64);
+    } else {
+      showToast('File tidak ditemukan di Drive. Mungkin sudah dipindahkan.');
+    }
+  }catch(e){
+    showToast('Gagal mengambil file dari Drive. Cek koneksi internet.');
+  }finally{
+    btnEl.disabled = false;
+    btnEl.textContent = 'Unduh';
+  }
+}
+
+function triggerUnduh(namaFile, b64){
+  const bin = atob(b64); const buf = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) buf[i]=bin.charCodeAt(i);
+  const url = URL.createObjectURL(new Blob([buf],
+    {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+  const tmp = document.createElement('a');
+  tmp.href = url; tmp.download = namaFile;
+  document.body.appendChild(tmp); tmp.click(); tmp.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 4000);
+}
+
+function renderBerkasBernomor(){
+  if(!CURRENT_STAF) return;
+  const semua = loadBerkas(CURRENT_STAF);
+  const pjum  = semua.filter(b=>b.jenis==='PJUM').slice().reverse();
+  const benef = semua.filter(b=>b.jenis==='Benef').slice().reverse();
+
+  function buatItem(b){
+    const cached = !!berkasB64Cache[b.nama];
+    return `<div class="berkas-item" data-nama="${b.nama}">
+      <div class="berkas-icon"><svg class="ic" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="berkas-info">
+        <div class="berkas-nama" title="${b.nama}">${b.nama}</div>
+        <div class="berkas-meta">${b.tglWaktu||b.tgl}${cached?' · siap unduh':' · diambil dari Drive'}</div>
+      </div>
+      <div class="berkas-actions">
+        <button class="btn-unduh-berkas" data-nama="${b.nama}">Unduh</button>
+        <button class="btn-hapus-berkas" data-nama="${b.nama}" title="Hapus dari daftar">✕</button>
+      </div>
+    </div>`;
+  }
+
+  const emptyHtml = `<div class="empty-state" style="padding:24px 16px;">${ICON_INBOX}<div class="txt">Belum ada berkas bernomor.</div></div>`;
+
+  document.getElementById('berkasPjumList').innerHTML = pjum.length ? pjum.map(buatItem).join('') : emptyHtml;
+  document.getElementById('berkasBenefList').innerHTML = benef.length ? benef.map(buatItem).join('') : emptyHtml;
+
+  /* Pasang event listener tombol unduh */
+  ['berkasPjumList','berkasBenefList'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.querySelectorAll('.btn-unduh-berkas').forEach(btn=>{
+      btn.addEventListener('click', ()=>unduhBerkas(btn.dataset.nama, btn));
+    });
+    el.querySelectorAll('.btn-hapus-berkas').forEach(btn=>{
+      btn.addEventListener('click', ()=>hapusSatuBerkas(btn.dataset.nama));
+    });
+  });
+}
+
+/* Fungsi lama tampilkanUnduhan — sekarang hanya sebagai jembatan ke sistem baru.
+   dl-box di bawah tombol kirim tidak lagi dipakai untuk tampil permanen,
+   tapi tetap ada untuk flash feedback sesaat setelah upload. */
+function tampilkanUnduhan(jenis, daftar){
+  /* daftar sudah diproses di kirimBatch sebelum memanggil fungsi ini,
+     tidak perlu render dl-box lagi — section berkas bernomor sudah menangani. */
+  if(!daftar||daftar.length===0) return;
+  /* Beri feedback toast singkat */
+  showToast(`${daftar.length} berkas bernomor tersimpan di daftar Berkas Bernomor ↓`);
+}
+
+/* ============ CEK TUMPANG TINDIH ============ */
+const MAKS_KUNCI_CEK=4000;
+function kunciBarisBenef(parsed){
+  const h=(parsed.raw&&parsed.raw.headers)||[];
+  const norm=s=>String(s||'').replace(/\s+/g,' ').trim().toLowerCase();
+  const cari=nm=>h.findIndex(x=>norm(x)===norm(nm));
+  const iNama=cari('Nama Benef'),iDesa=cari('Desa/Kelurahan'),
+        iKeg=cari('Kegiatan terkait Benef'),iTgl=cari('Tanggal Kegiatan');
+  return ((parsed.raw&&parsed.raw.rows)||[]).map(r=>{
+    const tgl=iTgl>-1?String(r[iTgl]||'').slice(0,10):'';
+    return norm(iNama>-1?r[iNama]:'')+norm(iDesa>-1?r[iDesa]:'')+norm(iKeg>-1?r[iKeg]:'')+tgl;
+  });
+}
+function kunciBarisPjum(parsed){
+  const norm=s=>String(s||'').replace(/\s+/g,' ').trim().toLowerCase();
+  return ((parsed.raw&&parsed.raw.items)||[]).map(it=>
+    norm(it.keterangan)+'||'+norm(it.kegiatan)+String(it.tanggal||'').slice(0,10));
+}
+function kunciBaris(jenis,parsed){ return jenis==='Benef'?kunciBarisBenef(parsed):kunciBarisPjum(parsed); }
+function contohKunci(arr){
+  if(arr.length<=MAKS_KUNCI_CEK) return {kunci:arr,contoh:false};
+  const step=arr.length/MAKS_KUNCI_CEK; const out=[];
+  for(let i=0;i<MAKS_KUNCI_CEK;i++) out.push(arr[Math.floor(i*step)]);
+  return {kunci:out,contoh:true};
+}
+
+async function cekTumpangTindih(jenis,parsed){
+  try{
+    const semua=kunciBaris(jenis,parsed);
+    if(!semua.length) return null;
+    const {kunci,contoh}=contohKunci(semua);
+    const res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+      body:JSON.stringify({action:'cekTumpangTindih',jenis,kunci})});
+    const j=await res.json();
+    if(!j||typeof j.sudahAda!=='number') return null;
+    return {...j,contoh,totalBaris:semua.length};
+  }catch(e){return null;}
+}
+
+function konfirmasiTumpangTindih(fileName,t){
+  if(!t||t.sudahAda===0) return true;
+  const persen=Math.round(t.sudahAda/t.dicek*100);
+  const asal=(t.laporan||[]).map(x=>`  • ${x.id} — ${x.baris} baris`).join('\n');
+  const catatan=t.contoh?`(dihitung dari ${t.dicek} baris contoh dari total ${t.totalBaris})`:'';
+  return confirm(`DATA INI SEBAGIAN SUDAH ADA DI SISTEM\n\nBerkas: ${fileName}\n\n`+
+    `${t.sudahAda} dari ${t.dicek} baris (${persen}%) sudah tercatat.\n${catatan}\n\n`+
+    `Berasal dari:\n${asal}\n\nTetap unggah sebagai laporan baru?`);
+}
+
+async function cekLaporanKeServer(jenis,idFile){
+  try{
+    const res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+      body:JSON.stringify({action:'cekLaporan',jenis,idFile,staf:CURRENT_STAF})});
+    const json=await res.json();
+    if(json&&json.mode) return json;
+    return null;
+  }catch(e){return null;}
+}
+
+function ringkasLaporan(x){
+  const keg=(x.kegiatan&&x.kegiatan.length)?
+    x.kegiatan.slice(0,2).join(', ')+(x.jmlKegiatan>2?` +${x.jmlKegiatan-2} lainnya`:''):'(kegiatan tidak tercatat)';
+  return `  • ${keg}\n    ID ${x.id} · ${x.baris} baris`+
+    (x.staf&&x.staf.length?` · oleh ${x.staf.join(', ')}`:'')+(x.terakhir?` · ${x.terakhir}`:'')+
+    (x.file&&x.file.length?`\n    berkas: ${x.file.join(', ')}`:'');
+}
+
+function konfirmasiKoreksi(fileName,info){
+  const stafLain=(info.staf||[]).filter(s=>s&&s!==CURRENT_STAF);
+  let pesan=`KOREKSI LAPORAN\n\nBerkas: ${fileName}\n\nLaporan ini sudah ada:\n`+
+    `${ringkasLaporan(info)}\n\n${info.baris} baris lama akan DIGANTI.\n`+
+    `Berkas lama dipindahkan ke folder Arsip Revisi.`;
+  if(stafLain.length) pesan+=`\n\n⚠ Laporan ini diunggah oleh ${stafLain.join(', ')}, bukan oleh kamu.\nPastikan sudah ada kesepakatan.`;
+  return confirm(pesan+'\n\nLanjutkan?');
+}
+
+/* ============ FILE READER ============ */
+function readFileAll(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const arrayBuf=ev.target.result;
+        const bytes=new Uint8Array(arrayBuf);
+        let bin='';
+        for(let i=0;i<bytes.byteLength;i++) bin+=String.fromCharCode(bytes[i]);
+        const b64=btoa(bin);
+        const wb=XLSX.read(arrayBuf,{type:'array',cellDates:true});
+        resolve({wb,b64});
+      }catch(e){reject(e);}
+    };
+    reader.onerror=reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+/* FIX #6 — pending di-reset saat logout (sudah dihandle di logout handler) */
+const pending={PJUM:[],Benef:[]};
+
+function renderFileList(jenis){
+  const container=document.getElementById(jenis==='PJUM'?'fileListPJUM':'fileListBenef');
+  const btn=document.getElementById(jenis==='PJUM'?'btnKirimPjum':'btnKirimBenef');
+  const items=pending[jenis];
+  container.innerHTML=items.map((it,i)=>
+    `<div class="file-row ${it.valid?'':'bad'}">
+      <span class="fn">${it.fileName}</span>
+      <span class="fstatus ${it.valid?'ok':'bad'}">${it.valid?'✓':'✗ '+it.error}</span>
+      <span class="fremove" data-jenis="${jenis}" data-idx="${i}">✕</span>
+    </div>`).join('');
+  const validCount=items.filter(it=>it.valid).length;
+  btn.disabled=validCount===0;
+  btn.classList.toggle('ready',validCount>0);
+  const label=validCount>0?`Kirim ${jenis} (${validCount})`:`Kirim ${jenis}`;
+  btn.innerHTML=`<svg class="ic" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>${label}`;
+  container.querySelectorAll('.fremove').forEach(el=>{
+    el.addEventListener('click',()=>{
+      pending[el.dataset.jenis].splice(parseInt(el.dataset.idx),1);
+      renderFileList(el.dataset.jenis);
+    });
+  });
+}
+
+async function processFiles(files,jenis,parseFn){
+  for(const file of files){
+    try{
+      const {wb,b64}=await readFileAll(file);
+      const parsed=parseFn(wb);
+      if(parsed.error) pending[jenis].push({fileName:file.name,valid:false,error:parsed.error});
+      else pending[jenis].push({fileName:file.name,valid:true,parsed,b64});
+    }catch(err){
+      pending[jenis].push({fileName:file.name,valid:false,error:'File tidak terbaca — cek format .xlsx.'});
+    }
+  }
+  renderFileList(jenis);
+}
+
+function handleMultiFile(inputEl,jenis,parseFn){
+  inputEl.addEventListener('change',async e=>{
+    await processFiles(Array.from(e.target.files),jenis,parseFn);
+    inputEl.value='';
+  });
+  const card=inputEl.closest('.upload-card');
+  if(!card) return;
+  ['dragenter','dragover'].forEach(ev=>card.addEventListener(ev,e=>{
+    e.preventDefault();e.stopPropagation();
+    if(e.dataTransfer) e.dataTransfer.dropEffect='copy';
+    card.classList.add('dragover');
+  }));
+  ['dragleave','dragend'].forEach(ev=>card.addEventListener(ev,e=>{
+    e.preventDefault();e.stopPropagation();
+    if(ev==='dragleave'&&card.contains(e.relatedTarget)) return;
+    card.classList.remove('dragover');
+  }));
+  card.addEventListener('drop',async e=>{
+    e.preventDefault();e.stopPropagation();
+    card.classList.remove('dragover');
+    const all=Array.from((e.dataTransfer&&e.dataTransfer.files)||[]);
+    const files=all.filter(f=>/\.xlsx$/i.test(f.name));
+    if(all.length&&files.length===0){showToast('Hanya file .xlsx yang bisa diunggah');return;}
+    if(files.length===0) return;
+    await processFiles(files,jenis,parseFn);
+    showToast(`${files.length} file ditambahkan ke daftar ${jenis}`);
+  });
+}
+
+['dragover','drop'].forEach(ev=>window.addEventListener(ev,e=>{
+  if(!e.target.closest||!e.target.closest('.upload-card')) e.preventDefault();
+}));
+handleMultiFile(document.getElementById('filePJUM'),'PJUM',parsePJUMFile);
+handleMultiFile(document.getElementById('fileBenef'),'Benef',parseBenefFile);
+
+/* ============ RING MODAL PROGRESS ============ */
+const UM_RING_C=2*Math.PI*56;
+function setUploadRing(p){
+  const ring=document.getElementById('uploadModalRing');
+  const pctEl=document.getElementById('uploadModalPct');
+  const dots=document.querySelector('.um-dots');
+  if(!ring) return;
+  const v=Math.max(0,Math.min(100,p));
+  ring.style.strokeDasharray=UM_RING_C;
+  ring.style.strokeDashoffset=UM_RING_C*(1-v/100);
+  const warna=(pctEl&&pctEl.className.indexOf('benef')>-1)?'benef':'pjum';
+  ring.setAttribute('class','um-ring-fill '+warna);
+  if(dots) dots.style.visibility=v>=100?'hidden':'visible';
+}
+
+/* ============ KIRIM KE GAS ============ */
+const CHUNK_ROWS=3000;
+
+async function kirimKeGAS(jenis,parsed,fileName,b64,onProgress,idLaporan){
+  let driveStatus='gagal', gsheetStatus='gagal';
+  try{
+    const resDrive=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+      body:JSON.stringify({action:'uploadDrive',jenis,staf:CURRENT_STAF,fileName,fileBase64:b64,
+                           idLaporan:idLaporan||''})});
+    const jsonDrive=await resDrive.json();
+    driveStatus=jsonDrive.drive||'gagal';
+    if(jsonDrive.driveFileName){fileName=jsonDrive.driveFileName;kirimKeGAS._lastDriveName=jsonDrive.driveFileName;}
+  }catch(e){driveStatus='gagal';}
+
+  try{
+    let rawToSend=parsed.raw;
+    if(jenis==='Benef'&&rawToSend&&rawToSend.rows){
+      rawToSend={...rawToSend,rows:rawToSend.rows.map(r=>r.map(v=>v==='__STAF_PENGUPLOAD__'?CURRENT_STAF:v))};
+    }
+    const rows=rawToSend.rows||[];
+    const total=rows.length;
+
+    if(jenis!=='Benef'||total<=CHUNK_ROWS){
+      let rawText='';
+      try{
+        const res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+          body:JSON.stringify({action:'upload'+jenis,staf:CURRENT_STAF,fileName,driveStatus,
+                               parsed:rawToSend,idLaporan:idLaporan||''})});
+        rawText=await res.text();
+        const json=JSON.parse(rawText);
+        gsheetStatus=json.gsheet||'gagal';
+        if(json.error) kirimKeGAS._lastError=json.error;
+        else if(json.gsheet==='ok') kirimKeGAS._lastError=null;
+      }catch(e){kirimKeGAS._lastError='Parse error: '+(rawText?rawText.slice(0,200):e.message);gsheetStatus='gagal';}
+    } else {
+      const numChunks=Math.ceil(total/CHUNK_ROWS);
+      let allOk=true;
+      for(let i=0;i<numChunks;i++){
+        const chunkRows=rows.slice(i*CHUNK_ROWS,(i+1)*CHUNK_ROWS);
+        try{
+          const res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+            body:JSON.stringify({action:'uploadBenefChunk',staf:CURRENT_STAF,fileName,driveStatus,
+                                 isFirst:i===0,totalChunks:numChunks,chunkIndex:i,
+                                 idLaporan:idLaporan||'',parsed:{headers:rawToSend.headers,rows:chunkRows}})});
+          const json=await res.json();
+          if(json.gsheet!=='ok'){allOk=false;break;}
+        }catch(e){allOk=false;break;}
+        if(typeof onProgress==='function')
+          onProgress(Math.round(((i+1)/numChunks)*100),i+1,numChunks);
+      }
+      gsheetStatus=allOk?'ok':'gagal';
+    }
+  }catch(e){gsheetStatus='gagal';}
+
+  /* FIX #1: Simpan ke localStorage setiap kali ada upload baru */
+  const entry={
+    jenis,kode:parsed.kode,kegiatan:parsed.kegiatan,proyek:parsed.proyek||'Ayo - JPM',
+    file:fileName,tgl:new Date().toISOString().slice(0,10),
+    staf:CURRENT_STAF,gsheet:gsheetStatus,drive:driveStatus,payload:parsed.raw
+  };
+  SUBMISSION_LOG.push(entry);
+  saveLog();   /* persist segera setelah upload */
+}
+
+async function kirimBatch(jenis){
+  const valid=pending[jenis].filter(it=>it.valid);
+  if(valid.length===0) return;
+
+  const isB=jenis==='Benef';
+  const color=isB?'benef':'pjum';
+  const btn=document.getElementById(isB?'btnKirimBenef':'btnKirimPjum');
+  const modal=document.getElementById('uploadModal');
+  const modalIcon=document.getElementById('uploadModalIcon');
+  const modalTitle=document.getElementById('uploadModalTitle');
+  const modalSub=document.getElementById('uploadModalSub');
+  const modalPct=document.getElementById('uploadModalPct');
+  const modalFill=document.getElementById('uploadModalFill');
+  const modalFile=document.getElementById('uploadModalFile');
+  const modalCount=document.getElementById('uploadModalCount');
+
+  modalIcon.className=`upload-modal-icon ${color}`;
+  modalPct.className=`upload-pct ${color}`;
+  modalFill.className=`upload-fill ${color}`;
+  modalTitle.textContent=`Mengirim ${jenis}...`;
+  modalSub.textContent='Mohon tunggu, jangan tutup halaman ini';
+  modalPct.textContent='0%';
+  modalFill.style.width='0%';
+  modalFile.textContent='—';
+  modalCount.textContent=`0 / ${valid.length}`;
+  modal.classList.add('show');
+  btn.disabled=true;
+
+  function setProgress(pct,fileLabel,countLabel,sub){
+    const p=Math.round(Math.min(100,Math.max(0,pct)));
+    modalPct.textContent=p+'%';
+    modalFill.style.width=p+'%';
+    setUploadRing(p);
+    if(fileLabel!==undefined) modalFile.textContent=fileLabel;
+    if(countLabel!==undefined) modalCount.textContent=countLabel;
+    if(sub!==undefined) modalSub.textContent=sub;
+  }
+
+  const before=SUBMISSION_LOG.length;
+  const dilewati=[],gagalCek=[],bernomor=[];
+
+  for(let i=0;i<valid.length;i++){
+    const it=valid[i];
+    const totalRows=it.parsed?.raw?.rows?.length||0;
+    const isChunked=isB&&totalRows>CHUNK_ROWS;
+    const filePct0=(i/valid.length)*100;
+    const filePct1=((i+1)/valid.length)*100;
+
+    setProgress(filePct0,it.fileName,`File ${i+1} / ${valid.length}`,'Memeriksa data yang sudah ada...');
+
+    const idFile=idDariNamaFileClient(it.fileName);
+    const cek=await cekLaporanKeServer(jenis,idFile);
+    let idLaporan=idFile;
+
+    if(cek){
+      if(cek.mode==='koreksi'){
+        modal.classList.remove('show');
+        const ok=konfirmasiKoreksi(it.fileName,cek.info);
+        modal.classList.add('show');
+        if(!ok){dilewati.push(it.fileName);setProgress(filePct1,it.fileName,`File ${i+1} / ${valid.length}`,'Dilewati');continue;}
+        idLaporan=cek.id;
+      } else {
+        idLaporan=cek.id||'';
+        const tt=await cekTumpangTindih(jenis,it.parsed);
+        if(tt&&tt.sudahAda>0){
+          modal.classList.remove('show');
+          const ok=konfirmasiTumpangTindih(it.fileName,tt);
+          modal.classList.add('show');
+          if(!ok){dilewati.push(it.fileName);setProgress(filePct1,it.fileName,`File ${i+1} / ${valid.length}`,'Dilewati');continue;}
+        }
+      }
+    } else {
+      gagalCek.push(it.fileName);
+      setProgress(filePct1,it.fileName,`File ${i+1} / ${valid.length}`,'Gagal: server tidak merespons');
+      continue;
+    }
+
+    setProgress(filePct0,it.fileName,`File ${i+1} / ${valid.length}`,
+      isChunked?`${totalRows.toLocaleString()} baris · chunked`:'Mengunggah...');
+
+    await kirimKeGAS(jenis,it.parsed,it.fileName,it.b64,(chunkPct,chunkIdx,numChunks)=>{
+      const overall=filePct0+(chunkPct/100)*(filePct1-filePct0);
+      setProgress(overall,it.fileName,`File ${i+1} / ${valid.length}`,`Chunk ${chunkIdx}/${numChunks} · ${chunkPct}%`);
+    },idLaporan);
+
+    if(kirimKeGAS._lastDriveName){
+      bernomor.push({nama:kirimKeGAS._lastDriveName,b64:it.b64});
+      /* FIX UTAMA: simpan ke daftar permanen + cache b64 in-memory */
+      tambahBerkasBernomor(jenis, kirimKeGAS._lastDriveName, it.b64);
+      kirimKeGAS._lastDriveName=null;
+    }
+    setProgress(filePct1,it.fileName,`File ${i+1} / ${valid.length}`,'Selesai');
+  }
+
+  setProgress(100,'—',`${valid.length} / ${valid.length}`,'Semua file terkirim!');
+  await new Promise(r=>setTimeout(r,800));
+  modal.classList.remove('show');
+  btn.disabled=false;
+
+  if(dilewati.length) showToast(`${dilewati.length} file dilewati: ${dilewati.join(', ')}`);
+  if(gagalCek.length) showToast(`Gagal (server tidak merespons): ${gagalCek.join(', ')} — coba lagi.`);
+  tampilkanUnduhan(jenis,bernomor);
+
+  const justSent=SUBMISSION_LOG.slice(before);
+  const sukses=justSent.filter(l=>l.gsheet==='ok'&&l.drive==='ok').length;
+  const gagal=justSent.length-sukses;
+  pending[jenis]=[];
+  renderFileList(jenis);
+  /* Refresh KPI + riwayat setelah upload selesai */
+  renderKpiCards();
+  renderRiwayat();
+
+  const errDetail=kirimKeGAS._lastError?` — Error: ${kirimKeGAS._lastError}`:'';
+  if(gagal===0) showToast(`${sukses} file ${jenis} terkirim ke Google Sheet & Google Drive`);
+  else if(sukses===0) showToast(`Gagal mengirim ${gagal} file ${jenis}${errDetail}`);
+  else showToast(`${sukses} file ${jenis} berhasil, ${gagal} gagal${errDetail}`);
+}
+
+document.getElementById('btnKirimPjum').addEventListener('click',()=>kirimBatch('PJUM'));
+document.getElementById('btnKirimBenef').addEventListener('click',()=>kirimBatch('Benef'));
+
+/* ============ COLLAPSE BERKAS BERNOMOR & RIWAYAT ============ */
+document.getElementById('berkasToggle').addEventListener('click',()=>{
+  document.getElementById('berkasToggle').classList.toggle('collapsed');
+  document.getElementById('berkasGrid').classList.toggle('collapsed');
+});
+document.getElementById('hapusBerkasPJUM').addEventListener('click',e=>{
+  e.stopPropagation(); hapusSemuaBerkas('PJUM');
+});
+document.getElementById('hapusBerkasBenef').addEventListener('click',e=>{
+  e.stopPropagation(); hapusSemuaBerkas('Benef');
+});
+
+document.getElementById('riwayatToggle').addEventListener('click',()=>{
+  document.getElementById('riwayatToggle').classList.toggle('collapsed');
+  document.getElementById('riwayatGrid').classList.toggle('collapsed');
+});
+
+/* ============ MODAL PREVIEW & EDIT ============ */
+const editOverlay=document.getElementById('editOverlay');
+const editScroll=document.getElementById('editScroll');
+const editTitle=document.getElementById('editTitle');
+const editSub=document.getElementById('editSub');
+const btnEditSave=document.getElementById('editSave');
+let currentEdit=null;
+
+function closeEditModal(){editOverlay.classList.remove('show');currentEdit=null;}
+document.getElementById('editClose').addEventListener('click',closeEditModal);
+document.getElementById('editCancel').addEventListener('click',closeEditModal);
+editOverlay.addEventListener('click',e=>{if(e.target===editOverlay) closeEditModal();});
+
+async function openEditModal(jenis,fileName){
+  editTitle.textContent=jenis==='PJUM'?'Preview & Edit PJUM':'Preview & Edit Benef';
+  editSub.textContent=fileName;
+  editScroll.innerHTML=`<div class="modal-loading">Memuat data...</div>`;
+  btnEditSave.disabled=true;
+  editOverlay.classList.add('show');
+  try{
+    const res=await fetch(`${GAS_URL}?action=getDetail&jenis=${jenis}&fileName=${encodeURIComponent(fileName)}`,{redirect:'follow'});
+    const json=await res.json();
+    if(json.error){editScroll.innerHTML=`<div class="modal-loading">${json.error}</div>`;return;}
+    currentEdit={jenis,fileName,data:json};
+    if(jenis==='PJUM') renderPjumEditor(json); else renderBenefEditor(json);
+    btnEditSave.disabled=false;
+  }catch(err){
+    editScroll.innerHTML=`<div class="modal-loading">Gagal memuat data dari server.</div>`;
+  }
+}
+
+function renderPjumEditor(d){
+  editScroll.innerHTML=`
+    <div class="field-row">
+      <div class="field"><label>Kegiatan</label><input id="fKegiatan" value="${d.kegiatan||''}"></div>
+      <div class="field"><label>Kode</label><input id="fKode" value="${d.kode||''}"></div>
+      <div class="field"><label>Proyek</label><input id="fProyek" value="${d.proyek||''}"></div>
+    </div>
+    <div class="edit-table-wrap"><table class="edit-table">
+      <thead><tr><th>Tanggal</th><th>Deskripsi/Item</th><th>Cost</th><th></th></tr></thead>
+      <tbody id="itemsBody"></tbody>
+    </table></div>
+    <button class="btn-add-row" id="btnAddItem">+ Tambah Item</button>`;
+  const renderItems=()=>{
+    document.getElementById('itemsBody').innerHTML=d.items.map((it,i)=>`<tr>
+      <td><input type="date" data-i="${i}" data-f="tanggal" value="${it.tanggal||''}"></td>
+      <td><input type="text" data-i="${i}" data-f="keterangan" value="${(it.keterangan||'').replace(/"/g,'&quot;')}"></td>
+      <td><input type="number" data-i="${i}" data-f="jumlah" value="${it.jumlah||0}"></td>
+      <td><button class="row-remove" data-i="${i}">✕</button></td>
+    </tr>`).join('');
+    document.querySelectorAll('#itemsBody input').forEach(inp=>{
+      inp.addEventListener('input',()=>{d.items[inp.dataset.i][inp.dataset.f]=inp.type==='number'?parseFloat(inp.value)||0:inp.value;});
+    });
+    document.querySelectorAll('#itemsBody .row-remove').forEach(btn=>{
+      btn.addEventListener('click',()=>{d.items.splice(parseInt(btn.dataset.i),1);renderItems();});
+    });
+  };
+  renderItems();
+  document.getElementById('btnAddItem').addEventListener('click',()=>{d.items.push({tanggal:'',keterangan:'',jumlah:0});renderItems();});
+}
+
+function renderBenefEditor(d){
+  editScroll.innerHTML=`
+    <div class="edit-table-wrap"><table class="edit-table">
+      <thead><tr>${d.headers.map(h=>`<th>${h}</th>`).join('')}<th></th></tr></thead>
+      <tbody id="benefBody"></tbody>
+    </table></div>
+    <button class="btn-add-row" id="btnAddBenefRow">+ Tambah Baris</button>`;
+  const renderRows=()=>{
+    document.getElementById('benefBody').innerHTML=d.rows.map((row,ri)=>`<tr>
+      ${row.map((v,ci)=>`<td><input data-r="${ri}" data-c="${ci}" value="${(v??'').toString().replace(/"/g,'&quot;')}"></td>`).join('')}
+      <td><button class="row-remove" data-r="${ri}">✕</button></td>
+    </tr>`).join('');
+    document.querySelectorAll('#benefBody input').forEach(inp=>{
+      inp.addEventListener('input',()=>{d.rows[inp.dataset.r][inp.dataset.c]=inp.value;});
+    });
+    document.querySelectorAll('#benefBody .row-remove').forEach(btn=>{
+      btn.addEventListener('click',()=>{d.rows.splice(parseInt(btn.dataset.r),1);renderRows();});
+    });
+  };
+  renderRows();
+  document.getElementById('btnAddBenefRow').addEventListener('click',()=>{d.rows.push(d.headers.map(()=>''));renderRows();});
+}
+
+btnEditSave.addEventListener('click',async()=>{
+  if(!currentEdit) return;
+  btnEditSave.disabled=true;
+  btnEditSave.textContent='Menyimpan...';
+  const {jenis,fileName,data}=currentEdit;
+  try{
+    let body;
+    if(jenis==='PJUM'){
+      body={action:'updatePJUM',fileName,staf:CURRENT_STAF,
+            kegiatan:document.getElementById('fKegiatan').value,
+            kode:document.getElementById('fKode').value,
+            proyek:document.getElementById('fProyek').value,items:data.items};
+    } else {
+      body={action:'updateBenef',fileName,staf:CURRENT_STAF,headers:data.headers,rows:data.rows};
+    }
+    const res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',body:JSON.stringify(body)});
+    const json=await res.json();
+    if(json.gsheet==='ok'&&json.drive==='ok'){
+      showToast(json.savedAs?`Tersimpan — file baru: ${json.savedAs}`:'Perubahan tersimpan');
+    } else {
+      showToast(`Simpan sebagian gagal — Gsheet:${json.gsheet}, Gdrive:${json.drive}`);
+    }
+    closeEditModal();
+    renderKpiCards();
+    renderRiwayat();
+  }catch(err){showToast('Gagal menyimpan perubahan.');}
+  finally{btnEditSave.disabled=false;btnEditSave.textContent='Simpan';}
+});
+
+initLogin();
+</script>
 </body>
 </html>
