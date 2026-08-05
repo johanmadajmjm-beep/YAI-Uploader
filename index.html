@@ -313,17 +313,34 @@
       </div>
       <div class="login-logo-text"><h2>AppWeb Staf</h2><p>Yayasan Ayo Indonesia</p></div>
     </div>
-    <div class="login-title">Selamat Datang</div>
-    <div class="login-sub">Masukkan nama kamu untuk melanjutkan</div>
+    <div class="login-title" id="loginTitle">Selamat Datang</div>
+    <div class="login-sub" id="loginSub">Pilih nama kamu untuk melanjutkan</div>
+
+    <!-- Selalu tampil: pilih nama -->
     <div class="login-field">
       <label>Nama Staf</label>
       <select id="inputNama"><option value="">— Pilih nama —</option></select>
     </div>
+
+    <!-- Field sandi (muncul setelah nama dipilih & dicek ke server) -->
+    <div class="login-field" id="fieldSandi" style="display:none;">
+      <label id="labelSandi">Sandi</label>
+      <input type="password" id="inputSandi" placeholder="Masukkan sandi" autocomplete="off">
+    </div>
+    <!-- Konfirmasi sandi (hanya saat buat sandi baru) -->
+    <div class="login-field" id="fieldSandi2" style="display:none;">
+      <label>Ulangi Sandi</label>
+      <input type="password" id="inputSandi2" placeholder="Ketik ulang sandi" autocomplete="off">
+    </div>
+
     <div class="login-error" id="loginError">Nama tidak boleh kosong.</div>
+
     <button class="btn-login" id="btnMasuk">
       <svg class="ic" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-      Masuk
+      <span id="btnMasukLabel">Lanjut</span>
     </button>
+
+    <button type="button" id="btnLupaSandi" style="display:none; width:100%; margin-top:12px; background:none; border:none; color:var(--muted); font-size:11.5px; font-family:var(--font); cursor:pointer; text-decoration:underline;">Lupa sandi?</button>
   </div>
 </div>
 
@@ -407,6 +424,7 @@
     </div>
 
     <div class="section-title toggleable" id="riwayatToggle"><span class="si"><svg class="ic" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span> Riwayat Laporan Terkirim<span class="chevron"><svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+    <div id="syncBadge" style="font-size:10.5px; color:var(--muted); margin:-6px 0 10px 2px; display:flex; align-items:center; gap:5px;">Memuat...</div>
     <div class="riwayat-grid" id="riwayatGrid">
       <div class="riwayat-card pjum">
         <div class="riwayat-head">Riwayat Upload PJUM</div>
@@ -515,16 +533,80 @@ function isiDaftarStaf(){
       .map(n=>`<option value="${n}">${n}</option>`).join('');
 }
 
+/* ============================================================
+   LOGIN BERTINGKAT DENGAN SANDI
+   Tahap 1 'pilihNama'  : pilih nama → cek ke server apakah sudah punya sandi
+   Tahap 2a 'buatSandi' : belum punya → set sandi baru (2x konfirmasi)
+   Tahap 2b 'isiSandi'  : sudah punya → masukkan sandi → verifikasi
+   Sandi di-hash SHA-256 di browser sebelum dikirim ke server.
+   ============================================================ */
+let LOGIN_STAGE = 'pilihNama';   /* pilihNama | buatSandi | isiSandi */
+let LOGIN_STAF  = '';            /* nama yang sedang diproses */
+
+/* SHA-256 hex dari string (Web Crypto API) */
+async function sha256Hex(text){
+  const enc = new TextEncoder().encode(text);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+/* Salt sederhana supaya hash tidak sama dengan hash sandi polos umum */
+function saltSandi(nama, sandi){ return 'YAI|' + nama.toLowerCase() + '|' + sandi; }
+
+const elNama   = () => document.getElementById('inputNama');
+const elSandi  = () => document.getElementById('inputSandi');
+const elSandi2 = () => document.getElementById('inputSandi2');
+const elFieldSandi  = () => document.getElementById('fieldSandi');
+const elFieldSandi2 = () => document.getElementById('fieldSandi2');
+const elErr    = () => document.getElementById('loginError');
+const elTitle  = () => document.getElementById('loginTitle');
+const elSub    = () => document.getElementById('loginSub');
+const elBtnLbl = () => document.getElementById('btnMasukLabel');
+const elLupa   = () => document.getElementById('btnLupaSandi');
+
+function isiDaftarStaf(){
+  const sel = elNama();
+  if(!sel) return;
+  sel.innerHTML = '<option value="">— Pilih nama —</option>' +
+    DAFTAR_STAF.slice().sort((a,b)=>a.localeCompare(b,'id'))
+      .map(n=>`<option value="${n}">${n}</option>`).join('');
+}
+
+function showErr(msg){ elErr().textContent = msg; elErr().classList.add('show'); }
+function clearErr(){ elErr().classList.remove('show'); }
+
+/* Reset tampilan login ke tahap pilih nama */
+function resetLoginUI(){
+  LOGIN_STAGE = 'pilihNama';
+  LOGIN_STAF = '';
+  elNama().disabled = false;
+  elNama().value = '';
+  elSandi().value = '';
+  elSandi2().value = '';
+  elFieldSandi().style.display = 'none';
+  elFieldSandi2().style.display = 'none';
+  elLupa().style.display = 'none';
+  elTitle().textContent = 'Selamat Datang';
+  elSub().textContent = 'Pilih nama kamu untuk melanjutkan';
+  elBtnLbl().textContent = 'Lanjut';
+  clearErr();
+}
+
 function initLogin(){
   isiDaftarStaf();
+  resetLoginUI();
   const saved = localStorage.getItem('staf_name');
-  if(saved && DAFTAR_STAF.indexOf(saved.trim()) > -1){
+  /* Sesi tersimpan hanya dipulihkan jika juga ada penanda sudah-terverifikasi.
+     Ini mencegah bypass sandi hanya dengan menyisipkan staf_name. */
+  const verified = localStorage.getItem('staf_verified');
+  if(saved && verified === saved && DAFTAR_STAF.indexOf(saved.trim()) > -1){
     CURRENT_STAF = saved.trim();
     showApp();
   } else {
     localStorage.removeItem('staf_name');
+    localStorage.removeItem('staf_verified');
     document.getElementById('loginScreen').classList.add('show');
-    document.getElementById('inputNama').focus();
+    elNama().focus();
   }
 }
 
@@ -532,43 +614,197 @@ function initLogin(){
 async function showApp(){
   document.getElementById('loginScreen').classList.remove('show');
   document.getElementById('userLabel').textContent = CURRENT_STAF;
-  /* Muat log lokal dulu → UI langsung responsif sebelum server balas */
   SUBMISSION_LOG = loadLog(CURRENT_STAF);
-  renderKpiCards();       /* tampilkan angka lokal segera */
+  renderKpiCards();
   renderRiwayat();
-  renderBerkasBernomor(); /* tampilkan daftar berkas bernomor dari localStorage */
-  await renderStatus();   /* sync server, update ulang KPI + riwayat */
+  renderBerkasBernomor();
+  await renderStatus();
 }
 
-document.getElementById('btnMasuk').addEventListener('click', doLogin);
-document.getElementById('inputNama').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
-document.getElementById('inputNama').addEventListener('change', ()=>{
-  document.getElementById('loginError').classList.remove('show');
-  document.getElementById('inputNama').classList.remove('error');
+/* Ganti nama → kembali ke tahap pilih nama */
+elNama().addEventListener('change', ()=>{
+  clearErr();
+  elNama().classList.remove('error');
+  if(LOGIN_STAGE !== 'pilihNama') resetLoginUI();
 });
 
-function doLogin(){
-  const val = document.getElementById('inputNama').value.trim();
-  const errEl = document.getElementById('loginError');
-  const inputEl = document.getElementById('inputNama');
+document.getElementById('btnMasuk').addEventListener('click', prosesLogin);
+elSandi().addEventListener('keydown', e=>{ if(e.key==='Enter') prosesLogin(); });
+elSandi2().addEventListener('keydown', e=>{ if(e.key==='Enter') prosesLogin(); });
+
+/* Tombol utama — perilakunya tergantung tahap */
+async function prosesLogin(){
+  if(LOGIN_STAGE === 'pilihNama')      await tahapPilihNama();
+  else if(LOGIN_STAGE === 'buatSandi') await tahapBuatSandi();
+  else if(LOGIN_STAGE === 'isiSandi')  await tahapIsiSandi();
+}
+
+/* Tahap 1: nama dipilih → tanya server apakah sudah punya sandi */
+async function tahapPilihNama(){
+  const val = elNama().value.trim();
   if(!val || DAFTAR_STAF.indexOf(val) < 0){
-    errEl.textContent = 'Pilih nama kamu dari daftar.';
-    errEl.classList.add('show');
-    inputEl.classList.add('error');
-    inputEl.focus();
+    showErr('Pilih nama kamu dari daftar.');
+    elNama().classList.add('error');
     return;
   }
-  errEl.classList.remove('show');
-  inputEl.classList.remove('error');
-  CURRENT_STAF = val;
-  localStorage.setItem('staf_name', val);
+  elNama().classList.remove('error');
+  clearErr();
+  LOGIN_STAF = val;
+
+  const btn = document.getElementById('btnMasuk');
+  btn.disabled = true;
+  elBtnLbl().textContent = 'Memeriksa...';
+
+  let info;
+  try{
+    const res = await fetch(`${GAS_URL}?action=cekSandi&staf=${encodeURIComponent(val)}`, {redirect:'follow'});
+    info = await res.json();
+  }catch(e){ info = null; }
+
+  btn.disabled = false;
+
+  if(!info || info.error){
+    showErr('Gagal menghubungi server. Coba lagi.');
+    elBtnLbl().textContent = 'Lanjut';
+    return;
+  }
+
+  elNama().disabled = true;   /* kunci pilihan nama saat masuk tahap sandi */
+
+  if(info.sudahAda && !info.resetDiminta){
+    /* Sudah punya sandi → minta masukkan sandi */
+    LOGIN_STAGE = 'isiSandi';
+    elTitle().textContent = 'Masuk sebagai ' + val;
+    elSub().textContent = 'Masukkan sandi kamu';
+    document.getElementById('labelSandi').textContent = 'Sandi';
+    elSandi().placeholder = 'Masukkan sandi';
+    elFieldSandi().style.display = 'flex';
+    elFieldSandi2().style.display = 'none';
+    elLupa().style.display = 'block';
+    elBtnLbl().textContent = 'Masuk';
+    elSandi().focus();
+  } else {
+    /* Belum punya sandi (atau reset disetujui) → buat sandi baru */
+    LOGIN_STAGE = 'buatSandi';
+    elTitle().textContent = 'Buat Sandi';
+    elSub().textContent = info.resetDiminta
+      ? 'Sandi kamu sudah direset. Silakan buat sandi baru.'
+      : 'Ini pertama kali kamu masuk. Buat sandi untuk akun "' + val + '".';
+    document.getElementById('labelSandi').textContent = 'Sandi Baru';
+    elSandi().placeholder = 'Minimal 4 karakter';
+    elFieldSandi().style.display = 'flex';
+    elFieldSandi2().style.display = 'flex';
+    elLupa().style.display = 'none';
+    elBtnLbl().textContent = 'Simpan & Masuk';
+    elSandi().focus();
+  }
+}
+
+/* Tahap 2a: buat sandi baru */
+async function tahapBuatSandi(){
+  const s1 = elSandi().value;
+  const s2 = elSandi2().value;
+  if(s1.length < 4){ showErr('Sandi minimal 4 karakter.'); elSandi().focus(); return; }
+  if(s1 !== s2){ showErr('Sandi dan ulangan tidak sama.'); elSandi2().focus(); return; }
+  clearErr();
+
+  const btn = document.getElementById('btnMasuk');
+  btn.disabled = true;
+  elBtnLbl().textContent = 'Menyimpan...';
+
+  try{
+    const hash = await sha256Hex(saltSandi(LOGIN_STAF, s1));
+    const res = await fetch(GAS_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow',
+      body: JSON.stringify({ action:'setSandi', staf: LOGIN_STAF, hashSandi: hash })
+    });
+    const json = await res.json();
+    btn.disabled = false;
+    if(json.ok){
+      loginBerhasil(LOGIN_STAF);
+    } else {
+      showErr(json.error || 'Gagal menyimpan sandi.');
+      elBtnLbl().textContent = 'Simpan & Masuk';
+    }
+  }catch(e){
+    btn.disabled = false;
+    showErr('Gagal menghubungi server. Coba lagi.');
+    elBtnLbl().textContent = 'Simpan & Masuk';
+  }
+}
+
+/* Tahap 2b: verifikasi sandi yang sudah ada */
+async function tahapIsiSandi(){
+  const s = elSandi().value;
+  if(!s){ showErr('Masukkan sandi.'); elSandi().focus(); return; }
+  clearErr();
+
+  const btn = document.getElementById('btnMasuk');
+  btn.disabled = true;
+  elBtnLbl().textContent = 'Memeriksa...';
+
+  try{
+    const hash = await sha256Hex(saltSandi(LOGIN_STAF, s));
+    const res = await fetch(GAS_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow',
+      body: JSON.stringify({ action:'verifSandi', staf: LOGIN_STAF, hashSandi: hash })
+    });
+    const json = await res.json();
+    btn.disabled = false;
+    if(json.ok){
+      loginBerhasil(LOGIN_STAF);
+    } else {
+      showErr(json.error || 'Sandi salah.');
+      elSandi().value = '';
+      elSandi().focus();
+      elBtnLbl().textContent = 'Masuk';
+    }
+  }catch(e){
+    btn.disabled = false;
+    showErr('Gagal menghubungi server. Coba lagi.');
+    elBtnLbl().textContent = 'Masuk';
+  }
+}
+
+/* Login berhasil → simpan sesi + buka app */
+function loginBerhasil(nama){
+  CURRENT_STAF = nama;
+  localStorage.setItem('staf_name', nama);
+  localStorage.setItem('staf_verified', nama);   /* penanda sudah verifikasi */
   showApp();
 }
+
+/* Lupa sandi → minta reset ke server (admin yang menyetujui) */
+elLupa().addEventListener('click', async ()=>{
+  if(!LOGIN_STAF) return;
+  if(!confirm(`Minta reset sandi untuk "${LOGIN_STAF}"?\n\nSetelah admin menyetujui, kamu bisa membuat sandi baru saat login berikutnya.`)) return;
+  elLupa().disabled = true;
+  elLupa().textContent = 'Mengirim permintaan...';
+  try{
+    const res = await fetch(GAS_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow',
+      body: JSON.stringify({ action:'requestReset', staf: LOGIN_STAF })
+    });
+    const json = await res.json();
+    if(json.ok){
+      showToast('Permintaan reset terkirim. Hubungi admin untuk menyetujui.');
+      elSub().textContent = 'Permintaan reset terkirim. Tunggu admin menyetujui, lalu login lagi.';
+    } else {
+      showErr(json.error || 'Gagal mengirim permintaan.');
+    }
+  }catch(e){
+    showErr('Gagal menghubungi server.');
+  }finally{
+    elLupa().disabled = false;
+    elLupa().textContent = 'Lupa sandi?';
+  }
+});
 
 /* FIX #3 — Logout bersihkan: SUBMISSION_LOG, pending, dl-box, DOM KPI & riwayat */
 document.getElementById('btnLogout').addEventListener('click', ()=>{
   if(!confirm(`Keluar dari sesi "${CURRENT_STAF}"?`)) return;
   localStorage.removeItem('staf_name');
+  localStorage.removeItem('staf_verified');
   CURRENT_STAF = '';
   SUBMISSION_LOG = [];
 
@@ -593,8 +829,8 @@ document.getElementById('btnLogout').addEventListener('click', ()=>{
 
   document.getElementById('loginScreen').classList.add('show');
   isiDaftarStaf();
-  document.getElementById('inputNama').value = '';
-  document.getElementById('inputNama').focus();
+  resetLoginUI();   /* kembalikan form login ke tahap pilih nama */
+  elNama().focus();
 });
 
 /* ============================================================
@@ -650,34 +886,57 @@ async function pullFromServer(staf){
     const json = await res.json();
     /* Hapus entry server lama, pertahankan entry lokal */
     SUBMISSION_LOG = SUBMISSION_LOG.filter(l => !l.fromServer);
-    const localFiles = new Set(SUBMISSION_LOG.map(l => l.file));
+    /* Kunci lokal = idLaporan bila ada, jika tidak pakai fileName */
+    const kunciLokal = new Set(SUBMISSION_LOG.map(l => l.idLaporan || l.file));
     (json.pjum||[]).forEach(r=>{
-      if(localFiles.has(r.fileName)) return;
+      const kunci = (r.idLaporan||'') || r.fileName;
+      if(kunciLokal.has(kunci)) return;
       SUBMISSION_LOG.push({
         jenis:'PJUM', kode:r.kode||'', kegiatan:r.kegiatan||'', proyek:r.proyek||'Ayo - JPM',
-        staf: r.staf || staf,   /* FIX #5: pakai staf dari server */
+        staf: r.staf || staf,
+        idLaporan: r.idLaporan||'',
         file: r.fileName, tgl:(r.uploadedAt||'').slice(0,10),
         gsheet:r.gsheet, drive:r.drive,
         payload:{items:[]}, fromServer:true
       });
     });
     (json.benef||[]).forEach(r=>{
-      if(localFiles.has(r.fileName)) return;
+      const kunci = (r.idLaporan||'') || r.fileName;
+      if(kunciLokal.has(kunci)) return;
       SUBMISSION_LOG.push({
         jenis:'Benef', kode:r.kode||'', kegiatan:r.kegiatan||'', proyek:r.proyek||'Ayo - JPM',
-        staf: r.staf || staf,   /* FIX #5: pakai staf dari server */
+        staf: r.staf || staf,
+        idLaporan: r.idLaporan||'',
         file: r.fileName, tgl:(r.uploadedAt||'').slice(0,10),
         gsheet:r.gsheet, drive:r.drive,
         payload:{headers:[], rows:[]}, fromServer:true
       });
     });
-  }catch(err){ /* server tidak terjangkau — pakai data lokal */ }
+    return true;   /* server berhasil dihubungi */
+  }catch(err){
+    return false;  /* server tidak terjangkau — pakai data lokal */
+  }
 }
 
 async function renderStatus(){
-  await pullFromServer(CURRENT_STAF);
+  const ok = await pullFromServer(CURRENT_STAF);
   renderKpiCards();
   renderRiwayat();
+  /* Tampilkan indikator status sinkronisasi supaya staf tahu
+     apakah yang tampil sudah lengkap dari server atau hanya lokal. */
+  setSyncBadge(ok);
+}
+
+function setSyncBadge(ok){
+  const el = document.getElementById('syncBadge');
+  if(!el) return;
+  if(ok){
+    el.innerHTML = '<span style="color:var(--ok);">●</span> Tersinkron dari server';
+    el.style.color = 'var(--muted)';
+  } else {
+    el.innerHTML = '<span style="color:var(--miss);">●</span> Offline — hanya data perangkat ini';
+    el.style.color = 'var(--miss)';
+  }
 }
 
 function statusPill(v){ return v==='ok'
@@ -685,10 +944,15 @@ function statusPill(v){ return v==='ok'
   : `<span class="status-pill bad">${ICON_X} Gagal</span>`; }
 
 function renderRiwayat(){
+  /* Dedup per idLaporan (stabil); fallback fileName. Ambil entri terbaru. */
   function dedupLog(entries){
-    const seen = new Map();
-    entries.forEach(l => seen.set(l.file, l));
-    return [...seen.values()].reverse();
+    const grup = new Map();
+    entries.forEach(l => {
+      const kunci = l.idLaporan || l.file;
+      const ada = grup.get(kunci);
+      if(!ada || String(l.tgl) >= String(ada.tgl)) grup.set(kunci, l);
+    });
+    return [...grup.values()].reverse();
   }
   const pjum  = dedupLog(SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF && l.jenis==='PJUM'));
   const benef = dedupLog(SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF && l.jenis==='Benef'));
@@ -1344,6 +1608,7 @@ async function kirimKeGAS(jenis,parsed,fileName,b64,onProgress,idLaporan){
   /* FIX #1: Simpan ke localStorage setiap kali ada upload baru */
   const entry={
     jenis,kode:parsed.kode,kegiatan:parsed.kegiatan,proyek:parsed.proyek||'Ayo - JPM',
+    idLaporan: idLaporan||'',
     file:fileName,tgl:new Date().toISOString().slice(0,10),
     staf:CURRENT_STAF,gsheet:gsheetStatus,drive:driveStatus,payload:parsed.raw
   };
