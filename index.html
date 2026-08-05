@@ -8,9 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-  /* ═══ UPLOADER YAI — Design System v4 "Warm Modern" ═══
-     Selaras dengan YAI Dashboard: warm cream, navy header, aksen oranye.
-     PJUM = biru · Benef = teal · hijau HANYA untuk status sukses. */
   :root{
     --ink:#1C2237; --ink-2:#4C5470; --muted:#8C8578; --muted-2:#B0A99C;
     --page-bg:#F6F4EF; --card:#FFFFFF; --card-2:#FAF9F6;
@@ -37,15 +34,10 @@
   .page-wrap{max-width:1040px; margin:0 auto; padding:22px 16px 60px;}
   .sheet{background:var(--card); border-radius:20px; overflow:hidden; box-shadow:var(--sh-md); border:1px solid var(--line);}
 
-  /* ═══ HEADER ═══ */
   header.top{background:linear-gradient(160deg,var(--navy-1) 0%,var(--navy-2) 100%); padding:16px 24px;}
   header.top .inner{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;}
   .brand{display:flex; align-items:center; gap:13px;}
-  .logo-box{
-    width:44px; height:44px; border-radius:13px; flex:none;
-    background:#fff; overflow:hidden; display:flex; align-items:center; justify-content:center;
-    box-shadow:0 3px 12px rgba(0,0,0,.28);
-  }
+  .logo-box{width:44px; height:44px; border-radius:13px; flex:none; background:#fff; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 12px rgba(0,0,0,.28);}
   .logo-box img{width:100%; height:100%; object-fit:cover;}
   .brand-text h1{margin:0; font-size:16px; font-weight:800; color:#fff; letter-spacing:-.2px;}
   .brand-text p{margin:2px 0 0; font-size:11.5px; font-weight:400; color:#8A93B0;}
@@ -59,14 +51,9 @@
   .section-title.collapsed .chevron{transform:rotate(-90deg);}
   .riwayat-grid.collapsed{display:none;}
 
-  /* ═══ KPI ═══ */
   .kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:11px;}
   @media (max-width:760px){.kpi-row{grid-template-columns:repeat(2,1fr);}}
-  .kpi{
-    background:var(--card); border:1px solid var(--line); border-top:3px solid var(--pjum);
-    border-radius:0 0 var(--r-md) var(--r-md); padding:13px 14px 12px;
-    transition:transform .18s ease, box-shadow .18s ease;
-  }
+  .kpi{background:var(--card); border:1px solid var(--line); border-top:3px solid var(--pjum); border-radius:0 0 var(--r-md) var(--r-md); padding:13px 14px 12px; transition:transform .18s ease, box-shadow .18s ease;}
   .kpi:hover{transform:translateY(-2px); box-shadow:var(--sh-md);}
   .kpi:nth-child(3), .kpi:nth-child(4){border-top-color:var(--benef);}
   .kpi-top{display:flex; align-items:center; gap:9px;}
@@ -76,16 +63,10 @@
   .kpi .value{font-size:26px; font-weight:800; margin-top:10px; color:var(--ink); letter-spacing:-.6px; font-variant-numeric:tabular-nums; line-height:1;}
   .kpi .unit{font-size:11px; color:var(--muted-2); font-weight:500; margin-top:3px;}
 
-  /* ═══ UPLOAD / DROPZONE ═══ */
   .upload-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
   @media (max-width:760px){.upload-grid{grid-template-columns:1fr;}}
   .upload-col{display:flex; flex-direction:column; gap:11px;}
-  .upload-card{
-    border-radius:var(--r-lg); padding:24px 20px; border:1.5px dashed;
-    background:var(--card);
-    display:flex; flex-direction:column; align-items:center; text-align:center; min-height:210px; justify-content:center;
-    transition:border-color .2s, background .2s, transform .18s ease, box-shadow .2s;
-  }
+  .upload-card{border-radius:var(--r-lg); padding:24px 20px; border:1.5px dashed; background:var(--card); display:flex; flex-direction:column; align-items:center; text-align:center; min-height:210px; justify-content:center; transition:border-color .2s, background .2s, transform .18s ease, box-shadow .2s;}
   .upload-card.pjum{border-color:var(--pjum-line);}
   .upload-card.benef{border-color:var(--benef-line);}
   .upload-card:hover{box-shadow:var(--sh);}
@@ -100,11 +81,7 @@
   .upload-card.dragover .upload-avatar{transform:translateY(-3px) scale(1.06);}
   .upload-card h3{margin:0 0 4px; font-size:14px; font-weight:700; color:var(--ink); letter-spacing:-.1px;}
   .upload-card p.desc{margin:0 0 15px; font-size:11.5px; color:var(--muted); max-width:270px; line-height:1.5;}
-  .btn-pick{
-    border:none; border-radius:99px; padding:9px 22px; font-size:12px; font-weight:700; cursor:pointer; color:#fff;
-    display:inline-flex; align-items:center; gap:7px; font-family:var(--font);
-    transition:filter .18s, box-shadow .18s, transform .12s;
-  }
+  .btn-pick{border:none; border-radius:99px; padding:9px 22px; font-size:12px; font-weight:700; cursor:pointer; color:#fff; display:inline-flex; align-items:center; gap:7px; font-family:var(--font); transition:filter .18s, box-shadow .18s, transform .12s;}
   .btn-pick:active{transform:scale(.97);}
   .upload-card.pjum .btn-pick{background:var(--pjum); box-shadow:0 3px 10px rgba(55,138,221,.3);}
   .upload-card.pjum .btn-pick:hover{filter:brightness(1.06); box-shadow:0 5px 14px rgba(55,138,221,.42);}
@@ -123,12 +100,7 @@
   .file-row .fremove:hover{color:var(--miss);}
   .file-row.bad{background:var(--miss-bg); border-color:#F0C9C9;}
 
-  .btn-kirim{
-    display:flex; align-items:center; justify-content:center; gap:8px;
-    width:100%; border:none; border-radius:99px; padding:12px; font-size:12.5px; font-weight:700; cursor:not-allowed;
-    background:var(--card-2); color:var(--muted-2); border:1px solid var(--line); font-family:var(--font);
-    transition:filter .18s, box-shadow .18s, transform .12s;
-  }
+  .btn-kirim{display:flex; align-items:center; justify-content:center; gap:8px; width:100%; border:none; border-radius:99px; padding:12px; font-size:12.5px; font-weight:700; cursor:not-allowed; background:var(--card-2); color:var(--muted-2); border:1px solid var(--line); font-family:var(--font); transition:filter .18s, box-shadow .18s, transform .12s;}
   .btn-kirim.benefbtn{background:var(--card-2); color:var(--muted-2);}
   .btn-kirim.ready{cursor:pointer; border-color:transparent; color:#fff;}
   .btn-kirim.ready:active{transform:scale(.985);}
@@ -155,15 +127,10 @@
   .progress-fill.pjumfill{background:var(--pjum);}
   .progress-fill.benefill{background:var(--benef);}
 
-  /* ═══ RIWAYAT ═══ */
   .riwayat-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
   @media (max-width:760px){.riwayat-grid{grid-template-columns:1fr;}}
   .riwayat-card{border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--line); background:var(--card); box-shadow:var(--sh);}
-  .riwayat-head{
-    padding:11px 15px; font-size:12.5px; font-weight:700; color:var(--ink);
-    background:var(--card); border-bottom:1px solid var(--line);
-    display:flex; align-items:center; gap:9px;
-  }
+  .riwayat-head{padding:11px 15px; font-size:12.5px; font-weight:700; color:var(--ink); background:var(--card); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:9px;}
   .riwayat-head::before{content:""; width:8px; height:8px; border-radius:3px; flex:none;}
   .riwayat-card.pjum .riwayat-head::before{background:var(--pjum);}
   .riwayat-card.benef .riwayat-head::before{background:var(--benef);}
@@ -184,10 +151,8 @@
   .toast .dot{width:8px;height:8px;border-radius:50%;background:#5DCAA5; flex:none;}
 
   footer{padding:14px 24px; border-top:1px solid var(--line); font-size:10.5px; color:var(--muted-2); text-align:center; background:var(--card-2);}
-
   tr.clickable{cursor:pointer;}
 
-  /* ═══ LOGIN ═══ */
   .login-screen{display:none; position:fixed; inset:0; background:linear-gradient(160deg,var(--navy-1) 0%,var(--navy-2) 100%); align-items:center; justify-content:center; z-index:999; padding:20px;}
   .login-screen.show{display:flex;}
   .login-card{background:#fff; border-radius:20px; padding:36px 32px; width:100%; max-width:400px; box-shadow:var(--sh-lg); animation:umUp .3s cubic-bezier(.22,.9,.35,1) both;}
@@ -200,31 +165,25 @@
   .login-sub{font-size:12.5px; color:var(--muted); margin:0 0 22px;}
   .login-field{display:flex; flex-direction:column; gap:6px; margin-bottom:18px;}
   .login-field label{font-size:10.5px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.6px;}
-  .login-field input,
-  .login-field select{padding:11px 13px; border:1.5px solid var(--line); border-radius:var(--r-sm); font-size:14px; font-family:var(--font); outline:none; background:var(--card-2); transition:border-color .18s, box-shadow .18s, background .18s; width:100%; cursor:pointer; color:var(--ink);}
+  .login-field input,.login-field select{padding:11px 13px; border:1.5px solid var(--line); border-radius:var(--r-sm); font-size:14px; font-family:var(--font); outline:none; background:var(--card-2); transition:border-color .18s, box-shadow .18s, background .18s; width:100%; cursor:pointer; color:var(--ink);}
   .login-field select{appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C8578' stroke-width='2.2' stroke-linecap='round'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat:no-repeat; background-position:right 12px center; background-size:16px; padding-right:38px;}
-  .login-field input:focus,
-  .login-field select:focus{border-color:var(--orange); box-shadow:var(--ring); background-color:#fff;}
-  .login-field input.error,
-  .login-field select.error{border-color:var(--miss);}
+  .login-field input:focus,.login-field select:focus{border-color:var(--orange); box-shadow:var(--ring); background-color:#fff;}
+  .login-field input.error,.login-field select.error{border-color:var(--miss);}
   .login-error{font-size:12px; color:var(--miss); margin:-10px 0 14px; display:none;}
   .login-error.show{display:block;}
   .btn-login{width:100%; border:none; border-radius:99px; padding:13px; font-size:13.5px; font-weight:700; cursor:pointer; background:linear-gradient(135deg,#FB8B3C,var(--orange) 60%,var(--orange-deep)); color:#fff; display:flex; align-items:center; justify-content:center; gap:8px; font-family:var(--font); box-shadow:0 4px 14px rgba(249,115,22,.35); transition:filter .18s, box-shadow .18s, transform .12s;}
   .btn-login:hover{filter:brightness(1.06); box-shadow:0 6px 20px rgba(249,115,22,.45);}
   .btn-login:active{transform:scale(.985);}
 
-  /* ═══ USER CHIP ═══ */
   .user-info{display:flex; align-items:center; gap:8px;}
   .user-chip{background:rgba(255,255,255,.1); border-radius:99px; padding:6px 13px; font-size:12px; font-weight:500; color:#fff; display:flex; align-items:center; gap:7px;}
   .user-chip svg{opacity:.75;}
   .btn-logout{background:transparent; border:1px solid rgba(255,255,255,.25); border-radius:99px; padding:6px 13px; font-size:11.5px; font-weight:600; color:#C9CEDF; cursor:pointer; font-family:var(--font); transition:all .18s;}
   .btn-logout:hover{background:rgba(255,255,255,.12); color:#fff; border-color:rgba(255,255,255,.4);}
 
-  /* ═══ MODAL EDIT ═══ */
   .modal-overlay{display:none; position:fixed; inset:0; background:rgba(18,23,43,.55); backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); align-items:center; justify-content:center; z-index:300; padding:20px;}
   .modal-overlay.show{display:flex;}
 
-  /* ═══ UPLOAD PROGRESS MODAL ═══ */
   .upload-modal{display:none; position:fixed; inset:0; background:rgba(18,23,43,.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); align-items:center; justify-content:center; z-index:500; padding:20px;}
   .upload-modal.show{display:flex; animation:umFade .2s ease both;}
   @keyframes umFade{from{opacity:0}to{opacity:1}}
@@ -241,11 +200,7 @@
   .um-ring-wrap{position:relative; width:168px; height:168px; margin:0 auto 18px;}
   .um-ring{width:100%; height:100%; transform:rotate(-90deg);}
   .um-ring-track{fill:none; stroke:var(--line); stroke-width:9;}
-  .um-ring-fill{
-    fill:none; stroke-width:9; stroke-linecap:round;
-    stroke-dasharray:351.86; stroke-dashoffset:351.86;
-    transition:stroke-dashoffset .4s cubic-bezier(.4,0,.2,1), stroke .3s;
-  }
+  .um-ring-fill{fill:none; stroke-width:9; stroke-linecap:round; stroke-dasharray:351.86; stroke-dashoffset:351.86; transition:stroke-dashoffset .4s cubic-bezier(.4,0,.2,1), stroke .3s;}
   .um-ring-fill.pjum{stroke:var(--pjum);}
   .um-ring-fill.benef{stroke:var(--benef);}
   .um-ring-center{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none;}
@@ -267,7 +222,6 @@
   .upload-fill.pjum{background:var(--pjum);}
   .upload-fill.benef{background:var(--benef);}
 
-  /* ═══ MODAL BOX (edit) ═══ */
   .modal-box{background:#fff; border-radius:var(--r-lg); max-width:720px; width:100%; max-height:88vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--sh-lg); animation:umUp .24s cubic-bezier(.22,.9,.35,1) both;}
   .modal-head{padding:16px 22px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; background:var(--card-2);}
   .modal-head h3{margin:0; font-size:14px; font-weight:800; color:var(--ink);}
@@ -298,6 +252,34 @@
   .btn-modal-primary:hover{filter:brightness(1.06);}
   .btn-modal-primary:disabled{background:var(--line-2); box-shadow:none; cursor:not-allowed;}
   .modal-loading{padding:38px; text-align:center; color:var(--muted); font-size:12.5px;}
+
+  /* ═══ BERKAS BERNOMOR — section permanen ═══ */
+  .berkas-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:760px){.berkas-grid{grid-template-columns:1fr;}}
+  .berkas-card{border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--line); background:var(--card); box-shadow:var(--sh);}
+  .berkas-head{padding:11px 15px; font-size:12.5px; font-weight:700; color:var(--ink); background:var(--card); border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:9px;}
+  .berkas-head-left{display:flex; align-items:center; gap:9px;}
+  .berkas-head::before{display:none;}
+  .berkas-card.pjum .berkas-head-left::before{content:""; width:8px; height:8px; border-radius:3px; flex:none; background:var(--pjum);}
+  .berkas-card.benef .berkas-head-left::before{content:""; width:8px; height:8px; border-radius:3px; flex:none; background:var(--benef);}
+  .berkas-hapus-semua{font-size:10px; font-weight:700; color:var(--muted-2); background:none; border:none; cursor:pointer; font-family:var(--font); padding:3px 8px; border-radius:99px; transition:all .15s;}
+  .berkas-hapus-semua:hover{background:var(--miss-bg); color:var(--miss);}
+  .berkas-item{display:flex; align-items:center; gap:10px; padding:9px 15px; border-bottom:1px solid #F2EFE8; transition:background .12s;}
+  .berkas-item:last-child{border-bottom:none;}
+  .berkas-item:hover{background:#FFF8F1;}
+  .berkas-icon{flex:none; width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px;}
+  .berkas-card.pjum .berkas-icon{background:var(--pjum-pale); color:var(--pjum-deep);}
+  .berkas-card.benef .berkas-icon{background:var(--benef-pale); color:var(--benef-deep);}
+  .berkas-info{flex:1; min-width:0;}
+  .berkas-nama{font-size:11.5px; font-weight:600; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .berkas-meta{font-size:10px; color:var(--muted-2); margin-top:1px;}
+  .berkas-actions{display:flex; align-items:center; gap:5px; flex:none;}
+  .btn-unduh-berkas{font-size:10.5px; font-weight:700; color:#fff; background:var(--orange); border:none; border-radius:99px; padding:5px 12px; cursor:pointer; font-family:var(--font); transition:filter .15s, box-shadow .15s; white-space:nowrap;}
+  .btn-unduh-berkas:hover{filter:brightness(1.07); box-shadow:0 3px 8px rgba(249,115,22,.3);}
+  .btn-unduh-berkas:disabled{background:var(--muted-2); cursor:not-allowed; filter:none; box-shadow:none;}
+  .btn-hapus-berkas{width:22px; height:22px; border-radius:6px; background:none; border:none; cursor:pointer; color:var(--muted-2); font-size:13px; font-weight:800; display:flex; align-items:center; justify-content:center; transition:all .15s; flex:none;}
+  .btn-hapus-berkas:hover{background:var(--miss-bg); color:var(--miss);}
+  .berkas-grid.collapsed{display:none;}
 </style>
 </head>
 <body>
@@ -351,7 +333,7 @@
   <header class="top">
     <div class="inner">
       <div class="brand">
-        <div class="logo-box"><img src="data:image/png;base64,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" alt="Logo Yayasan Ayo Indonesia"></div>
+        <div class="logo-box"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAACgCAYAAACLz2ctAACbf0lEQVR42uy9d7xddZX+//6UXU67PZU0IIFQQq/Si4qCBUWwYYWxgL2MOmN3nNGxd3EUURRBBKQqSO8dQgkJJCG93tx2yi6f8vtjn3tzEwIE1BnnO7/zeiW3nbr32qs861nPEhN6uj3PdRNj/7V/FGM/CiFGfwOi+P3o3zffTzzjKb33Y189Hu/Be1f87D3eFV/d6M9b/aP9mM1fNz/nuFfBP/cnQ4hnfNBxv9/8ucTY5xEIIZDtr0Ju/l5KWXzf/p1s/04INt+n/TztQzX2igK/xdfNb9xv9T1bfe/HH1S2+M3Wf9/yyDzbn7Zx32c1inHHT2x1CMU2jrHY5jPp4iXEM86MEOOfRDzLi7dPyuhjtvq6tcGOHhMhfPGqo0aFxwtZGB4eJ4sDL/+HDXD0s794AxQIIQvDEwI5dp2OPqdn81FqnwfvN7+v0VPjx73F0c8rtrKO8X8DEKPPty2TEs98/Au9bW0TYmufJbZptMV52fzC2m/xSUEpRZ7nZFn2zAeLrb2gGOct2p5PiG0brdhsgb59xfpRL/gs/5xzz2KA2zK4v9/tuQxQSbmlAbYNb8wIxxvq5kCxhRcc7/nkFidpnKcb5wmF38KXjR3L8X/3W/mwbTtEv8W3z3tEtxXRxhzN1oYotrLN4n8pJVEUF9eGc+jNtucRQjIwMMCkSZOYM2dO8eR+qxcWY8FpK2sfZ4xinCfd6hL12wrDY56wfTCfw+i2bYTb8nZ/Hw/onUMIgdYBCJDjvJUUtL1ecTyUEEopi39bhV8EbWMrIsHmVxxnbKNGOD4sb/Gh/Divt40Pu9UB2J7wzPM6RrGVXxHPbpxjacxmH9dqNVm+dElhiHHc9oAepJDU63Xe9/7384/++GPm29H//8XgAs/GRTp7TqSSwDjO13/xmUcf+ADp0+G8OhNcCevuAONW1YRM2mVqPSyYoJlEqPR0P6a0Q5aMfUeyFJjaSWItpJmFoYWYA2kBtFe22YnGNqNoGhUHa/sWqJsAIMZknCGLQHoQRm3YT4SuFT7WBoCKFEkHhYVQASxfvpbsOaJXFkAbSfEG+1eqCCGJSlOovlHIQoNFuXFKFJlSqKxnUIMrCVCovECAWJoqIyBVKRIDCoQiREDISgRhJHihhJghAoVsUoUaVBkiAVEJpVWqk0i1J0oUgkKUqUBICkGgIBgCRVGgU0BVoBAqCZBiVzEiRSBRaqnkBhWEqiROiC5hbQmgKCRmpkogIRa7dI1Qm0ZiloMqlUSgFIkKiKQFpNKkgVqKZTQoWWIDQQpRahWgKM0kICWqXkCYRIlFJVGKAEKUqVEJBCkTmOjSwVQZqBaDDdI2gEoqFoVmOiSJYBqZARpoBqEAFJQoYQJVqhJVCbKoNFSFKbJamMCKAAEBEqVKoqSgFQBKRkCCqNqgIVKGkAlgklkJSmVVqAAlFKBAlBqoIRBVKEBISiqJHVqUFJKlaqpSqpJFUiYpkBSmEJJFQYoJKpJUgqKoJFSEJIYYkuZGSiiROUkEBJIqYoJCImVAQq" alt="Logo"></div>
         <div class="brand-text"><h1>UPLOADER PJUM &amp; BENEF</h1><p>Yayasan Ayo Indonesia</p></div>
       </div>
       <div class="user-info">
@@ -365,7 +347,6 @@
   </header>
 
   <div class="body-pad">
-
     <div class="section-title"><span class="si"><svg class="ic" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span> Status Laporan</div>
     <div class="kpi-row" id="kpiStatus"></div>
 
@@ -407,28 +388,40 @@
       </div>
     </div>
 
+    <div class="section-title toggleable" id="berkasToggle"><span class="si"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span> Berkas Bernomor <span style="font-size:9px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted-2);margin-left:4px;">— unduh ulang jika perlu koreksi</span><span class="chevron"><svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+    <div class="berkas-grid" id="berkasGrid">
+      <div class="berkas-card pjum">
+        <div class="berkas-head">
+          <div class="berkas-head-left">Berkas PJUM Bernomor</div>
+          <button class="berkas-hapus-semua" id="hapusBerkasPJUM" title="Hapus semua dari daftar lokal">Hapus semua</button>
+        </div>
+        <div id="berkasPjumList"></div>
+      </div>
+      <div class="berkas-card benef">
+        <div class="berkas-head">
+          <div class="berkas-head-left">Berkas Benef Bernomor</div>
+          <button class="berkas-hapus-semua" id="hapusBerkasBenef" title="Hapus semua dari daftar lokal">Hapus semua</button>
+        </div>
+        <div id="berkasBenefList"></div>
+      </div>
+    </div>
+
     <div class="section-title toggleable" id="riwayatToggle"><span class="si"><svg class="ic" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></span> Riwayat Laporan Terkirim<span class="chevron"><svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></span></div>
     <div class="riwayat-grid" id="riwayatGrid">
       <div class="riwayat-card pjum">
         <div class="riwayat-head">Riwayat Upload PJUM</div>
-        <table>
-          <thead><tr><th>File/Kegiatan</th><th>Tgl Kirim</th><th>G-Sheet</th><th>Gdrive</th></tr></thead>
-          <tbody id="logPjumBody"></tbody>
-        </table>
+        <table><thead><tr><th>File/Kegiatan</th><th>Tgl Kirim</th><th>G-Sheet</th><th>Gdrive</th></tr></thead>
+        <tbody id="logPjumBody"></tbody></table>
       </div>
       <div class="riwayat-card benef">
         <div class="riwayat-head">Riwayat Upload Benef</div>
-        <table>
-          <thead><tr><th>File/Kegiatan</th><th>Tgl Kirim</th><th>G-Sheet</th><th>Gdrive</th></tr></thead>
-          <tbody id="logBenefBody"></tbody>
-        </table>
+        <table><thead><tr><th>File/Kegiatan</th><th>Tgl Kirim</th><th>G-Sheet</th><th>Gdrive</th></tr></thead>
+        <tbody id="logBenefBody"></tbody></table>
       </div>
     </div>
-
   </div>
 
   <footer>AppWeb Staf — Yayasan Ayo Indonesia · parsing di browser (SheetJS), sinkron ke Google Sheet &amp; Google Drive lewat Code_Uploader.gs</footer>
-
 </div>
 </div>
 
@@ -436,15 +429,12 @@
 <div class="upload-modal" id="uploadModal">
   <div class="upload-modal-box">
     <div class="um-head">
-      <div class="upload-modal-icon" id="uploadModalIcon">
-        <svg class="ic" style="width:20px;height:20px;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      </div>
+      <div class="upload-modal-icon" id="uploadModalIcon"><svg class="ic" style="width:20px;height:20px;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
       <div class="um-head-text">
         <div class="upload-modal-title" id="uploadModalTitle">Mengirim data…</div>
         <div class="upload-modal-sub" id="uploadModalSub">Mohon tunggu, jangan tutup halaman ini</div>
       </div>
     </div>
-
     <div class="um-ring-wrap">
       <svg class="um-ring" viewBox="0 0 128 128" aria-hidden="true">
         <circle class="um-ring-track" cx="64" cy="64" r="56"/>
@@ -456,7 +446,6 @@
         <div class="um-dots"><i></i><i></i><i></i></div>
       </div>
     </div>
-
     <div class="upload-detail">
       <span id="uploadModalFile">—</span>
       <span id="uploadModalCount">—</span>
@@ -480,14 +469,10 @@
 </div>
 
 <div class="toast" id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
-
 <script>
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbz7fjIFALDAbVo2TGEUi0j-RwLqZk7KxcUyU2rdNAiTHcEsAMD2i0O0g4-biV41Nw-hew/exec';
 
-/* ============ LOGIN ============ */
-/* Daftar staf resmi — staf MEMILIH, tidak mengetik, supaya nama yang
-   tercatat di kolom Staf_Upload dan di dalam ID laporan selalu seragam.
-   Menambah staf baru: cukup tambahkan namanya di daftar ini. */
+/* ============ STATE ============ */
 const DAFTAR_STAF = [
   'Apri','Boy','Delfi','Didi','Eni','Erika','Flory','Gens','Gusto',
   'Jack','Jeri','Johan','Len','Misel','Nerdi','Patris','Tarsi','Rikar',
@@ -495,19 +480,44 @@ const DAFTAR_STAF = [
 ];
 
 let CURRENT_STAF = '';
+let SUBMISSION_LOG = [];
 
+/* ============================================================
+   FIX #1 — PERSISTENCE ke localStorage per staf
+   Hanya entry lokal (bukan fromServer) yang disimpan supaya
+   tidak membengkak dan tidak bertabrakan dengan data server.
+   ============================================================ */
+function logKey(staf){ return 'submission_log_v2_' + staf; }
+
+function saveLog(){
+  if(!CURRENT_STAF) return;
+  try{
+    const local = SUBMISSION_LOG.filter(l => !l.fromServer);
+    localStorage.setItem(logKey(CURRENT_STAF), JSON.stringify(local));
+  }catch(e){ /* quota exceeded — abaikan */ }
+}
+
+function loadLog(staf){
+  try{
+    const raw = localStorage.getItem(logKey(staf));
+    if(!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){ return []; }
+}
+
+/* ============ LOGIN ============ */
 function isiDaftarStaf(){
   const sel = document.getElementById('inputNama');
   if(!sel) return;
   sel.innerHTML = '<option value="">— Pilih nama —</option>' +
-    DAFTAR_STAF.slice().sort(function(a,b){ return a.localeCompare(b,'id'); })
-      .map(function(n){ return '<option value="'+n+'">'+n+'</option>'; }).join('');
+    DAFTAR_STAF.slice().sort((a,b)=>a.localeCompare(b,'id'))
+      .map(n=>`<option value="${n}">${n}</option>`).join('');
 }
 
 function initLogin(){
   isiDaftarStaf();
   const saved = localStorage.getItem('staf_name');
-  /* Sesi lama hanya dipulihkan bila namanya ada di daftar resmi */
   if(saved && DAFTAR_STAF.indexOf(saved.trim()) > -1){
     CURRENT_STAF = saved.trim();
     showApp();
@@ -518,10 +528,16 @@ function initLogin(){
   }
 }
 
-function showApp(){
+/* FIX #2 — showApp() jadi async, properly await renderStatus() */
+async function showApp(){
   document.getElementById('loginScreen').classList.remove('show');
   document.getElementById('userLabel').textContent = CURRENT_STAF;
-  renderStatus();
+  /* Muat log lokal dulu → UI langsung responsif sebelum server balas */
+  SUBMISSION_LOG = loadLog(CURRENT_STAF);
+  renderKpiCards();       /* tampilkan angka lokal segera */
+  renderRiwayat();
+  renderBerkasBernomor(); /* tampilkan daftar berkas bernomor dari localStorage */
+  await renderStatus();   /* sync server, update ulang KPI + riwayat */
 }
 
 document.getElementById('btnMasuk').addEventListener('click', doLogin);
@@ -549,99 +565,146 @@ function doLogin(){
   showApp();
 }
 
+/* FIX #3 — Logout bersihkan: SUBMISSION_LOG, pending, dl-box, DOM KPI & riwayat */
 document.getElementById('btnLogout').addEventListener('click', ()=>{
   if(!confirm(`Keluar dari sesi "${CURRENT_STAF}"?`)) return;
   localStorage.removeItem('staf_name');
   CURRENT_STAF = '';
   SUBMISSION_LOG = [];
+
+  /* Bersihkan pending file */
+  pending.PJUM = [];
+  pending.Benef = [];
+  renderFileList('PJUM');
+  renderFileList('Benef');
+
+  /* Bersihkan tombol unduh */
+  ['PJUM','Benef'].forEach(j=>{
+    const box = document.getElementById('dlBox'+j);
+    if(box){ box.classList.remove('show'); box.innerHTML=''; }
+  });
+
+  /* Bersihkan DOM KPI, riwayat, dan berkas bernomor */
+  document.getElementById('kpiStatus').innerHTML = '';
+  document.getElementById('logPjumBody').innerHTML = '';
+  document.getElementById('logBenefBody').innerHTML = '';
+  document.getElementById('berkasPjumList').innerHTML = '';
+  document.getElementById('berkasBenefList').innerHTML = '';
+
   document.getElementById('loginScreen').classList.add('show');
   isiDaftarStaf();
   document.getElementById('inputNama').value = '';
   document.getElementById('inputNama').focus();
 });
 
-let SUBMISSION_LOG = [];
-
+/* ============================================================
+   FIX #4 — KPI CARDS: 4 angka BERBEDA dengan filter bulan benar
+   Card 1: PJUM bulan ini  (filter by tgl YYYY-MM)
+   Card 2: Total PJUM semua waktu
+   Card 3: Benef bulan ini
+   Card 4: Total Benef semua waktu
+   ============================================================ */
 function bulanNamaNow(){
   const names=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
   const d = new Date();
   return names[d.getMonth()] + ' ' + d.getFullYear();
 }
 
-const ICON_DOC = `<svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`;
-const ICON_CLOUD = `<svg class="ic" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>`;
-const ICON_USERS = `<svg class="ic" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
-const ICON_CLIPBOARD = `<svg class="ic" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>`;
-const ICON_CHECK = `<svg class="ic" viewBox="0 0 24 24" style="width:.9em;height:.9em;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
-const ICON_X = `<svg class="ic" viewBox="0 0 24 24" style="width:.9em;height:.9em;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
-const ICON_DOWNLOAD = `<svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
-const ICON_INBOX = `<svg class="ic ic-empty" viewBox="0 0 24 24" style="stroke-width:1.5;"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>`;
-
-async function renderStatus(){
-  await pullFromServer(CURRENT_STAF);
-  const mine = SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF);
-  const pjumCount = mine.filter(l=>l.jenis==='PJUM').length;
-  const benefCount = mine.filter(l=>l.jenis==='Benef').length;
-  document.getElementById('kpiStatus').innerHTML = `
-    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_DOC}</span><span class="label">Jumlah PJUM<br>Bulan ini (${bulanNamaNow()})</span></div><div class="value">${pjumCount}</div><div class="unit">Laporan</div></div>
-    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_CLOUD}</span><span class="label">Total PJUM yang<br>sudah upload</span></div><div class="value">${mine.filter(l=>l.jenis==='PJUM').length}</div><div class="unit">Laporan</div></div>
-    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_USERS}</span><span class="label">Jumlah Benef<br>Bulan ini (${bulanNamaNow()})</span></div><div class="value">${benefCount}</div><div class="unit">Laporan</div></div>
-    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_CLIPBOARD}</span><span class="label">Total Benef yang<br>sudah di upload</span></div><div class="value">${mine.filter(l=>l.jenis==='Benef').length}</div><div class="unit">Laporan</div></div>
-  `;
-  renderRiwayat();
+function isThisMonth(tglStr){
+  if(!tglStr) return false;
+  const now = new Date();
+  const yy  = now.getFullYear();
+  const mm  = String(now.getMonth()+1).padStart(2,'0');
+  return String(tglStr).slice(0,7) === `${yy}-${mm}`;
 }
 
+const ICON_DOC  = `<svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`;
+const ICON_CLOUD= `<svg class="ic" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>`;
+const ICON_USERS= `<svg class="ic" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+const ICON_CLIP = `<svg class="ic" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>`;
+const ICON_CHECK= `<svg class="ic" viewBox="0 0 24 24" style="width:.9em;height:.9em;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
+const ICON_X    = `<svg class="ic" viewBox="0 0 24 24" style="width:.9em;height:.9em;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+const ICON_DL   = `<svg class="ic" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const ICON_INBOX= `<svg class="ic ic-empty" viewBox="0 0 24 24" style="stroke-width:1.5;"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>`;
+
+function renderKpiCards(){
+  const mine       = SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF);
+  const pjumBulan  = mine.filter(l=>l.jenis==='PJUM' && isThisMonth(l.tgl)).length;
+  const pjumTotal  = mine.filter(l=>l.jenis==='PJUM').length;
+  const benefBulan = mine.filter(l=>l.jenis==='Benef' && isThisMonth(l.tgl)).length;
+  const benefTotal = mine.filter(l=>l.jenis==='Benef').length;
+  document.getElementById('kpiStatus').innerHTML = `
+    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_DOC}</span><span class="label">PJUM bulan ini<br>(${bulanNamaNow()})</span></div><div class="value">${pjumBulan}</div><div class="unit">Laporan</div></div>
+    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_CLOUD}</span><span class="label">Total PJUM<br>sudah di-upload</span></div><div class="value">${pjumTotal}</div><div class="unit">Laporan</div></div>
+    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_USERS}</span><span class="label">Benef bulan ini<br>(${bulanNamaNow()})</span></div><div class="value">${benefBulan}</div><div class="unit">Laporan</div></div>
+    <div class="kpi"><div class="kpi-top"><span class="icon-circle">${ICON_CLIP}</span><span class="label">Total Benef<br>sudah di-upload</span></div><div class="value">${benefTotal}</div><div class="unit">Laporan</div></div>
+  `;
+}
+
+/* ============================================================
+   FIX #5 — pullFromServer: pakai r.staf dari server, bukan paksa CURRENT_STAF
+   ============================================================ */
 async function pullFromServer(staf){
   try{
     const res = await fetch(`${GAS_URL}?action=getStatus&staf=${encodeURIComponent(staf)}`, {redirect:'follow'});
     const json = await res.json();
-    /* Hapus entry lama dari server, pertahankan entry lokal (baru diupload) */
+    /* Hapus entry server lama, pertahankan entry lokal */
     SUBMISSION_LOG = SUBMISSION_LOG.filter(l => !l.fromServer);
-    /* Kumpulkan fileName yang sudah ada dari entry lokal — jangan duplikat */
     const localFiles = new Set(SUBMISSION_LOG.map(l => l.file));
     (json.pjum||[]).forEach(r=>{
-      if(localFiles.has(r.fileName)) return; /* sudah ada dari upload lokal */
+      if(localFiles.has(r.fileName)) return;
       SUBMISSION_LOG.push({
-        jenis:'PJUM', kode:r.kode, kegiatan:r.kegiatan, proyek:'Ayo - JPM',
-        staf: CURRENT_STAF,
-        file:r.fileName, tgl:(r.uploadedAt||'').slice(0,10), gsheet:r.gsheet, drive:r.drive,
+        jenis:'PJUM', kode:r.kode||'', kegiatan:r.kegiatan||'', proyek:r.proyek||'Ayo - JPM',
+        staf: r.staf || staf,   /* FIX #5: pakai staf dari server */
+        file: r.fileName, tgl:(r.uploadedAt||'').slice(0,10),
+        gsheet:r.gsheet, drive:r.drive,
         payload:{items:[]}, fromServer:true
       });
     });
     (json.benef||[]).forEach(r=>{
-      if(localFiles.has(r.fileName)) return; /* sudah ada dari upload lokal */
+      if(localFiles.has(r.fileName)) return;
       SUBMISSION_LOG.push({
-        jenis:'Benef', kode:r.kode, kegiatan:r.kegiatan, proyek:'Ayo - JPM',
-        staf: CURRENT_STAF,
-        file:r.fileName, tgl:(r.uploadedAt||'').slice(0,10), gsheet:r.gsheet, drive:r.drive,
+        jenis:'Benef', kode:r.kode||'', kegiatan:r.kegiatan||'', proyek:r.proyek||'Ayo - JPM',
+        staf: r.staf || staf,   /* FIX #5: pakai staf dari server */
+        file: r.fileName, tgl:(r.uploadedAt||'').slice(0,10),
+        gsheet:r.gsheet, drive:r.drive,
         payload:{headers:[], rows:[]}, fromServer:true
       });
     });
-  }catch(err){ /* GAS belum bisa diakses — pakai data lokal apa adanya */ }
+  }catch(err){ /* server tidak terjangkau — pakai data lokal */ }
 }
 
-function statusPill(v){ return v==='ok' ? `<span class="status-pill">${ICON_CHECK} Tersimpan</span>` : `<span class="status-pill bad">${ICON_X} Gagal</span>`; }
+async function renderStatus(){
+  await pullFromServer(CURRENT_STAF);
+  renderKpiCards();
+  renderRiwayat();
+}
+
+function statusPill(v){ return v==='ok'
+  ? `<span class="status-pill">${ICON_CHECK} Tersimpan</span>`
+  : `<span class="status-pill bad">${ICON_X} Gagal</span>`; }
 
 function renderRiwayat(){
-  /* Dedup berdasarkan fileName — entry lokal (fromServer=false) diprioritaskan */
   function dedupLog(entries){
     const seen = new Map();
-    /* Proses dari terlama ke terbaru supaya yang terbaru (lokal) override yang lama */
     entries.forEach(l => seen.set(l.file, l));
-    return [...seen.values()].reverse(); /* balik lagi jadi terbaru di atas */
+    return [...seen.values()].reverse();
   }
+  const pjum  = dedupLog(SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF && l.jenis==='PJUM'));
+  const benef = dedupLog(SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF && l.jenis==='Benef'));
 
-  const allPjum  = SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF && l.jenis==='PJUM');
-  const allBenef = SUBMISSION_LOG.filter(l=>l.staf===CURRENT_STAF && l.jenis==='Benef');
-  const pjum  = dedupLog(allPjum);
-  const benef = dedupLog(allBenef);
+  document.getElementById('logPjumBody').innerHTML = pjum.length
+    ? pjum.map(l=>`<tr class="clickable" data-jenis="PJUM" data-file="${l.file}">
+        <td>${l.kegiatan||l.file}</td><td>${l.tgl}</td><td>${statusPill(l.gsheet)}</td><td>${statusPill(l.drive)}</td>
+      </tr>`).join('')
+    : `<tr><td colspan="4"><div class="empty-state">${ICON_INBOX}<div class="txt">Belum ada laporan PJUM.</div></div></td></tr>`;
 
-  document.getElementById('logPjumBody').innerHTML = pjum.length ? pjum.map(l=>`<tr class="clickable" data-jenis="PJUM" data-file="${l.file}">
-    <td>${l.kegiatan}</td><td>${l.tgl}</td><td>${statusPill(l.gsheet)}</td><td>${statusPill(l.drive)}</td>
-  </tr>`).join('') : `<tr><td colspan="4"><div class="empty-state">${ICON_INBOX}<div class="txt">Belum ada laporan PJUM.</div></div></td></tr>`;
-  document.getElementById('logBenefBody').innerHTML = benef.length ? benef.map(l=>`<tr class="clickable" data-jenis="Benef" data-file="${l.file}">
-    <td>${l.kegiatan}</td><td>${l.tgl}</td><td>${statusPill(l.gsheet)}</td><td>${statusPill(l.drive)}</td>
-  </tr>`).join('') : `<tr><td colspan="4"><div class="empty-state">${ICON_INBOX}<div class="txt">Belum ada laporan Benef.</div></div></td></tr>`;
+  document.getElementById('logBenefBody').innerHTML = benef.length
+    ? benef.map(l=>`<tr class="clickable" data-jenis="Benef" data-file="${l.file}">
+        <td>${l.kegiatan||l.file}</td><td>${l.tgl}</td><td>${statusPill(l.gsheet)}</td><td>${statusPill(l.drive)}</td>
+      </tr>`).join('')
+    : `<tr><td colspan="4"><div class="empty-state">${ICON_INBOX}<div class="txt">Belum ada laporan Benef.</div></div></td></tr>`;
+
   document.querySelectorAll('tr.clickable').forEach(tr=>{
     tr.addEventListener('click', ()=>openEditModal(tr.dataset.jenis, tr.dataset.file));
   });
@@ -657,879 +720,808 @@ function showToast(msg){
 /* ============ PARSER ============ */
 function cellVal(ws, addr){ const c = ws[addr]; return c ? c.v : null; }
 
-/* Konversi serial date Excel ke string YYYY-MM-DD
-   Pakai UTC parts supaya tidak kena timezone offset (WITA UTC+8) */
 function excelDateToStr(v){
   if(!v) return '';
   if(v instanceof Date){
-    const y = v.getUTCFullYear();
-    const m = String(v.getUTCMonth()+1).padStart(2,'0');
-    const d = String(v.getUTCDate()).padStart(2,'0');
+    const y=v.getUTCFullYear(), m=String(v.getUTCMonth()+1).padStart(2,'0'), d=String(v.getUTCDate()).padStart(2,'0');
     return `${y}-${m}-${d}`;
   }
   if(typeof v === 'number'){
-    const d = new Date(Math.round((v - 25569) * 86400 * 1000));
-    const y = d.getUTCFullYear();
-    const mo = String(d.getUTCMonth()+1).padStart(2,'0');
-    const dd = String(d.getUTCDate()).padStart(2,'0');
-    return `${y}-${mo}-${dd}`;
+    const d=new Date(Math.round((v-25569)*86400*1000));
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
   }
   return String(v);
 }
-function parsePJUMFile(wb){
-  const ws = wb.Sheets['Laporan'];
-  if(!ws) return {error:'Sheet "Laporan" tidak ditemukan.'};
 
-  const range = XLSX.utils.decode_range(ws['!ref'] || 'A1:Z100');
-
-  /* ============ parseJumlah — parser nominal tahan format (v5.1) ============
-   Menangani: angka murni, "1500000", "1.500.000" (ID), "1,500,000" (EN),
-   "Rp 500.000", "500.000,50". Nilai tak terbaca → 0.
-   Sinkron dengan parseJumlah() di dashboard (api.js).
-   ========================================================================= */
 function parseJumlah(v){
-  if(typeof v === 'number') return isFinite(v) ? v : 0;
-  if(v === null || v === undefined) return 0;
-  let s = String(v).trim();
-  if(!s || !/\d/.test(s)) return 0;
-  s = s.replace(/rp/gi,'').replace(/\s+/g,'').replace(/[^0-9.,-]/g,'');
-  const neg = s.charAt(0) === '-';
-  s = s.replace(/-/g,'');
-  const hasDot = s.indexOf('.') > -1, hasComma = s.indexOf(',') > -1;
-  if(hasDot && hasComma){
-    if(s.lastIndexOf(',') > s.lastIndexOf('.')) s = s.replace(/\./g,'').replace(',','.');
-    else s = s.replace(/,/g,'');
+  if(typeof v==='number') return isFinite(v)?v:0;
+  if(v===null||v===undefined) return 0;
+  let s=String(v).trim();
+  if(!s||!/\d/.test(s)) return 0;
+  s=s.replace(/rp/gi,'').replace(/\s+/g,'').replace(/[^0-9.,-]/g,'');
+  const neg=s.charAt(0)==='-';
+  s=s.replace(/-/g,'');
+  const hasDot=s.indexOf('.')>-1, hasComma=s.indexOf(',')>-1;
+  if(hasDot&&hasComma){
+    if(s.lastIndexOf(',')>s.lastIndexOf('.')) s=s.replace(/\./g,'').replace(',','.');
+    else s=s.replace(/,/g,'');
   } else if(hasComma){
-    const pc = s.split(',');
-    if(pc.length === 2 && pc[1].length <= 2) s = pc[0] + '.' + pc[1];
-    else s = s.replace(/,/g,'');
+    const pc=s.split(',');
+    if(pc.length===2&&pc[1].length<=2) s=pc[0]+'.'+pc[1];
+    else s=s.replace(/,/g,'');
   } else if(hasDot){
-    const pd = s.split('.');
-    const polaRibuan = pd.every((p,i) => i === 0 ? (p.length >= 1 && p.length <= 3) : p.length === 3);
-    if(pd.length === 2 && pd[1].length <= 2 && pd[0].length <= 3 && pd[1].length !== 3){
-      /* 1.5 / 12.75 → desimal, biarkan */
-    } else if(polaRibuan){
-      s = s.replace(/\./g,'');
-    }
+    const pd=s.split('.');
+    const polaRibuan=pd.every((p,i)=>i===0?(p.length>=1&&p.length<=3):p.length===3);
+    if(!(pd.length===2&&pd[1].length<=2&&pd[0].length<=3&&pd[1].length!==3)&&polaRibuan) s=s.replace(/\./g,'');
   }
-  const n = parseFloat(s);
-  return isFinite(n) ? (neg ? -n : n) : 0;
+  const n=parseFloat(s);
+  return isFinite(n)?(neg?-n:n):0;
 }
 
-/* ---- 7 Header yang dicari (posisi bebas di sheet) ----
-     Proyek | Staf | Tgl | Kode | Kegiatan | Item Pengeluaran | Jumlah
-     Kolom "No" diabaikan — hanya nomor urut
-     Kunci wajib: semua kecuali Kode */
-  const ALIASES = {
-    proyek:   ['proyek','project','program'],
-    staf:     ['staf','staff','nama staf'],
-    tanggal:  ['tgl','tanggal','date'],
-    kode:     ['kode','kode kegiatan','code'],
-    no:       ['no','no.','nomor','number'],
-    kegiatan: ['kegiatan','nama kegiatan','activity'],
-    item:     ['item pengeluaran','item','keterangan','deskripsi','uraian'],
-    jumlah:   ['jumlah','amount','cost','total','nilai'],
-  };
+const ALIASES={
+  proyek:['proyek','project','program'],staf:['staf','staff','nama staf'],
+  tanggal:['tgl','tanggal','date'],kode:['kode','kode kegiatan','code'],
+  no:['no','no.','nomor','number'],kegiatan:['kegiatan','nama kegiatan','activity'],
+  item:['item pengeluaran','item','keterangan','deskripsi','uraian'],
+  jumlah:['jumlah','amount','cost','total','nilai'],
+};
 
-  /* Cari baris header — baris yang mengandung "item/keterangan" dan "jumlah" */
-  let headerRow = -1;
-  const COL = {};
-
-  for(let r = range.s.r; r <= Math.min(range.e.r, 25); r++){
-    const rowVals = [];
-    for(let c = range.s.c; c <= range.e.c; c++){
-      rowVals.push(String(cellVal(ws, XLSX.utils.encode_cell({r,c}))||'').trim().toLowerCase());
-    }
-    const hasItem   = rowVals.some(v => ALIASES.item.some(a => v === a));
-    const hasJumlah = rowVals.some(v => ALIASES.jumlah.some(a => v === a));
-    if(hasItem && hasJumlah){
-      headerRow = r;
-      rowVals.forEach((v, c) => {
-        for(const [key, aliases] of Object.entries(ALIASES)){
-          if(!(key in COL) && aliases.some(a => v === a)) COL[key] = c;
+function parsePJUMFile(wb){
+  const ws=wb.Sheets['Laporan'];
+  if(!ws) return {error:'Sheet "Laporan" tidak ditemukan.'};
+  const range=XLSX.utils.decode_range(ws['!ref']||'A1:Z100');
+  let headerRow=-1;
+  const COL={};
+  for(let r=range.s.r;r<=Math.min(range.e.r,25);r++){
+    const rowVals=[];
+    for(let c=range.s.c;c<=range.e.c;c++)
+      rowVals.push(String(cellVal(ws,XLSX.utils.encode_cell({r,c}))||'').trim().toLowerCase());
+    const hasItem=rowVals.some(v=>ALIASES.item.some(a=>v===a));
+    const hasJumlah=rowVals.some(v=>ALIASES.jumlah.some(a=>v===a));
+    if(hasItem&&hasJumlah){
+      headerRow=r;
+      rowVals.forEach((v,c)=>{
+        for(const[key,aliases]of Object.entries(ALIASES)){
+          if(!(key in COL)&&aliases.some(a=>v===a)) COL[key]=c;
         }
       });
       break;
     }
   }
-
-  if(headerRow === -1) return {error:'Baris header tidak ditemukan. Pastikan ada kolom "Item Pengeluaran" dan "Jumlah" di sheet Laporan.'};
-  if(!('item'   in COL)) return {error:'Kolom "Item Pengeluaran" tidak ditemukan.'};
+  if(headerRow===-1) return {error:'Baris header tidak ditemukan. Pastikan ada kolom "Item Pengeluaran" dan "Jumlah".'};
+  if(!('item' in COL)) return {error:'Kolom "Item Pengeluaran" tidak ditemukan.'};
   if(!('jumlah' in COL)) return {error:'Kolom "Jumlah" tidak ditemukan.'};
 
-  /* Baca baris data */
-  const items = [];
-  for(let r = headerRow + 1; r <= range.e.r; r++){
-    const ket = String(cellVal(ws, XLSX.utils.encode_cell({r, c:COL.item}))||'').trim();
-    /* Baris total/jumlah/saldo → STOP, jangan baca baris berikutnya */
-    if(ket && ['jumlah','saldo','total'].includes(ket.toLowerCase())) break;
-    /* Baris item kosong → skip saja, lanjut ke baris berikutnya */
+  const items=[];
+  for(let r=headerRow+1;r<=range.e.r;r++){
+    const ket=String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.item}))||'').trim();
+    if(ket&&['jumlah','saldo','total'].includes(ket.toLowerCase())) break;
     if(!ket) continue;
-
     items.push({
-      proyek:     'proyek'   in COL ? String(cellVal(ws, XLSX.utils.encode_cell({r, c:COL.proyek}))||'').trim()   : '',
-      staf:       'staf'     in COL ? String(cellVal(ws, XLSX.utils.encode_cell({r, c:COL.staf}))||'').trim()     : '',
-      tanggal:    excelDateToStr('tanggal' in COL ? cellVal(ws, XLSX.utils.encode_cell({r, c:COL.tanggal})) : null),
-      kode:       'kode'     in COL ? String(cellVal(ws, XLSX.utils.encode_cell({r, c:COL.kode}))||'').trim()     : '',
-      no:         'no'       in COL ? String(cellVal(ws, XLSX.utils.encode_cell({r, c:COL.no}))||'').trim()       : '',
-      kegiatan:   'kegiatan' in COL ? String(cellVal(ws, XLSX.utils.encode_cell({r, c:COL.kegiatan}))||'').trim() : '',
-      keterangan: ket,
-      jumlah:     parseJumlah(cellVal(ws, XLSX.utils.encode_cell({r, c:COL.jumlah}))),
-      jumlahRaw:  String(cellVal(ws, XLSX.utils.encode_cell({r, c:COL.jumlah})) ?? '').trim(),
+      proyek:'proyek' in COL?String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.proyek}))||'').trim():'',
+      staf:'staf' in COL?String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.staf}))||'').trim():'',
+      tanggal:excelDateToStr('tanggal' in COL?cellVal(ws,XLSX.utils.encode_cell({r,c:COL.tanggal})):null),
+      kode:'kode' in COL?String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.kode}))||'').trim():'',
+      no:'no' in COL?String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.no}))||'').trim():'',
+      kegiatan:'kegiatan' in COL?String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.kegiatan}))||'').trim():'',
+      keterangan:ket,
+      jumlah:parseJumlah(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.jumlah}))),
+      jumlahRaw:String(cellVal(ws,XLSX.utils.encode_cell({r,c:COL.jumlah}))??'').trim(),
     });
   }
+  if(items.length===0) return {error:'Tidak ada baris item di sheet Laporan.'};
 
-  if(items.length === 0) return {error:'Tidak ada baris item di sheet Laporan.'};
-
-  /* Validasi kunci wajib per baris: Proyek, Staf, Kegiatan, Jumlah */
-  const itemErrors = [];
-  items.forEach((it, i) => {
-    const rowMissing = [];
-    if(!it.proyek)                    rowMissing.push('Proyek');
-    if(!it.staf)                      rowMissing.push('Staf');
-    if(!it.kegiatan)                  rowMissing.push('Kegiatan');
-    if(!it.jumlah || it.jumlah === 0){
-      /* Bedakan: sel memang kosong, atau terisi tapi formatnya tak terbaca */
+  const itemErrors=[];
+  items.forEach((it,i)=>{
+    const rowMissing=[];
+    if(!it.proyek) rowMissing.push('Proyek');
+    if(!it.staf) rowMissing.push('Staf');
+    if(!it.kegiatan) rowMissing.push('Kegiatan');
+    if(!it.jumlah||it.jumlah===0){
       if(it.jumlahRaw) itemErrors.push(`Baris ${i+1}: nominal "${it.jumlahRaw}" tidak terbaca sebagai angka`);
       else rowMissing.push('Jumlah');
     }
-    if(rowMissing.length > 0) itemErrors.push(`Baris ${i+1}: ${rowMissing.join(', ')} kosong`);
+    if(rowMissing.length>0) itemErrors.push(`Baris ${i+1}: ${rowMissing.join(', ')} kosong`);
   });
-
-  if(itemErrors.length > 0){
-    const tampil = itemErrors.slice(0,3).join(' | ') + (itemErrors.length>3 ? ` ... +${itemErrors.length-3} baris lagi` : '');
-    return { error: tampil };
+  if(itemErrors.length>0){
+    const tampil=itemErrors.slice(0,3).join(' | ')+(itemErrors.length>3?` ... +${itemErrors.length-3} baris lagi`:'');
+    return {error:tampil};
   }
-
-  const first = items[0];
+  const first=items[0];
   return {
-    valid:    true,
-    kode:     first.kode.toUpperCase(),
-    kegiatan: first.kegiatan,
-    proyek:   first.proyek,
-    staf:     first.staf,
-    raw: {
-      kegiatan: first.kegiatan,
-      kode:     first.kode.toUpperCase(),
-      proyek:   first.proyek,
-      staf:     first.staf,
-      /* jumlahRaw hanya utk validasi lokal — tidak dikirim ke GAS */
-      items: items.map(({jumlahRaw, ...it}) => it)
-    }
+    valid:true, kode:first.kode.toUpperCase(), kegiatan:first.kegiatan,
+    proyek:first.proyek, staf:first.staf,
+    raw:{kegiatan:first.kegiatan, kode:first.kode.toUpperCase(), proyek:first.proyek, staf:first.staf,
+         items:items.map(({jumlahRaw,...it})=>it)}
   };
 }
-/* 23 header wajib sesuai template Benef_List */
-const BENEF_REQUIRED_HEADERS = [
+
+const BENEF_REQUIRED_HEADERS=[
   'Nama Benef','Jenis Kelamin','Usia','Kategori Usia','Disabiltas','Kategori Benef',
   'Jika lainnya, sebutkan','Desa/Kelurahan','Kecamatan','Kabupaten','Paroki',
   'Instansi/Lembaga','Jabatan','Alamat Instansi','Benefit yang Diperoleh',
   'Jika benda, sebutkan','Kegiatan terkait Benef','Kode kegiatan (*lihat RAB)',
   'Nomor HP Benef','Tanggal Kegiatan','Program Pendukung','Lembaga Mitra','Nama Staf'
 ];
-/* 4 kolom yang wajib terisi di setiap baris */
-const BENEF_ROW_REQUIRED = ['Nama Benef','Program Pendukung','Nama Staf'];
-
-/* ============ PATCH v4 — MODE KETAT HEADER (sinkron dgn GAS) ============
-   Setiap header di file wajib terpetakan ke salah satu kolom resmi.
-   Header tak dikenal / ganda → file DITOLAK sebelum dikirim,
-   dengan pesan yang menyebut header bermasalahnya. */
-const BENEF_OFFICIAL_HEADERS = [...BENEF_REQUIRED_HEADERS, 'Nama Staf Pengupload'];
-const BENEF_HEADER_ALIASES = {
-  'kode':'Kode kegiatan (*lihat RAB)', 'kode kegiatan':'Kode kegiatan (*lihat RAB)',
-  'kode rab':'Kode kegiatan (*lihat RAB)',
-  'umur':'Usia', 'disabilitas':'Disabiltas',
-  'pekerjaan':'Jabatan', 'jabatan/pekerjaan':'Jabatan',
-  'lembaga mitra':'Lembaga Mitra',
-  'alamat instansi/lembaga':'Alamat Instansi',
-  'instansi':'Instansi/Lembaga', 'instansi lembaga':'Instansi/Lembaga',
-  'lembaga/instansi':'Instansi/Lembaga', 'nama instansi':'Instansi/Lembaga',
-  'instansi/lembaga asal':'Instansi/Lembaga',
+const BENEF_ROW_REQUIRED=['Nama Benef','Program Pendukung','Nama Staf'];
+const BENEF_OFFICIAL_HEADERS=[...BENEF_REQUIRED_HEADERS,'Nama Staf Pengupload'];
+const BENEF_HEADER_ALIASES={
+  'kode':'Kode kegiatan (*lihat RAB)','kode kegiatan':'Kode kegiatan (*lihat RAB)',
+  'kode rab':'Kode kegiatan (*lihat RAB)','umur':'Usia','disabilitas':'Disabiltas',
+  'pekerjaan':'Jabatan','jabatan/pekerjaan':'Jabatan','lembaga mitra':'Lembaga Mitra',
+  'alamat instansi/lembaga':'Alamat Instansi','instansi':'Instansi/Lembaga',
+  'instansi lembaga':'Instansi/Lembaga','lembaga/instansi':'Instansi/Lembaga',
+  'nama instansi':'Instansi/Lembaga','instansi/lembaga asal':'Instansi/Lembaga',
 };
-const BENEF_IGNORABLE = ['no','no.','nomor','nomor urut'];
+const BENEF_IGNORABLE=['no','no.','nomor','nomor urut'];
+
 function benefNormalizeHeader(s){
   return String(s||'').replace(/[\u00A0\u200B\t]+/g,' ')
     .replace(/\s*\/\s*/g,'/').replace(/\s+/g,' ').trim().toLowerCase();
 }
 function benefResolveHeader(raw){
-  const norm = benefNormalizeHeader(raw);
+  const norm=benefNormalizeHeader(raw);
   if(BENEF_HEADER_ALIASES[norm]) return BENEF_HEADER_ALIASES[norm];
-  const exact = BENEF_OFFICIAL_HEADERS.find(h => benefNormalizeHeader(h) === norm);
-  return exact || String(raw||'').trim();
+  const exact=BENEF_OFFICIAL_HEADERS.find(h=>benefNormalizeHeader(h)===norm);
+  return exact||String(raw||'').trim();
 }
 function validateBenefHeadersClient(headers){
-  const unknown = [], seen = {}, duplicates = [];
-  const official = {};
-  BENEF_OFFICIAL_HEADERS.forEach(h => official[h] = true);
-  (headers||[]).forEach(raw => {
-    const t = String(raw||'').trim();
-    if(!t) return;
-    if(BENEF_IGNORABLE.indexOf(benefNormalizeHeader(t)) > -1) return;
-    const resolved = benefResolveHeader(t);
-    if(!official[resolved]){ unknown.push(t); return; }
+  const unknown=[],seen={},duplicates=[];
+  const official={};
+  BENEF_OFFICIAL_HEADERS.forEach(h=>official[h]=true);
+  (headers||[]).forEach(raw=>{
+    const t=String(raw||'').trim();
+    if(!t||BENEF_IGNORABLE.indexOf(benefNormalizeHeader(t))>-1) return;
+    const resolved=benefResolveHeader(t);
+    if(!official[resolved]){unknown.push(t);return;}
     if(seen[resolved]) duplicates.push(resolved);
-    else seen[resolved] = t;
+    else seen[resolved]=t;
   });
-  return { ok: unknown.length===0 && duplicates.length===0, unknown, duplicates };
+  return {ok:unknown.length===0&&duplicates.length===0,unknown,duplicates};
 }
 
 function parseBenefFile(wb){
-  const ws = wb.Sheets['Benef_List'];
+  const ws=wb.Sheets['Benef_List'];
   if(!ws) return {error:'Sheet "Benef_List" tidak ditemukan.'};
-  const range = XLSX.utils.decode_range(ws['!ref']);
-  const headers = [];
-  for(let c=range.s.c; c<=range.e.c; c++){
-    const cell = ws[XLSX.utils.encode_cell({r:0,c})];
-    headers.push(cell ? String(cell.v).trim() : '');
+  const range=XLSX.utils.decode_range(ws['!ref']);
+  const headers=[];
+  for(let c=range.s.c;c<=range.e.c;c++){
+    const cell=ws[XLSX.utils.encode_cell({r:0,c})];
+    headers.push(cell?String(cell.v).trim():'');
   }
-
-  /* Normalisasi: trim + collapse semua whitespace termasuk non-breaking space */
-  const normalizeH = s => String(s).replace(/[\u00A0\u200B\t]+/g,' ').replace(/\s+/g,' ').trim();
-  const headersNorm = headers.map(normalizeH);
-
-  /* Validasi: hanya 3 kolom kunci yang WAJIB ada di header */
-  const missingKunci = BENEF_ROW_REQUIRED.filter(h => !headersNorm.includes(normalizeH(h)));
-  if(missingKunci.length > 0){
-    return {error:`Kolom wajib tidak ada di header: ${missingKunci.join(', ')}`};
-  }
-
-  /* PATCH v4: MODE KETAT — semua header wajib dikenal & tidak ganda */
-  const hv = validateBenefHeadersClient(headers);
+  const normalizeH=s=>String(s).replace(/[\u00A0\u200B\t]+/g,' ').replace(/\s+/g,' ').trim();
+  const headersNorm=headers.map(normalizeH);
+  const missingKunci=BENEF_ROW_REQUIRED.filter(h=>!headersNorm.includes(normalizeH(h)));
+  if(missingKunci.length>0) return {error:`Kolom wajib tidak ada: ${missingKunci.join(', ')}`};
+  const hv=validateBenefHeadersClient(headers);
   if(!hv.ok){
-    const parts = [];
-    if(hv.unknown.length)    parts.push(`Header tidak dikenal: ${hv.unknown.join(', ')}`);
+    const parts=[];
+    if(hv.unknown.length) parts.push(`Header tidak dikenal: ${hv.unknown.join(', ')}`);
     if(hv.duplicates.length) parts.push(`Header ganda: ${hv.duplicates.join(', ')}`);
-    return {error: parts.join(' | ') + ' — sesuaikan dengan template resmi'};
+    return {error:parts.join(' | ')+' — sesuaikan dengan template resmi'};
   }
-
-  /* Baca raw:true supaya tanggal tidak diformat SheetJS, lalu konversi manual */
-  const rowsRaw = XLSX.utils.sheet_to_json(ws, {header:1, defval:null, raw:true}).slice(1).filter(r=>r[0]);
-  const tglColIdx = headersNorm.indexOf('tanggal kegiatan');
-  const rows = rowsRaw.map(r => r.map((v, ci) => {
-    if(v === null || v === undefined) return null;
-    if(ci === tglColIdx) return excelDateToStr(v);
-    /* Semua kolom lain: konversi ke string seperti raw:false */
+  const rowsRaw=XLSX.utils.sheet_to_json(ws,{header:1,defval:null,raw:true}).slice(1).filter(r=>r[0]);
+  const tglColIdx=headersNorm.indexOf('tanggal kegiatan');
+  const rows=rowsRaw.map(r=>r.map((v,ci)=>{
+    if(v===null||v===undefined) return null;
+    if(ci===tglColIdx) return excelDateToStr(v);
     if(v instanceof Date) return excelDateToStr(v);
-    if(typeof v === 'number') return String(v);
+    if(typeof v==='number') return String(v);
     return v;
   }));
   if(rows.length===0) return {error:'Tidak ada baris data.'};
 
-  /* --- Validasi 3 kolom wajib per baris --- */
-  const rowErrors = [];
-  BENEF_ROW_REQUIRED.forEach(colName => {
-    const normName = normalizeH(colName);
-    const idx = headersNorm.indexOf(normName);
-    if(idx === -1) return;
-    rows.forEach((row, i) => {
-      if(!row[idx] || String(row[idx]).trim() === ''){
-        rowErrors.push(`Baris ${i+2}: "${colName}" kosong`);
-      }
+  const rowErrors=[];
+  BENEF_ROW_REQUIRED.forEach(colName=>{
+    const idx=headersNorm.indexOf(normalizeH(colName));
+    if(idx===-1) return;
+    rows.forEach((row,i)=>{
+      if(!row[idx]||String(row[idx]).trim()==='') rowErrors.push(`Baris ${i+2}: "${colName}" kosong`);
     });
   });
-  if(rowErrors.length > 0){
-    const tampil = rowErrors.slice(0,3).join(' | ') + (rowErrors.length>3 ? ` ... +${rowErrors.length-3} baris lagi` : '');
-    return {error: tampil};
+  if(rowErrors.length>0){
+    const tampil=rowErrors.slice(0,3).join(' | ')+(rowErrors.length>3?` ... +${rowErrors.length-3} baris lagi`:'');
+    return {error:tampil};
   }
-
-  const kegIdx  = headersNorm.indexOf(normalizeH('Kegiatan terkait Benef'));
-  const kodeIdx = headersNorm.indexOf(normalizeH('Kode kegiatan (*lihat RAB)'));
-  const progIdx = headersNorm.indexOf(normalizeH('Program Pendukung'));
-  const kode    = kodeIdx>-1 && rows[0][kodeIdx] ? String(rows[0][kodeIdx]).toUpperCase() : '';
-  const kegiatan= kegIdx>-1 ? rows[0][kegIdx] : '';
-  const proyek  = progIdx>-1 && rows[0][progIdx] ? String(rows[0][progIdx]).trim() : 'Ayo - JPM';
-
-  /* Output headers: pakai nama asli dari file (sudah di-trim), tambah kolom sistem */
-  const headersOut = [...headers.map(h => String(h).trim()), 'Nama Staf Pengupload'];
-  /* Placeholder akan diganti dengan CURRENT_STAF saat kirimKeGAS */
-  const rowsOut = rows.map(r => {
-    const extended = [...r];
-    while(extended.length < headers.length) extended.push(null);
+  const kegIdx=headersNorm.indexOf(normalizeH('Kegiatan terkait Benef'));
+  const kodeIdx=headersNorm.indexOf(normalizeH('Kode kegiatan (*lihat RAB)'));
+  const progIdx=headersNorm.indexOf(normalizeH('Program Pendukung'));
+  const kode=kodeIdx>-1&&rows[0][kodeIdx]?String(rows[0][kodeIdx]).toUpperCase():'';
+  const kegiatan=kegIdx>-1?rows[0][kegIdx]:'';
+  const proyek=progIdx>-1&&rows[0][progIdx]?String(rows[0][progIdx]).trim():'Ayo - JPM';
+  const headersOut=[...headers.map(h=>String(h).trim()),'Nama Staf Pengupload'];
+  const rowsOut=rows.map(r=>{
+    const extended=[...r];
+    while(extended.length<headers.length) extended.push(null);
     extended.push('__STAF_PENGUPLOAD__');
     return extended;
   });
-
-  return { valid:true, kode, kegiatan, proyek, raw:{headers: headersOut, rows: rowsOut} };
+  return {valid:true,kode,kegiatan,proyek,raw:{headers:headersOut,rows:rowsOut}};
 }
-/* ============ IDENTITAS LAPORAN (v6) ============
-   ID berformat {Staf}_{B|P}{yyMMdd}-{4 acak}, mis. Johan_B260723-K7F3.
-   ID dibuat SERVER dan menempel sbg awalan nama berkas di Drive,
-   sehingga ikut terbawa saat staf mengunduh berkas untuk diperbaiki. */
-const ID_RE_CLIENT = /^([A-Za-z0-9]{1,14}_[BP]\d{6}-[A-Z0-9]{4})_?/;
+
+/* ============ IDENTITAS FILE ============ */
+const ID_RE_CLIENT=/^([A-Za-z0-9]{1,14}_[BP]\d{6}-[A-Z0-9]{4})_?/;
 function idDariNamaFileClient(fileName){
-  const m = ID_RE_CLIENT.exec(String(fileName || '').trim());
-  return m ? m[1] : '';
+  const m=ID_RE_CLIENT.exec(String(fileName||'').trim());
+  return m?m[1]:'';
 }
 
-/* ============ BERKAS BERNOMOR SIAP UNDUH (v7) ============
-   Setelah unggah berhasil, staf bisa menyimpan versi bernomor ke
-   komputernya. Berkas bernomor inilah yang dipakai bila nanti perlu
-   diperbaiki — sistem akan mengenalinya sebagai koreksi, bukan
-   laporan baru. */
-function b64keBlobUrl(b64){
-  const bin = atob(b64);
-  const buf = new Uint8Array(bin.length);
-  for(let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
-  return URL.createObjectURL(new Blob([buf],
+/* ============================================================
+   BERKAS BERNOMOR — sistem persist permanen
+   - Metadata (nama, tgl, jenis) disimpan ke localStorage per staf
+   - b64 juga disimpan sementara di memori (berkasB64Cache) untuk
+     unduh langsung setelah upload tanpa request ulang ke server
+   - Jika b64 tidak ada di cache (misal setelah refresh), tombol
+     "Unduh" mengambil file dari Google Drive via GAS (action=downloadFile)
+   ============================================================ */
+
+/* Cache b64 in-memory — hanya valid selama sesi, untuk unduh segera setelah upload */
+const berkasB64Cache = {};  /* key: namaFile, value: b64 string */
+
+function berkasKey(staf){ return 'berkas_bernomor_v1_' + staf; }
+
+function loadBerkas(staf){
+  try{
+    const raw = localStorage.getItem(berkasKey(staf));
+    if(!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){ return []; }
+}
+
+function saveBerkas(staf, daftar){
+  try{
+    /* Simpan maksimal 50 berkas per staf supaya tidak membengkak */
+    const trimmed = daftar.slice(-50);
+    localStorage.setItem(berkasKey(staf), JSON.stringify(trimmed));
+  }catch(e){ /* quota exceeded */ }
+}
+
+/* Tambahkan berkas baru ke daftar — dipanggil setiap kali upload berhasil */
+function tambahBerkasBernomor(jenis, namaFile, b64){
+  if(!namaFile) return;
+  /* Simpan b64 ke cache in-memory */
+  if(b64) berkasB64Cache[namaFile] = b64;
+  const daftar = loadBerkas(CURRENT_STAF);
+  /* Hindari duplikat berdasarkan nama file */
+  if(daftar.some(b => b.nama === namaFile)) return;
+  daftar.push({
+    nama: namaFile,
+    jenis: jenis,
+    tgl: new Date().toISOString().slice(0,10),
+    tglWaktu: new Date().toLocaleString('id-ID',{timeZone:'Asia/Makassar'})
+  });
+  saveBerkas(CURRENT_STAF, daftar);
+  renderBerkasBernomor();
+}
+
+/* Hapus satu berkas dari daftar */
+function hapusSatuBerkas(namaFile){
+  const daftar = loadBerkas(CURRENT_STAF).filter(b => b.nama !== namaFile);
+  saveBerkas(CURRENT_STAF, daftar);
+  delete berkasB64Cache[namaFile];
+  renderBerkasBernomor();
+}
+
+/* Hapus semua berkas jenis tertentu */
+function hapusSemuaBerkas(jenis){
+  if(!confirm(`Hapus semua berkas ${jenis} bernomor dari daftar lokal?\n(File di Google Drive tidak terpengaruh)`)) return;
+  const daftar = loadBerkas(CURRENT_STAF).filter(b => b.jenis !== jenis);
+  saveBerkas(CURRENT_STAF, daftar);
+  renderBerkasBernomor();
+}
+
+/* Unduh berkas — coba cache dulu, fallback ke GAS/Drive */
+async function unduhBerkas(namaFile, btnEl){
+  /* 1. Jika b64 masih ada di cache in-memory → langsung unduh */
+  if(berkasB64Cache[namaFile]){
+    triggerUnduh(namaFile, berkasB64Cache[namaFile]);
+    return;
+  }
+  /* 2. Minta GAS untuk mengambil file dari Drive dan kembalikan sebagai base64 */
+  btnEl.disabled = true;
+  btnEl.textContent = 'Mengunduh...';
+  try{
+    const res = await fetch(GAS_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow',
+      body: JSON.stringify({ action:'downloadFile', fileName: namaFile, staf: CURRENT_STAF })
+    });
+    const json = await res.json();
+    if(json.b64){
+      berkasB64Cache[namaFile] = json.b64;
+      triggerUnduh(namaFile, json.b64);
+    } else {
+      showToast('File tidak ditemukan di Drive. Mungkin sudah dipindahkan.');
+    }
+  }catch(e){
+    showToast('Gagal mengambil file dari Drive. Cek koneksi internet.');
+  }finally{
+    btnEl.disabled = false;
+    btnEl.textContent = 'Unduh';
+  }
+}
+
+function triggerUnduh(namaFile, b64){
+  const bin = atob(b64); const buf = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) buf[i]=bin.charCodeAt(i);
+  const url = URL.createObjectURL(new Blob([buf],
     {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+  const tmp = document.createElement('a');
+  tmp.href = url; tmp.download = namaFile;
+  document.body.appendChild(tmp); tmp.click(); tmp.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 4000);
 }
 
-function tampilkanUnduhan(jenis, daftar){
-  const box = document.getElementById('dlBox' + jenis);
-  if(!box) return;
-  if(!daftar || daftar.length === 0){ box.classList.remove('show'); box.innerHTML=''; return; }
-  box.innerHTML =
-    '<div class="dl-head">' + ICON_DOWNLOAD + ' Simpan berkas bernomor</div>' +
-    '<div class="dl-note">Pakai berkas ini bila nanti perlu diperbaiki, supaya dikenali sebagai koreksi ' +
-    '(bukan laporan baru). Kalau tidak diunduh sekarang, berkasnya tetap bisa diambil dari Google Drive.</div>' +
-    daftar.map(function(f, n){
-      return '<div class="dl-item"><span class="dl-nm" title="'+f.nama+'">'+f.nama+'</span>' +
-             '<a href="#" data-dl="'+n+'" download="'+f.nama+'">Unduh</a></div>';
-    }).join('') +
-    '<button class="dl-close" type="button">Tutup</button>';
-  box.classList.add('show');
-  box.querySelectorAll('a[data-dl]').forEach(function(a){
-    a.addEventListener('click', function(ev){
-      ev.preventDefault();
-      const f = daftar[parseInt(a.getAttribute('data-dl'), 10)];
-      const url = b64keBlobUrl(f.b64);
-      const tmp = document.createElement('a');
-      tmp.href = url; tmp.download = f.nama;
-      document.body.appendChild(tmp); tmp.click(); tmp.remove();
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+function renderBerkasBernomor(){
+  if(!CURRENT_STAF) return;
+  const semua = loadBerkas(CURRENT_STAF);
+  const pjum  = semua.filter(b=>b.jenis==='PJUM').slice().reverse();
+  const benef = semua.filter(b=>b.jenis==='Benef').slice().reverse();
+
+  function buatItem(b){
+    const cached = !!berkasB64Cache[b.nama];
+    return `<div class="berkas-item" data-nama="${b.nama}">
+      <div class="berkas-icon"><svg class="ic" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="berkas-info">
+        <div class="berkas-nama" title="${b.nama}">${b.nama}</div>
+        <div class="berkas-meta">${b.tglWaktu||b.tgl}${cached?' · siap unduh':' · diambil dari Drive'}</div>
+      </div>
+      <div class="berkas-actions">
+        <button class="btn-unduh-berkas" data-nama="${b.nama}">Unduh</button>
+        <button class="btn-hapus-berkas" data-nama="${b.nama}" title="Hapus dari daftar">✕</button>
+      </div>
+    </div>`;
+  }
+
+  const emptyHtml = `<div class="empty-state" style="padding:24px 16px;">${ICON_INBOX}<div class="txt">Belum ada berkas bernomor.</div></div>`;
+
+  document.getElementById('berkasPjumList').innerHTML = pjum.length ? pjum.map(buatItem).join('') : emptyHtml;
+  document.getElementById('berkasBenefList').innerHTML = benef.length ? benef.map(buatItem).join('') : emptyHtml;
+
+  /* Pasang event listener tombol unduh */
+  ['berkasPjumList','berkasBenefList'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.querySelectorAll('.btn-unduh-berkas').forEach(btn=>{
+      btn.addEventListener('click', ()=>unduhBerkas(btn.dataset.nama, btn));
+    });
+    el.querySelectorAll('.btn-hapus-berkas').forEach(btn=>{
+      btn.addEventListener('click', ()=>hapusSatuBerkas(btn.dataset.nama));
     });
   });
-  box.querySelector('.dl-close').addEventListener('click', function(){
-    box.classList.remove('show'); box.innerHTML = '';
-  });
 }
 
-/* ---- Kunci BARIS untuk menghitung tumpang tindih ----
-   Bukan menebak identitas berkas, tapi menghitung berapa baris yang
-   isinya sudah ada di sistem. Tidak ada positif palsu. */
+/* Fungsi lama tampilkanUnduhan — sekarang hanya sebagai jembatan ke sistem baru.
+   dl-box di bawah tombol kirim tidak lagi dipakai untuk tampil permanen,
+   tapi tetap ada untuk flash feedback sesaat setelah upload. */
+function tampilkanUnduhan(jenis, daftar){
+  /* daftar sudah diproses di kirimBatch sebelum memanggil fungsi ini,
+     tidak perlu render dl-box lagi — section berkas bernomor sudah menangani. */
+  if(!daftar||daftar.length===0) return;
+  /* Beri feedback toast singkat */
+  showToast(`${daftar.length} berkas bernomor tersimpan di daftar Berkas Bernomor ↓`);
+}
+
+/* ============ CEK TUMPANG TINDIH ============ */
+const MAKS_KUNCI_CEK=4000;
 function kunciBarisBenef(parsed){
-  const h = (parsed.raw && parsed.raw.headers) || [];
-  const norm = s => String(s||'').replace(/\s+/g,' ').trim().toLowerCase();
-  const cari = nm => h.findIndex(x => norm(x) === norm(nm));
-  const iNama = cari('Nama Benef'), iDesa = cari('Desa/Kelurahan'),
-        iKeg  = cari('Kegiatan terkait Benef'), iTgl = cari('Tanggal Kegiatan');
-  const rows = (parsed.raw && parsed.raw.rows) || [];
-  return rows.map(r => {
-    const tgl = iTgl > -1 ? String(r[iTgl] || '').slice(0,10) : '';
-    return norm(iNama>-1?r[iNama]:'') + '|' + norm(iDesa>-1?r[iDesa]:'') + '|'
-         + norm(iKeg>-1?r[iKeg]:'')  + '|' + tgl;
+  const h=(parsed.raw&&parsed.raw.headers)||[];
+  const norm=s=>String(s||'').replace(/\s+/g,' ').trim().toLowerCase();
+  const cari=nm=>h.findIndex(x=>norm(x)===norm(nm));
+  const iNama=cari('Nama Benef'),iDesa=cari('Desa/Kelurahan'),
+        iKeg=cari('Kegiatan terkait Benef'),iTgl=cari('Tanggal Kegiatan');
+  return ((parsed.raw&&parsed.raw.rows)||[]).map(r=>{
+    const tgl=iTgl>-1?String(r[iTgl]||'').slice(0,10):'';
+    return norm(iNama>-1?r[iNama]:'')+norm(iDesa>-1?r[iDesa]:'')+norm(iKeg>-1?r[iKeg]:'')+tgl;
   });
 }
 function kunciBarisPjum(parsed){
-  const norm = s => String(s||'').replace(/\s+/g,' ').trim().toLowerCase();
-  return ((parsed.raw && parsed.raw.items) || []).map(it =>
-    norm(it.keterangan) + '||' + norm(it.kegiatan) + '|' + String(it.tanggal||'').slice(0,10));
+  const norm=s=>String(s||'').replace(/\s+/g,' ').trim().toLowerCase();
+  return ((parsed.raw&&parsed.raw.items)||[]).map(it=>
+    norm(it.keterangan)+'||'+norm(it.kegiatan)+String(it.tanggal||'').slice(0,10));
 }
-function kunciBaris(jenis, parsed){
-  return jenis === 'Benef' ? kunciBarisBenef(parsed) : kunciBarisPjum(parsed);
-}
-
-/* Batasi payload: berkas sangat besar diambil contoh merata */
-const MAKS_KUNCI_CEK = 4000;
+function kunciBaris(jenis,parsed){ return jenis==='Benef'?kunciBarisBenef(parsed):kunciBarisPjum(parsed); }
 function contohKunci(arr){
-  if(arr.length <= MAKS_KUNCI_CEK) return { kunci: arr, contoh: false };
-  const step = arr.length / MAKS_KUNCI_CEK;
-  const out = [];
-  for(let i = 0; i < MAKS_KUNCI_CEK; i++) out.push(arr[Math.floor(i * step)]);
-  return { kunci: out, contoh: true };
+  if(arr.length<=MAKS_KUNCI_CEK) return {kunci:arr,contoh:false};
+  const step=arr.length/MAKS_KUNCI_CEK; const out=[];
+  for(let i=0;i<MAKS_KUNCI_CEK;i++) out.push(arr[Math.floor(i*step)]);
+  return {kunci:out,contoh:true};
 }
 
-/* Tanya server: berapa baris berkas ini yang sudah ada di sistem */
-async function cekTumpangTindih(jenis, parsed){
+async function cekTumpangTindih(jenis,parsed){
   try{
-    const semua = kunciBaris(jenis, parsed);
+    const semua=kunciBaris(jenis,parsed);
     if(!semua.length) return null;
-    const { kunci, contoh } = contohKunci(semua);
-    const res = await fetch(GAS_URL, {
-      method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow',
-      body: JSON.stringify({ action:'cekTumpangTindih', jenis, kunci })
-    });
-    const j = await res.json();
-    if(!j || typeof j.sudahAda !== 'number') return null;
-    return { ...j, contoh, totalBaris: semua.length };
-  }catch(e){ return null; }
+    const {kunci,contoh}=contohKunci(semua);
+    const res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+      body:JSON.stringify({action:'cekTumpangTindih',jenis,kunci})});
+    const j=await res.json();
+    if(!j||typeof j.sudahAda!=='number') return null;
+    return {...j,contoh,totalBaris:semua.length};
+  }catch(e){return null;}
 }
 
-/* Dialog: laporkan hasil hitungan apa adanya, staf yang memutuskan */
-function konfirmasiTumpangTindih(fileName, t){
-  if(!t || t.sudahAda === 0) return true;             /* tidak ada tumpang tindih */
-  const persen = Math.round(t.sudahAda / t.dicek * 100);
-  const asal = (t.laporan || []).map(x => '  • ' + x.id + ' — ' + x.baris + ' baris').join('\n');
-  const catatan = t.contoh
-    ? '(dihitung dari ' + t.dicek + ' baris contoh dari total ' + t.totalBaris + ')'
-    : '';
-  const pesan = 'DATA INI SEBAGIAN SUDAH ADA DI SISTEM\n\n'
-    + 'Berkas: ' + fileName + '\n\n'
-    + t.sudahAda + ' dari ' + t.dicek + ' baris (' + persen + '%) sudah tercatat.\n'
-    + catatan + '\n\n'
-    + 'Berasal dari laporan:\n' + asal + '\n\n'
-    + (persen >= 90
-        ? 'Hampir seluruh isinya duplikat. Biasanya ini terjadi bila\nberkas rekap dan berkas kegiatan diunggah bersamaan.\n\n'
-        : 'Sebagian isinya duplikat.\n\n')
-    + 'Tetap unggah sebagai laporan baru?';
-  return confirm(pesan);
+function konfirmasiTumpangTindih(fileName,t){
+  if(!t||t.sudahAda===0) return true;
+  const persen=Math.round(t.sudahAda/t.dicek*100);
+  const asal=(t.laporan||[]).map(x=>`  • ${x.id} — ${x.baris} baris`).join('\n');
+  const catatan=t.contoh?`(dihitung dari ${t.dicek} baris contoh dari total ${t.totalBaris})`:'';
+  return confirm(`DATA INI SEBAGIAN SUDAH ADA DI SISTEM\n\nBerkas: ${fileName}\n\n`+
+    `${t.sudahAda} dari ${t.dicek} baris (${persen}%) sudah tercatat.\n${catatan}\n\n`+
+    `Berasal dari:\n${asal}\n\nTetap unggah sebagai laporan baru?`);
 }
 
-/* Tanya server: ini laporan baru, koreksi, atau mirip laporan yang ada?
-   Return { mode:'koreksi'|'mirip'|'baru', id, info, kandidat, idBaru } */
-async function cekLaporanKeServer(jenis, idFile){
+async function cekLaporanKeServer(jenis,idFile){
   try{
-    const res = await fetch(GAS_URL, {
-      method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow',
-      body: JSON.stringify({ action:'cekLaporan', jenis, idFile, staf: CURRENT_STAF })
-    });
-    const json = await res.json();
-    if(json && json.mode) return json;
+    const res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+      body:JSON.stringify({action:'cekLaporan',jenis,idFile,staf:CURRENT_STAF})});
+    const json=await res.json();
+    if(json&&json.mode) return json;
     return null;
-  }catch(e){ return null; }   /* server tak terjangkau → lanjut tanpa ID */
+  }catch(e){return null;}
 }
 
-/* Ringkasan satu laporan utk ditampilkan ke staf */
 function ringkasLaporan(x){
-  const keg = (x.kegiatan && x.kegiatan.length)
-    ? x.kegiatan.slice(0,2).join(', ') + (x.jmlKegiatan > 2 ? ' +' + (x.jmlKegiatan-2) + ' lainnya' : '')
-    : '(kegiatan tidak tercatat)';
-  return '  • ' + keg + '\n'
-       + '    ID ' + x.id + ' · ' + x.baris + ' baris'
-       + (x.staf && x.staf.length ? ' · oleh ' + x.staf.join(', ') : '')
-       + (x.terakhir ? ' · ' + x.terakhir : '')
-       + (x.file && x.file.length ? '\n    berkas: ' + x.file.join(', ') : '');
+  const keg=(x.kegiatan&&x.kegiatan.length)?
+    x.kegiatan.slice(0,2).join(', ')+(x.jmlKegiatan>2?` +${x.jmlKegiatan-2} lainnya`:''):'(kegiatan tidak tercatat)';
+  return `  • ${keg}\n    ID ${x.id} · ${x.baris} baris`+
+    (x.staf&&x.staf.length?` · oleh ${x.staf.join(', ')}`:'')+(x.terakhir?` · ${x.terakhir}`:'')+
+    (x.file&&x.file.length?`\n    berkas: ${x.file.join(', ')}`:'');
 }
 
-/* Mode 'koreksi': ID terbaca dari nama berkas dan sudah ada di sheet */
-function konfirmasiKoreksi(fileName, info){
-  const stafLain = (info.staf || []).filter(s => s && s !== CURRENT_STAF);
-  let pesan = 'KOREKSI LAPORAN\n\n'
-    + 'Berkas: ' + fileName + '\n\n'
-    + 'Laporan ini sudah ada di sistem:\n' + ringkasLaporan(info) + '\n\n'
-    + info.baris + ' baris lama akan DIGANTI dengan isi berkas ini.\n'
-    + 'Berkas lama dipindahkan ke folder Arsip Revisi.';
-  if(stafLain.length){
-    pesan += '\n\n\u26a0 Laporan ini diunggah oleh ' + stafLain.join(', ')
-          + ', bukan oleh kamu.\nPastikan sudah ada kesepakatan sebelum menggantinya.';
-  }
-  return confirm(pesan + '\n\nLanjutkan?');
+function konfirmasiKoreksi(fileName,info){
+  const stafLain=(info.staf||[]).filter(s=>s&&s!==CURRENT_STAF);
+  let pesan=`KOREKSI LAPORAN\n\nBerkas: ${fileName}\n\nLaporan ini sudah ada:\n`+
+    `${ringkasLaporan(info)}\n\n${info.baris} baris lama akan DIGANTI.\n`+
+    `Berkas lama dipindahkan ke folder Arsip Revisi.`;
+  if(stafLain.length) pesan+=`\n\n⚠ Laporan ini diunggah oleh ${stafLain.join(', ')}, bukan oleh kamu.\nPastikan sudah ada kesepakatan.`;
+  return confirm(pesan+'\n\nLanjutkan?');
 }
 
-/* ============ FILE READER — baca SEKALI, hasilkan ArrayBuffer + base64 bersamaan ============ */
+/* ============ FILE READER ============ */
 function readFileAll(file){
-  /* Satu kali baca → dapat ArrayBuffer (untuk SheetJS) + base64 (untuk Drive)
-     tanpa perlu baca ulang saat tombol Kirim ditekan. */
-  return new Promise((resolve, reject)=>{
-    const reader = new FileReader();
-    reader.onload = ev=>{
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
       try{
-        const arrayBuf = ev.target.result;
-        /* base64 dari ArrayBuffer tanpa baca ulang */
-        const bytes = new Uint8Array(arrayBuf);
-        let bin = '';
-        for(let i=0; i<bytes.byteLength; i++) bin += String.fromCharCode(bytes[i]);
-        const b64 = btoa(bin);
-        const wb = XLSX.read(arrayBuf, {type:'array', cellDates:true});
-        resolve({wb, b64});
-      }catch(e){ reject(e); }
+        const arrayBuf=ev.target.result;
+        const bytes=new Uint8Array(arrayBuf);
+        let bin='';
+        for(let i=0;i<bytes.byteLength;i++) bin+=String.fromCharCode(bytes[i]);
+        const b64=btoa(bin);
+        const wb=XLSX.read(arrayBuf,{type:'array',cellDates:true});
+        resolve({wb,b64});
+      }catch(e){reject(e);}
     };
-    reader.onerror = reject;
+    reader.onerror=reject;
     reader.readAsArrayBuffer(file);
   });
 }
 
-/* ============ pending selection state ============ */
-const pending = { PJUM: [], Benef: [] };
+/* FIX #6 — pending di-reset saat logout (sudah dihandle di logout handler) */
+const pending={PJUM:[],Benef:[]};
 
 function renderFileList(jenis){
-  const container = document.getElementById(jenis==='PJUM' ? 'fileListPJUM' : 'fileListBenef');
-  const btn = document.getElementById(jenis==='PJUM' ? 'btnKirimPjum' : 'btnKirimBenef');
-  const items = pending[jenis];
-  container.innerHTML = items.map((it,i)=>`<div class="file-row ${it.valid?'':'bad'}">
-    <span class="fn">${it.fileName}</span>
-    <span class="fstatus ${it.valid?'ok':'bad'}">${it.valid?'✓':'✗ '+it.error}</span>
-    <span class="fremove" data-jenis="${jenis}" data-idx="${i}">✕</span>
-  </div>`).join('');
-  const validCount = items.filter(it=>it.valid).length;
-  btn.disabled = validCount===0;
-  btn.classList.toggle('ready', validCount>0);
-  const label = validCount>0 ? `Kirim ${jenis} (${validCount})` : `Kirim ${jenis}`;
-  btn.innerHTML = `<svg class="ic" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>${label}`;
+  const container=document.getElementById(jenis==='PJUM'?'fileListPJUM':'fileListBenef');
+  const btn=document.getElementById(jenis==='PJUM'?'btnKirimPjum':'btnKirimBenef');
+  const items=pending[jenis];
+  container.innerHTML=items.map((it,i)=>
+    `<div class="file-row ${it.valid?'':'bad'}">
+      <span class="fn">${it.fileName}</span>
+      <span class="fstatus ${it.valid?'ok':'bad'}">${it.valid?'✓':'✗ '+it.error}</span>
+      <span class="fremove" data-jenis="${jenis}" data-idx="${i}">✕</span>
+    </div>`).join('');
+  const validCount=items.filter(it=>it.valid).length;
+  btn.disabled=validCount===0;
+  btn.classList.toggle('ready',validCount>0);
+  const label=validCount>0?`Kirim ${jenis} (${validCount})`:`Kirim ${jenis}`;
+  btn.innerHTML=`<svg class="ic" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>${label}`;
   container.querySelectorAll('.fremove').forEach(el=>{
-    el.addEventListener('click', ()=>{
+    el.addEventListener('click',()=>{
       pending[el.dataset.jenis].splice(parseInt(el.dataset.idx),1);
       renderFileList(el.dataset.jenis);
     });
   });
 }
 
-/* Proses daftar file (dipakai oleh input file DAN drag & drop) */
-async function processFiles(files, jenis, parseFn){
+async function processFiles(files,jenis,parseFn){
   for(const file of files){
     try{
-      /* Baca file SEKALI — dapat workbook + base64 sekaligus */
-      const {wb, b64} = await readFileAll(file);
-      const parsed = parseFn(wb);
-      if(parsed.error) pending[jenis].push({fileName:file.name, valid:false, error:parsed.error});
-      else pending[jenis].push({fileName:file.name, valid:true, parsed, b64}); // simpan b64, buang referensi file
+      const {wb,b64}=await readFileAll(file);
+      const parsed=parseFn(wb);
+      if(parsed.error) pending[jenis].push({fileName:file.name,valid:false,error:parsed.error});
+      else pending[jenis].push({fileName:file.name,valid:true,parsed,b64});
     }catch(err){
-      pending[jenis].push({fileName:file.name, valid:false, error:'File tidak terbaca — cek format .xlsx.'});
+      pending[jenis].push({fileName:file.name,valid:false,error:'File tidak terbaca — cek format .xlsx.'});
     }
   }
   renderFileList(jenis);
 }
 
-function handleMultiFile(inputEl, jenis, parseFn){
-  inputEl.addEventListener('change', async (e)=>{
-    await processFiles(Array.from(e.target.files), jenis, parseFn);
-    inputEl.value = '';
+function handleMultiFile(inputEl,jenis,parseFn){
+  inputEl.addEventListener('change',async e=>{
+    await processFiles(Array.from(e.target.files),jenis,parseFn);
+    inputEl.value='';
   });
-
-  /* ---- Drag & drop pada kartu upload (v4) ---- */
-  const card = inputEl.closest('.upload-card');
+  const card=inputEl.closest('.upload-card');
   if(!card) return;
-  ['dragenter','dragover'].forEach(ev => card.addEventListener(ev, e=>{
-    e.preventDefault(); e.stopPropagation();
-    if(e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+  ['dragenter','dragover'].forEach(ev=>card.addEventListener(ev,e=>{
+    e.preventDefault();e.stopPropagation();
+    if(e.dataTransfer) e.dataTransfer.dropEffect='copy';
     card.classList.add('dragover');
   }));
-  ['dragleave','dragend'].forEach(ev => card.addEventListener(ev, e=>{
-    e.preventDefault(); e.stopPropagation();
-    if(ev === 'dragleave' && card.contains(e.relatedTarget)) return;
+  ['dragleave','dragend'].forEach(ev=>card.addEventListener(ev,e=>{
+    e.preventDefault();e.stopPropagation();
+    if(ev==='dragleave'&&card.contains(e.relatedTarget)) return;
     card.classList.remove('dragover');
   }));
-  card.addEventListener('drop', async e=>{
-    e.preventDefault(); e.stopPropagation();
+  card.addEventListener('drop',async e=>{
+    e.preventDefault();e.stopPropagation();
     card.classList.remove('dragover');
-    const all   = Array.from((e.dataTransfer && e.dataTransfer.files) || []);
-    const files = all.filter(f => /\.xlsx$/i.test(f.name));
-    if(all.length && files.length === 0){ showToast('Hanya file .xlsx yang bisa diunggah'); return; }
-    if(files.length === 0) return;
-    await processFiles(files, jenis, parseFn);
-    showToast(files.length + ' file ditambahkan ke daftar ' + jenis);
+    const all=Array.from((e.dataTransfer&&e.dataTransfer.files)||[]);
+    const files=all.filter(f=>/\.xlsx$/i.test(f.name));
+    if(all.length&&files.length===0){showToast('Hanya file .xlsx yang bisa diunggah');return;}
+    if(files.length===0) return;
+    await processFiles(files,jenis,parseFn);
+    showToast(`${files.length} file ditambahkan ke daftar ${jenis}`);
   });
 }
 
-/* Cegah browser membuka file saat dijatuhkan di luar dropzone */
-['dragover','drop'].forEach(ev => window.addEventListener(ev, e=>{
-  if(!e.target.closest || !e.target.closest('.upload-card')) e.preventDefault();
+['dragover','drop'].forEach(ev=>window.addEventListener(ev,e=>{
+  if(!e.target.closest||!e.target.closest('.upload-card')) e.preventDefault();
 }));
-handleMultiFile(document.getElementById('filePJUM'), 'PJUM', parsePJUMFile);
-handleMultiFile(document.getElementById('fileBenef'), 'Benef', parseBenefFile);
+handleMultiFile(document.getElementById('filePJUM'),'PJUM',parsePJUMFile);
+handleMultiFile(document.getElementById('fileBenef'),'Benef',parseBenefFile);
 
-/* ============ KIRIM — 2 request terpisah: Drive dulu, lalu Sheet ============
-   Untuk Benef dengan banyak baris: chunked upload (CHUNK_ROWS per request)
-   ============================================================================ */
-/* ============ Ring progress modal (v4) — sinkron dgn persen ============ */
-const UM_RING_C = 2 * Math.PI * 56;   /* keliling lingkaran r=56 */
+/* ============ RING MODAL PROGRESS ============ */
+const UM_RING_C=2*Math.PI*56;
 function setUploadRing(p){
-  const ring  = document.getElementById('uploadModalRing');
-  const pctEl = document.getElementById('uploadModalPct');
-  const dots  = document.querySelector('.um-dots');
+  const ring=document.getElementById('uploadModalRing');
+  const pctEl=document.getElementById('uploadModalPct');
+  const dots=document.querySelector('.um-dots');
   if(!ring) return;
-  const v = Math.max(0, Math.min(100, p));
-  ring.style.strokeDasharray  = UM_RING_C;
-  ring.style.strokeDashoffset = UM_RING_C * (1 - v / 100);
-  /* warna ring ikut kategori (kelas sudah di-set pada elemen persen) */
-  const warna = (pctEl && pctEl.className.indexOf('benef') > -1) ? 'benef' : 'pjum';
-  ring.setAttribute('class', 'um-ring-fill ' + warna);
-  if(dots) dots.style.visibility = v >= 100 ? 'hidden' : 'visible';
+  const v=Math.max(0,Math.min(100,p));
+  ring.style.strokeDasharray=UM_RING_C;
+  ring.style.strokeDashoffset=UM_RING_C*(1-v/100);
+  const warna=(pctEl&&pctEl.className.indexOf('benef')>-1)?'benef':'pjum';
+  ring.setAttribute('class','um-ring-fill '+warna);
+  if(dots) dots.style.visibility=v>=100?'hidden':'visible';
 }
 
-const CHUNK_ROWS = 3000; // baris per request ke GAS — aman dalam 6-menit timeout
+/* ============ KIRIM KE GAS ============ */
+const CHUNK_ROWS=3000;
 
-async function kirimKeGAS(jenis, parsed, fileName, b64, onProgress, idLaporan){
-  let driveStatus = 'gagal';
-  let gsheetStatus = 'gagal';
-
-  /* ---- Request 1: upload file ke Drive ---- */
+async function kirimKeGAS(jenis,parsed,fileName,b64,onProgress,idLaporan){
+  let driveStatus='gagal', gsheetStatus='gagal';
   try{
-    const resDrive = await fetch(GAS_URL, {
-      method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow',
-      body: JSON.stringify({ action:'uploadDrive', jenis, staf: CURRENT_STAF, fileName, fileBase64: b64,
-                             idLaporan: idLaporan || '' })
-    });
-    const jsonDrive = await resDrive.json();
-    driveStatus = jsonDrive.drive || 'gagal';
-    /* v6: nama berkas final di Drive (sudah berawalan ID) dipakai juga
-       untuk kolom FileName di sheet, supaya keduanya selalu cocok */
-    if(jsonDrive.driveFileName){
-      fileName = jsonDrive.driveFileName;
-      kirimKeGAS._lastDriveName = jsonDrive.driveFileName;
-    }
-  }catch(e){ driveStatus = 'gagal'; }
+    const resDrive=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+      body:JSON.stringify({action:'uploadDrive',jenis,staf:CURRENT_STAF,fileName,fileBase64:b64,
+                           idLaporan:idLaporan||''})});
+    const jsonDrive=await resDrive.json();
+    driveStatus=jsonDrive.drive||'gagal';
+    if(jsonDrive.driveFileName){fileName=jsonDrive.driveFileName;kirimKeGAS._lastDriveName=jsonDrive.driveFileName;}
+  }catch(e){driveStatus='gagal';}
 
-  /* ---- Request 2+: kirim parsed data ke GSheet ---- */
   try{
-    /* Untuk Benef: ganti placeholder Nama Staf Pengupload */
-    let rawToSend = parsed.raw;
-    if(jenis === 'Benef' && rawToSend && rawToSend.rows){
-      rawToSend = {
-        ...rawToSend,
-        rows: rawToSend.rows.map(r => r.map(v => v === '__STAF_PENGUPLOAD__' ? CURRENT_STAF : v))
-      };
+    let rawToSend=parsed.raw;
+    if(jenis==='Benef'&&rawToSend&&rawToSend.rows){
+      rawToSend={...rawToSend,rows:rawToSend.rows.map(r=>r.map(v=>v==='__STAF_PENGUPLOAD__'?CURRENT_STAF:v))};
     }
+    const rows=rawToSend.rows||[];
+    const total=rows.length;
 
-    const rows  = rawToSend.rows || [];
-    const total = rows.length;
-
-    /* Untuk PJUM atau file kecil: satu request biasa */
-    if(jenis !== 'Benef' || total <= CHUNK_ROWS){
-      let rawText = '';
+    if(jenis!=='Benef'||total<=CHUNK_ROWS){
+      let rawText='';
       try{
-        const res = await fetch(GAS_URL, {
-          method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow',
-          body: JSON.stringify({ action:'upload'+jenis, staf: CURRENT_STAF, fileName, driveStatus,
-                                 parsed: rawToSend, idLaporan: idLaporan || '' })
-        });
-        rawText = await res.text();
-        const json = JSON.parse(rawText);
-        gsheetStatus = json.gsheet || 'gagal';
-        /* Simpan error message dari GAS supaya bisa ditampilkan */
-        if(json.error) kirimKeGAS._lastError = json.error;
-        else if(json.gsheet === 'ok') kirimKeGAS._lastError = null;
-      }catch(e){
-        /* Tampilkan raw response untuk debug */
-        kirimKeGAS._lastError = 'Parse error: ' + (rawText ? rawText.slice(0,200) : e.message);
-        gsheetStatus = 'gagal';
-      }
+        const res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+          body:JSON.stringify({action:'upload'+jenis,staf:CURRENT_STAF,fileName,driveStatus,
+                               parsed:rawToSend,idLaporan:idLaporan||''})});
+        rawText=await res.text();
+        const json=JSON.parse(rawText);
+        gsheetStatus=json.gsheet||'gagal';
+        if(json.error) kirimKeGAS._lastError=json.error;
+        else if(json.gsheet==='ok') kirimKeGAS._lastError=null;
+      }catch(e){kirimKeGAS._lastError='Parse error: '+(rawText?rawText.slice(0,200):e.message);gsheetStatus='gagal';}
     } else {
-      /* Chunked upload untuk Benef besar:
-         - Chunk pertama (isFirst=true): hapus data lama (koreksi), tulis chunk 1
-         - Chunk berikutnya (isFirst=false): append saja, tidak hapus
-         - Semua chunk bawa headers supaya GAS bisa mapping kolom */
-      const numChunks = Math.ceil(total / CHUNK_ROWS);
-      let allOk = true;
-      for(let i = 0; i < numChunks; i++){
-        const chunkRows = rows.slice(i * CHUNK_ROWS, (i + 1) * CHUNK_ROWS);
-        const isFirst   = i === 0;
-        const body = {
-          action: 'uploadBenefChunk',
-          staf: CURRENT_STAF,
-          fileName,
-          driveStatus,
-          isFirst,           /* GAS hapus data lama hanya saat chunk pertama */
-          totalChunks: numChunks,
-          chunkIndex: i,
-          /* v6: satu file = satu ID, dikirim di setiap chunk */
-          idLaporan: idLaporan || '',
-          parsed: { headers: rawToSend.headers, rows: chunkRows }
-        };
+      const numChunks=Math.ceil(total/CHUNK_ROWS);
+      let allOk=true;
+      for(let i=0;i<numChunks;i++){
+        const chunkRows=rows.slice(i*CHUNK_ROWS,(i+1)*CHUNK_ROWS);
         try{
-          const res  = await fetch(GAS_URL, {
-            method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow',
-            body: JSON.stringify(body)
-          });
-          const json = await res.json();
-          if(json.gsheet !== 'ok'){ allOk = false; break; }
-        }catch(e){ allOk = false; break; }
-
-        /* Update progress bar dari luar (opsional) */
-        if(typeof onProgress === 'function')
-          onProgress(Math.round(((i + 1) / numChunks) * 100), i + 1, numChunks);
+          const res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',
+            body:JSON.stringify({action:'uploadBenefChunk',staf:CURRENT_STAF,fileName,driveStatus,
+                                 isFirst:i===0,totalChunks:numChunks,chunkIndex:i,
+                                 idLaporan:idLaporan||'',parsed:{headers:rawToSend.headers,rows:chunkRows}})});
+          const json=await res.json();
+          if(json.gsheet!=='ok'){allOk=false;break;}
+        }catch(e){allOk=false;break;}
+        if(typeof onProgress==='function')
+          onProgress(Math.round(((i+1)/numChunks)*100),i+1,numChunks);
       }
-      gsheetStatus = allOk ? 'ok' : 'gagal';
+      gsheetStatus=allOk?'ok':'gagal';
     }
-  }catch(e){ gsheetStatus = 'gagal'; }
+  }catch(e){gsheetStatus='gagal';}
 
-  SUBMISSION_LOG.push({
-    jenis, kode: parsed.kode, kegiatan: parsed.kegiatan, proyek: parsed.proyek || 'Ayo - JPM',
-    file: fileName, tgl: new Date().toISOString().slice(0,10),
-    staf: CURRENT_STAF, gsheet: gsheetStatus, drive: driveStatus, payload: parsed.raw
-  });
+  /* FIX #1: Simpan ke localStorage setiap kali ada upload baru */
+  const entry={
+    jenis,kode:parsed.kode,kegiatan:parsed.kegiatan,proyek:parsed.proyek||'Ayo - JPM',
+    file:fileName,tgl:new Date().toISOString().slice(0,10),
+    staf:CURRENT_STAF,gsheet:gsheetStatus,drive:driveStatus,payload:parsed.raw
+  };
+  SUBMISSION_LOG.push(entry);
+  saveLog();   /* persist segera setelah upload */
 }
 
 async function kirimBatch(jenis){
-  const valid = pending[jenis].filter(it=>it.valid);
+  const valid=pending[jenis].filter(it=>it.valid);
   if(valid.length===0) return;
 
-  const isB    = jenis === 'Benef';
-  const color  = isB ? 'benef' : 'pjum';
-  const btn    = document.getElementById(isB ? 'btnKirimBenef' : 'btnKirimPjum');
+  const isB=jenis==='Benef';
+  const color=isB?'benef':'pjum';
+  const btn=document.getElementById(isB?'btnKirimBenef':'btnKirimPjum');
+  const modal=document.getElementById('uploadModal');
+  const modalIcon=document.getElementById('uploadModalIcon');
+  const modalTitle=document.getElementById('uploadModalTitle');
+  const modalSub=document.getElementById('uploadModalSub');
+  const modalPct=document.getElementById('uploadModalPct');
+  const modalFill=document.getElementById('uploadModalFill');
+  const modalFile=document.getElementById('uploadModalFile');
+  const modalCount=document.getElementById('uploadModalCount');
 
-  /* Buka modal loading */
-  const modal      = document.getElementById('uploadModal');
-  const modalIcon  = document.getElementById('uploadModalIcon');
-  const modalTitle = document.getElementById('uploadModalTitle');
-  const modalSub   = document.getElementById('uploadModalSub');
-  const modalPct   = document.getElementById('uploadModalPct');
-  const modalFill  = document.getElementById('uploadModalFill');
-  const modalFile  = document.getElementById('uploadModalFile');
-  const modalCount = document.getElementById('uploadModalCount');
-
-  modalIcon.className  = `upload-modal-icon ${color}`;
-  modalPct.className   = `upload-pct ${color}`;
-  modalFill.className  = `upload-fill ${color}`;
-  modalTitle.textContent = `Mengirim ${jenis}...`;
-  modalSub.textContent   = 'Mohon tunggu, jangan tutup halaman ini';
-  modalPct.textContent   = '0%';
-  modalFill.style.width  = '0%';
-  modalFile.textContent  = '—';
-  modalCount.textContent = `0 / ${valid.length}`;
+  modalIcon.className=`upload-modal-icon ${color}`;
+  modalPct.className=`upload-pct ${color}`;
+  modalFill.className=`upload-fill ${color}`;
+  modalTitle.textContent=`Mengirim ${jenis}...`;
+  modalSub.textContent='Mohon tunggu, jangan tutup halaman ini';
+  modalPct.textContent='0%';
+  modalFill.style.width='0%';
+  modalFile.textContent='—';
+  modalCount.textContent=`0 / ${valid.length}`;
   modal.classList.add('show');
-  btn.disabled = true;
+  btn.disabled=true;
 
-  /* Helper update progress modal (0–100 skala keseluruhan) */
-  function setProgress(pct, fileLabel, countLabel, sub){
-    const p = Math.round(Math.min(100, Math.max(0, pct)));
-    modalPct.textContent   = p + '%';
-    modalFill.style.width  = p + '%';
+  function setProgress(pct,fileLabel,countLabel,sub){
+    const p=Math.round(Math.min(100,Math.max(0,pct)));
+    modalPct.textContent=p+'%';
+    modalFill.style.width=p+'%';
     setUploadRing(p);
-    if(fileLabel  !== undefined) modalFile.textContent  = fileLabel;
-    if(countLabel !== undefined) modalCount.textContent = countLabel;
-    if(sub        !== undefined) modalSub.textContent   = sub;
+    if(fileLabel!==undefined) modalFile.textContent=fileLabel;
+    if(countLabel!==undefined) modalCount.textContent=countLabel;
+    if(sub!==undefined) modalSub.textContent=sub;
   }
 
-  const before = SUBMISSION_LOG.length;
-  const dilewati = [];
-  const gagalCek = [];
-  const bernomor = [];   /* berkas sukses + nama bernomor, utk tombol unduh */
-  for(let i=0; i<valid.length; i++){
-    const it = valid[i];
-    const totalRows   = it.parsed?.raw?.rows?.length || 0;
-    const isChunked   = isB && totalRows > CHUNK_ROWS;
-    const filePct0    = (i / valid.length) * 100;       // % awal file ini
-    const filePct1    = ((i+1) / valid.length) * 100;   // % setelah file ini selesai
+  const before=SUBMISSION_LOG.length;
+  const dilewati=[],gagalCek=[],bernomor=[];
 
-    setProgress(filePct0,
-      it.fileName,
-      `File ${i+1} / ${valid.length}`,
-      'Memeriksa data yang sudah ada...'
-    );
+  for(let i=0;i<valid.length;i++){
+    const it=valid[i];
+    const totalRows=it.parsed?.raw?.rows?.length||0;
+    const isChunked=isB&&totalRows>CHUNK_ROWS;
+    const filePct0=(i/valid.length)*100;
+    const filePct1=((i+1)/valid.length)*100;
 
-    /* v6: tentukan identitas laporan sebelum kirim.
-       Lapis 1 = ID pada nama berkas · Lapis 2 = kecocokan isi */
-    const idFile = idDariNamaFileClient(it.fileName);
-    const cek    = await cekLaporanKeServer(jenis, idFile);
-    let idLaporan = idFile;
+    setProgress(filePct0,it.fileName,`File ${i+1} / ${valid.length}`,'Memeriksa data yang sudah ada...');
+
+    const idFile=idDariNamaFileClient(it.fileName);
+    const cek=await cekLaporanKeServer(jenis,idFile);
+    let idLaporan=idFile;
 
     if(cek){
-      if(cek.mode === 'koreksi'){
-        modal.classList.remove('show');               /* modal ditutup agar dialog terlihat */
-        const ok = konfirmasiKoreksi(it.fileName, cek.info);
+      if(cek.mode==='koreksi'){
+        modal.classList.remove('show');
+        const ok=konfirmasiKoreksi(it.fileName,cek.info);
         modal.classList.add('show');
-        if(!ok){
-          dilewati.push(it.fileName);
-          setProgress(filePct1, it.fileName, `File ${i+1} / ${valid.length}`, 'Dilewati oleh pengguna');
-          continue;
-        }
-        idLaporan = cek.id;
+        if(!ok){dilewati.push(it.fileName);setProgress(filePct1,it.fileName,`File ${i+1} / ${valid.length}`,'Dilewati');continue;}
+        idLaporan=cek.id;
       } else {
-        /* Laporan baru: hitung dulu berapa barisnya yang sudah ada di sistem */
-        idLaporan = cek.id || '';
-        const tt = await cekTumpangTindih(jenis, it.parsed);
-        if(tt && tt.sudahAda > 0){
+        idLaporan=cek.id||'';
+        const tt=await cekTumpangTindih(jenis,it.parsed);
+        if(tt&&tt.sudahAda>0){
           modal.classList.remove('show');
-          const ok = konfirmasiTumpangTindih(it.fileName, tt);
+          const ok=konfirmasiTumpangTindih(it.fileName,tt);
           modal.classList.add('show');
-          if(!ok){
-            dilewati.push(it.fileName);
-            setProgress(filePct1, it.fileName, `File ${i+1} / ${valid.length}`, 'Dilewati oleh pengguna');
-            continue;
-          }
+          if(!ok){dilewati.push(it.fileName);setProgress(filePct1,it.fileName,`File ${i+1} / ${valid.length}`,'Dilewati');continue;}
         }
       }
     } else {
-      /* Server tidak merespons — jangan unggah tanpa identitas, karena
-         berkas tanpa ID tidak bisa dikoreksi dengan aman di kemudian hari. */
       gagalCek.push(it.fileName);
-      setProgress(filePct1, it.fileName, `File ${i+1} / ${valid.length}`,
-        'Gagal: identitas laporan tidak bisa dipastikan');
+      setProgress(filePct1,it.fileName,`File ${i+1} / ${valid.length}`,'Gagal: server tidak merespons');
       continue;
     }
 
-    setProgress(filePct0,
-      it.fileName,
-      `File ${i+1} / ${valid.length}`,
-      isChunked ? `${totalRows.toLocaleString()} baris · chunked` : 'Mengunggah...'
-    );
+    setProgress(filePct0,it.fileName,`File ${i+1} / ${valid.length}`,
+      isChunked?`${totalRows.toLocaleString()} baris · chunked`:'Mengunggah...');
 
-    await kirimKeGAS(jenis, it.parsed, it.fileName, it.b64, (chunkPct, chunkIdx, numChunks) => {
-      /* chunkPct = 0–100 dalam 1 file; skalakan ke porsi file ini */
-      const overall = filePct0 + (chunkPct / 100) * (filePct1 - filePct0);
-      setProgress(overall,
-        it.fileName,
-        `File ${i+1} / ${valid.length}`,
-        `Chunk ${chunkIdx}/${numChunks} · ${chunkPct}%`
-      );
-    }, idLaporan);
+    await kirimKeGAS(jenis,it.parsed,it.fileName,it.b64,(chunkPct,chunkIdx,numChunks)=>{
+      const overall=filePct0+(chunkPct/100)*(filePct1-filePct0);
+      setProgress(overall,it.fileName,`File ${i+1} / ${valid.length}`,`Chunk ${chunkIdx}/${numChunks} · ${chunkPct}%`);
+    },idLaporan);
 
-    /* Simpan nama bernomor supaya staf bisa mengunduh versi ber-ID */
     if(kirimKeGAS._lastDriveName){
-      bernomor.push({ nama: kirimKeGAS._lastDriveName, b64: it.b64 });
-      kirimKeGAS._lastDriveName = null;
+      bernomor.push({nama:kirimKeGAS._lastDriveName,b64:it.b64});
+      /* FIX UTAMA: simpan ke daftar permanen + cache b64 in-memory */
+      tambahBerkasBernomor(jenis, kirimKeGAS._lastDriveName, it.b64);
+      kirimKeGAS._lastDriveName=null;
     }
-
-    setProgress(filePct1, it.fileName, `File ${i+1} / ${valid.length}`, 'Selesai');
+    setProgress(filePct1,it.fileName,`File ${i+1} / ${valid.length}`,'Selesai');
   }
 
-  /* Tutup modal setelah selesai semua */
-  setProgress(100, '—', `${valid.length} / ${valid.length}`, 'Semua file terkirim!');
-  await new Promise(r => setTimeout(r, 800));
+  setProgress(100,'—',`${valid.length} / ${valid.length}`,'Semua file terkirim!');
+  await new Promise(r=>setTimeout(r,800));
   modal.classList.remove('show');
-  btn.disabled = false;
+  btn.disabled=false;
 
-  if(dilewati.length){
-    showToast(dilewati.length + ' file dilewati: ' + dilewati.join(', '));
-  }
-  if(gagalCek.length){
-    showToast('Gagal (server tidak merespons): ' + gagalCek.join(', ') + ' — coba lagi.');
-  }
-  tampilkanUnduhan(jenis, bernomor);
-  const justSent = SUBMISSION_LOG.slice(before);
-  const sukses   = justSent.filter(l=>l.gsheet==='ok' && l.drive==='ok').length;
-  const gagal    = justSent.length - sukses;
-  pending[jenis] = [];
+  if(dilewati.length) showToast(`${dilewati.length} file dilewati: ${dilewati.join(', ')}`);
+  if(gagalCek.length) showToast(`Gagal (server tidak merespons): ${gagalCek.join(', ')} — coba lagi.`);
+  tampilkanUnduhan(jenis,bernomor);
+
+  const justSent=SUBMISSION_LOG.slice(before);
+  const sukses=justSent.filter(l=>l.gsheet==='ok'&&l.drive==='ok').length;
+  const gagal=justSent.length-sukses;
+  pending[jenis]=[];
   renderFileList(jenis);
-  renderStatus();
-  const errDetail = kirimKeGAS._lastError ? ` — Error: ${kirimKeGAS._lastError}` : '. Cek Executions log di Apps Script.';
-  if(gagal===0)       showToast(`${sukses} file ${jenis} terkirim ke Google Sheet & Google Drive`);
-  else if(sukses===0) showToast(`Gagal mengirim ${gagal} file ${jenis}${errDetail}`);
-  else                showToast(`${sukses} file ${jenis} berhasil, ${gagal} gagal${errDetail}`);
-}
-document.getElementById('btnKirimPjum').addEventListener('click', ()=>kirimBatch('PJUM'));
-document.getElementById('btnKirimBenef').addEventListener('click', ()=>kirimBatch('Benef'));
+  /* Refresh KPI + riwayat setelah upload selesai */
+  renderKpiCards();
+  renderRiwayat();
 
-/* ============ COLLAPSE/EXPAND RIWAYAT ============ */
-document.getElementById('riwayatToggle').addEventListener('click', ()=>{
+  const errDetail=kirimKeGAS._lastError?` — Error: ${kirimKeGAS._lastError}`:'';
+  if(gagal===0) showToast(`${sukses} file ${jenis} terkirim ke Google Sheet & Google Drive`);
+  else if(sukses===0) showToast(`Gagal mengirim ${gagal} file ${jenis}${errDetail}`);
+  else showToast(`${sukses} file ${jenis} berhasil, ${gagal} gagal${errDetail}`);
+}
+
+document.getElementById('btnKirimPjum').addEventListener('click',()=>kirimBatch('PJUM'));
+document.getElementById('btnKirimBenef').addEventListener('click',()=>kirimBatch('Benef'));
+
+/* ============ COLLAPSE BERKAS BERNOMOR & RIWAYAT ============ */
+document.getElementById('berkasToggle').addEventListener('click',()=>{
+  document.getElementById('berkasToggle').classList.toggle('collapsed');
+  document.getElementById('berkasGrid').classList.toggle('collapsed');
+});
+document.getElementById('hapusBerkasPJUM').addEventListener('click',e=>{
+  e.stopPropagation(); hapusSemuaBerkas('PJUM');
+});
+document.getElementById('hapusBerkasBenef').addEventListener('click',e=>{
+  e.stopPropagation(); hapusSemuaBerkas('Benef');
+});
+
+document.getElementById('riwayatToggle').addEventListener('click',()=>{
   document.getElementById('riwayatToggle').classList.toggle('collapsed');
   document.getElementById('riwayatGrid').classList.toggle('collapsed');
 });
 
 /* ============ MODAL PREVIEW & EDIT ============ */
-const editOverlay = document.getElementById('editOverlay');
-const editScroll = document.getElementById('editScroll');
-const editTitle = document.getElementById('editTitle');
-const editSub = document.getElementById('editSub');
-const btnEditSave = document.getElementById('editSave');
-let currentEdit = null; // {jenis, fileName, data}
+const editOverlay=document.getElementById('editOverlay');
+const editScroll=document.getElementById('editScroll');
+const editTitle=document.getElementById('editTitle');
+const editSub=document.getElementById('editSub');
+const btnEditSave=document.getElementById('editSave');
+let currentEdit=null;
 
-function closeEditModal(){ editOverlay.classList.remove('show'); currentEdit = null; }
-document.getElementById('editClose').addEventListener('click', closeEditModal);
-document.getElementById('editCancel').addEventListener('click', closeEditModal);
-editOverlay.addEventListener('click', e=>{ if(e.target===editOverlay) closeEditModal(); });
+function closeEditModal(){editOverlay.classList.remove('show');currentEdit=null;}
+document.getElementById('editClose').addEventListener('click',closeEditModal);
+document.getElementById('editCancel').addEventListener('click',closeEditModal);
+editOverlay.addEventListener('click',e=>{if(e.target===editOverlay) closeEditModal();});
 
-async function openEditModal(jenis, fileName){
-  editTitle.textContent = jenis==='PJUM' ? 'Preview & Edit PJUM' : 'Preview & Edit Benef';
-  editSub.textContent = fileName;
-  editScroll.innerHTML = `<div class="modal-loading">Memuat data...</div>`;
-  btnEditSave.disabled = true;
+async function openEditModal(jenis,fileName){
+  editTitle.textContent=jenis==='PJUM'?'Preview & Edit PJUM':'Preview & Edit Benef';
+  editSub.textContent=fileName;
+  editScroll.innerHTML=`<div class="modal-loading">Memuat data...</div>`;
+  btnEditSave.disabled=true;
   editOverlay.classList.add('show');
-
   try{
-    const res = await fetch(`${GAS_URL}?action=getDetail&jenis=${jenis}&fileName=${encodeURIComponent(fileName)}`, {redirect:'follow'});
-    const json = await res.json();
-    if(json.error){ editScroll.innerHTML = `<div class="modal-loading">${json.error}</div>`; return; }
-    currentEdit = { jenis, fileName, data: json };
+    const res=await fetch(`${GAS_URL}?action=getDetail&jenis=${jenis}&fileName=${encodeURIComponent(fileName)}`,{redirect:'follow'});
+    const json=await res.json();
+    if(json.error){editScroll.innerHTML=`<div class="modal-loading">${json.error}</div>`;return;}
+    currentEdit={jenis,fileName,data:json};
     if(jenis==='PJUM') renderPjumEditor(json); else renderBenefEditor(json);
-    btnEditSave.disabled = false;
+    btnEditSave.disabled=false;
   }catch(err){
-    editScroll.innerHTML = `<div class="modal-loading">Gagal memuat data dari server.</div>`;
+    editScroll.innerHTML=`<div class="modal-loading">Gagal memuat data dari server.</div>`;
   }
 }
 
 function renderPjumEditor(d){
-  editScroll.innerHTML = `
+  editScroll.innerHTML=`
     <div class="field-row">
       <div class="field"><label>Kegiatan</label><input id="fKegiatan" value="${d.kegiatan||''}"></div>
       <div class="field"><label>Kode</label><input id="fKode" value="${d.kode||''}"></div>
@@ -1539,83 +1531,75 @@ function renderPjumEditor(d){
       <thead><tr><th>Tanggal</th><th>Deskripsi/Item</th><th>Cost</th><th></th></tr></thead>
       <tbody id="itemsBody"></tbody>
     </table></div>
-    <button class="btn-add-row" id="btnAddItem">+ Tambah Item</button>
-  `;
-  const renderItems = ()=>{
-    document.getElementById('itemsBody').innerHTML = d.items.map((it,i)=>`<tr>
+    <button class="btn-add-row" id="btnAddItem">+ Tambah Item</button>`;
+  const renderItems=()=>{
+    document.getElementById('itemsBody').innerHTML=d.items.map((it,i)=>`<tr>
       <td><input type="date" data-i="${i}" data-f="tanggal" value="${it.tanggal||''}"></td>
       <td><input type="text" data-i="${i}" data-f="keterangan" value="${(it.keterangan||'').replace(/"/g,'&quot;')}"></td>
       <td><input type="number" data-i="${i}" data-f="jumlah" value="${it.jumlah||0}"></td>
       <td><button class="row-remove" data-i="${i}">✕</button></td>
     </tr>`).join('');
     document.querySelectorAll('#itemsBody input').forEach(inp=>{
-      inp.addEventListener('input', ()=>{ d.items[inp.dataset.i][inp.dataset.f] = inp.type==='number' ? parseFloat(inp.value)||0 : inp.value; });
+      inp.addEventListener('input',()=>{d.items[inp.dataset.i][inp.dataset.f]=inp.type==='number'?parseFloat(inp.value)||0:inp.value;});
     });
     document.querySelectorAll('#itemsBody .row-remove').forEach(btn=>{
-      btn.addEventListener('click', ()=>{ d.items.splice(parseInt(btn.dataset.i),1); renderItems(); });
+      btn.addEventListener('click',()=>{d.items.splice(parseInt(btn.dataset.i),1);renderItems();});
     });
   };
   renderItems();
-  document.getElementById('btnAddItem').addEventListener('click', ()=>{ d.items.push({tanggal:'',keterangan:'',jumlah:0}); renderItems(); });
+  document.getElementById('btnAddItem').addEventListener('click',()=>{d.items.push({tanggal:'',keterangan:'',jumlah:0});renderItems();});
 }
 
 function renderBenefEditor(d){
-  editScroll.innerHTML = `
+  editScroll.innerHTML=`
     <div class="edit-table-wrap"><table class="edit-table">
       <thead><tr>${d.headers.map(h=>`<th>${h}</th>`).join('')}<th></th></tr></thead>
       <tbody id="benefBody"></tbody>
     </table></div>
-    <button class="btn-add-row" id="btnAddBenefRow">+ Tambah Baris</button>
-  `;
-  const renderRows = ()=>{
-    document.getElementById('benefBody').innerHTML = d.rows.map((row,ri)=>`<tr>
+    <button class="btn-add-row" id="btnAddBenefRow">+ Tambah Baris</button>`;
+  const renderRows=()=>{
+    document.getElementById('benefBody').innerHTML=d.rows.map((row,ri)=>`<tr>
       ${row.map((v,ci)=>`<td><input data-r="${ri}" data-c="${ci}" value="${(v??'').toString().replace(/"/g,'&quot;')}"></td>`).join('')}
       <td><button class="row-remove" data-r="${ri}">✕</button></td>
     </tr>`).join('');
     document.querySelectorAll('#benefBody input').forEach(inp=>{
-      inp.addEventListener('input', ()=>{ d.rows[inp.dataset.r][inp.dataset.c] = inp.value; });
+      inp.addEventListener('input',()=>{d.rows[inp.dataset.r][inp.dataset.c]=inp.value;});
     });
     document.querySelectorAll('#benefBody .row-remove').forEach(btn=>{
-      btn.addEventListener('click', ()=>{ d.rows.splice(parseInt(btn.dataset.r),1); renderRows(); });
+      btn.addEventListener('click',()=>{d.rows.splice(parseInt(btn.dataset.r),1);renderRows();});
     });
   };
   renderRows();
-  document.getElementById('btnAddBenefRow').addEventListener('click', ()=>{ d.rows.push(d.headers.map(()=>'')); renderRows(); });
+  document.getElementById('btnAddBenefRow').addEventListener('click',()=>{d.rows.push(d.headers.map(()=>''));renderRows();});
 }
 
-btnEditSave.addEventListener('click', async ()=>{
+btnEditSave.addEventListener('click',async()=>{
   if(!currentEdit) return;
-  btnEditSave.disabled = true;
-  btnEditSave.textContent = 'Menyimpan...';
-  const { jenis, fileName, data } = currentEdit;
+  btnEditSave.disabled=true;
+  btnEditSave.textContent='Menyimpan...';
+  const {jenis,fileName,data}=currentEdit;
   try{
     let body;
     if(jenis==='PJUM'){
-      body = {
-        action:'updatePJUM', fileName, staf: CURRENT_STAF,
-        kegiatan: document.getElementById('fKegiatan').value,
-        kode: document.getElementById('fKode').value,
-        proyek: document.getElementById('fProyek').value,
-        items: data.items
-      };
+      body={action:'updatePJUM',fileName,staf:CURRENT_STAF,
+            kegiatan:document.getElementById('fKegiatan').value,
+            kode:document.getElementById('fKode').value,
+            proyek:document.getElementById('fProyek').value,items:data.items};
     } else {
-      body = { action:'updateBenef', fileName, staf: CURRENT_STAF, headers: data.headers, rows: data.rows };
+      body={action:'updateBenef',fileName,staf:CURRENT_STAF,headers:data.headers,rows:data.rows};
     }
-    const res = await fetch(GAS_URL, { method:'POST', headers:{'Content-Type':'text/plain'}, redirect:'follow', body: JSON.stringify(body) });
-    const json = await res.json();
-    if(json.gsheet==='ok' && json.drive==='ok'){
-      showToast(json.savedAs ? `Tersimpan — file baru di Drive: ${json.savedAs}` : 'Perubahan tersimpan ke Google Sheet & Google Drive');
+    const res=await fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain'},redirect:'follow',body:JSON.stringify(body)});
+    const json=await res.json();
+    if(json.gsheet==='ok'&&json.drive==='ok'){
+      showToast(json.savedAs?`Tersimpan — file baru: ${json.savedAs}`:'Perubahan tersimpan');
     } else {
       showToast(`Simpan sebagian gagal — Gsheet:${json.gsheet}, Gdrive:${json.drive}`);
     }
     closeEditModal();
-    renderStatus();
-  }catch(err){
-    showToast('Gagal menyimpan perubahan.');
-  }finally{
-    btnEditSave.disabled = false;
-    btnEditSave.textContent = 'Simpan';
-  }
+    renderKpiCards();
+    renderRiwayat();
+  }catch(err){showToast('Gagal menyimpan perubahan.');}
+  finally{btnEditSave.disabled=false;btnEditSave.textContent='Simpan';}
 });
 
 initLogin();
